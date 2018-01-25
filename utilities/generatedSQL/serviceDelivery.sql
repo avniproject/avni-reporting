@@ -46,4 +46,21 @@ INNER JOIN encounter_type ON program_encounter.encounter_type_id = encounter_typ
 INNER JOIN individual ON program_enrolment.individual_id = individual.id
 INNER JOIN gender ON individual.gender_id = gender.id
 INNER JOIN address_level ON address_level.id = individual.address_id
+WHERE program.name = 'Adolescent' GROUP BY program_encounter.program_enrolment_id, gender.name, address_level.type) AS encounter_function_output UNION 
+SELECT 'Total adolescents dropped out',
+ count(CASE WHEN has_dropped_out THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'Village') AS "Village - Male", 
+ count(CASE WHEN has_dropped_out THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'Village') AS "Village - Female", 
+ count(CASE WHEN has_dropped_out THEN 1 END) FILTER (WHERE address_level_type = 'Village') AS "Village - Total", 
+ count(CASE WHEN has_dropped_out THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'School') AS "School - Male", 
+ count(CASE WHEN has_dropped_out THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'School') AS "School - Female", 
+ count(CASE WHEN has_dropped_out THEN 1 END) FILTER (WHERE address_level_type = 'School') AS "School - Total", 
+ count(CASE WHEN has_dropped_out THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'Boarding School') AS "Village - Male", 
+ count(CASE WHEN has_dropped_out THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'Boarding School') AS "Village - Female", 
+ count(CASE WHEN has_dropped_out THEN 1 END) FILTER (WHERE address_level_type = 'Boarding School') AS "Boarding School - Total"
+ from (SELECT bool_and(has_dropped_out(program_enrolment.observations, program_encounter.observations)) AS has_dropped_out, gender.name gender_name, address_level.type address_level_type from program_encounter
+INNER JOIN program_enrolment ON program_encounter.program_enrolment_id = program_enrolment.id
+INNER JOIN encounter_type ON program_encounter.encounter_type_id = encounter_type.id INNER JOIN program ON program_enrolment.program_id = program.id
+INNER JOIN individual ON program_enrolment.individual_id = individual.id
+INNER JOIN gender ON individual.gender_id = gender.id
+INNER JOIN address_level ON address_level.id = individual.address_id
 WHERE program.name = 'Adolescent' GROUP BY program_encounter.program_enrolment_id, gender.name, address_level.type) AS encounter_function_output 

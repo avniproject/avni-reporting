@@ -43,6 +43,13 @@ let serviceDelivery = {
             addressTypeColumn: 'address_level_type',
             aggregateFn: 'count(CASE WHEN is_counselled THEN 1 END)',
             from: mustache.render(programEncounterFunctionTemplate, {fact: 'bool_and(is_counselled(program_encounter.observations)) AS is_counselled'})
+        },
+        {
+            indicator: 'Total adolescents dropped out',
+            genderColumn: 'gender_name',
+            addressTypeColumn: 'address_level_type',
+            aggregateFn: 'count(CASE WHEN has_dropped_out THEN 1 END)',
+            from: mustache.render(programEncounterFunctionTemplate, {fact: 'bool_and(has_dropped_out(program_enrolment.observations, program_encounter.observations)) AS has_dropped_out'})
         }
     ]
 };

@@ -1,11 +1,19 @@
 // export * as encounterDecision from "./health_modules/encounterDecision";
 // IT IS NOT MANDATORY THAT ALL THE SQL ARE GENERATED THIS FASHION. USE IT FOR ELIMINATING DUPLICATION OF CODE AND SCALE OF DUPLICATION
-let mustache = require('mustache');
-var fs = require('fs');
+const mustache = require('mustache');
+const fs = require('fs');
 
 let replacements = new Map();
 replacements.set('&#x3D;', '=');
 replacements.set('&#39;', '\'');
+
+function render(template, data) {
+    let sql = mustache.render(template, data);
+    replacements.forEach((value, key) => {
+        sql = sql.split(key).join(value);
+    });
+    return sql;
+}
 
 let dimensionsBase = `INNER JOIN program ON program_enrolment.program_id = program.id
 INNER JOIN individual ON program_enrolment.individual_id = individual.id
@@ -35,21 +43,28 @@ let serviceDelivery = {
             genderColumn: 'gender_name',
             addressTypeColumn: 'address_level_type',
             aggregateFn: 'count(CASE WHEN has_problem THEN 1 END)',
-            from: mustache.render(programEncounterFunctionTemplate, {fact: 'bool_and(has_problem(program_encounter.observations)) AS has_problem'})
+            from: render(programEncounterFunctionTemplate, {fact: 'bool_and(has_problem(program_encounter.observations)) AS has_problem'})
         },
         {
             indicator: 'Total adolescents counselled',
             genderColumn: 'gender_name',
             addressTypeColumn: 'address_level_type',
             aggregateFn: 'count(CASE WHEN is_counselled THEN 1 END)',
-            from: mustache.render(programEncounterFunctionTemplate, {fact: 'bool_and(is_counselled(program_encounter.observations)) AS is_counselled'})
+            from: render(programEncounterFunctionTemplate, {fact: 'bool_and(is_counselled(program_encounter.observations)) AS is_counselled'})
         },
         {
             indicator: 'Total adolescents dropped out',
             genderColumn: 'gender_name',
             addressTypeColumn: 'address_level_type',
             aggregateFn: 'count(CASE WHEN has_dropped_out THEN 1 END)',
-            from: mustache.render(programEncounterFunctionTemplate, {fact: 'bool_and(has_dropped_out(program_enrolment.observations, program_encounter.observations)) AS has_dropped_out'})
+            from: render(programEncounterFunctionTemplate, {fact: 'bool_and(has_dropped_out(program_enrolment.observations, program_encounter.observations)) AS has_dropped_out'})
+        },
+        {
+            indicator: 'Total adolescents whose home visits done',
+            genderColumn: 'gender_name',
+            addressTypeColumn: 'address_level_type',
+            aggregateFn: 'count(CASE WHEN home_visit_done THEN 1 END)',
+            from: render(programEncounterFunctionTemplate, {fact: `bool_and(encounter_type.name = 'Dropout Home Visit') AS home_visit_done`})
         }
     ]
 };
@@ -67,12 +82,8 @@ let template = `{{#indicators}}SELECT '{{indicator}}',
  from {{from}} UNION 
 {{/indicators}}`;
 
-let sql = mustache.render(template, serviceDelivery);
-replacements.forEach((value, key) => {
-    sql = sql.split(key).join(value);
-});
+let sql = render(template, serviceDelivery);
 sql = sql.substring(0, sql.length - " UNION ".length);
-console.log(sql);
 fs.writeFileSync('generatedSQL/serviceDelivery.sql', sql);
 
 

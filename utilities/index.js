@@ -65,6 +65,13 @@ let serviceDelivery = {
             addressTypeColumn: 'address_level_type',
             aggregateFn: 'count(CASE WHEN home_visit_done THEN 1 END)',
             from: render(programEncounterFunctionTemplate, {fact: `bool_and(encounter_type.name = 'Dropout Home Visit') AS home_visit_done`})
+        },
+        {
+            indicator: 'Total adolescents referred',
+            genderColumn: 'gender_name',
+            addressTypeColumn: 'address_level_type',
+            aggregateFn: 'count(CASE WHEN is_referred THEN 1 END)',
+            from: render(programEncounterFunctionTemplate, {fact: `bool_and(coded_obs_exists(program_encounter, 'Refer to hospital for')) AS is_referred`})
         }
     ]
 };

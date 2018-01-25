@@ -19,7 +19,7 @@ INNER JOIN encounter_type ON program_encounter.encounter_type_id = encounter_typ
 
 let programEnrolmentBase = `program_enrolment ${dimensionsBase}`;
 
-let encounterFunctionBase = `(SELECT bool_and(has_problem(program_encounter.observations)) AS has_problem, gender.name gender_name, address_level.type address_level_type from ${programEncounterBase}) AS encounter_function_output`;
+let programEncounterFunctionTemplate = `(SELECT {{fact}}, gender.name gender_name, address_level.type address_level_type from ${programEncounterBase}) AS encounter_function_output`;
 
 let serviceDelivery = {
     indicators: [
@@ -35,7 +35,14 @@ let serviceDelivery = {
             genderColumn: 'gender_name',
             addressTypeColumn: 'address_level_type',
             aggregateFn: 'count(CASE WHEN has_problem THEN 1 END)',
-            from: encounterFunctionBase
+            from: mustache.render(programEncounterFunctionTemplate, {fact: 'bool_and(has_problem(program_encounter.observations)) AS has_problem'})
+        },
+        {
+            indicator: 'Total adolescents counselled',
+            genderColumn: 'gender_name',
+            addressTypeColumn: 'address_level_type',
+            aggregateFn: 'count(CASE WHEN is_counselled THEN 1 END)',
+            from: mustache.render(programEncounterFunctionTemplate, {fact: 'bool_and(is_counselled(program_encounter.observations)) AS is_counselled'})
         }
     ]
 };

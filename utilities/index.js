@@ -4,9 +4,9 @@ const fs = require('fs');
 const render = require('./renderer').render;
 const reportDefinition = require('./reportDefinition');
 
-let masterTemplate = `SELECT Indicator, VillageMale as "Village - Male", VillageFemale as "Village - Female", VillageTotal as "Village - Total",
-SchoolMale as "School - Male", SchoolFemale as "School - Female", SchoolTotal as "School - Total", 
-BoardingSchoolMale as "Boarding School - Male", BoardingSchoolFemale as "Boarding School - Female", BoardingSchoolTotal as "Boarding School - Total" from 
+let masterTemplate = `SELECT Indicator, VillageMale as "VLG Male", VillageFemale as "VLG Female", VillageTotal as "VLG Total",
+SchoolMale as "SCH Male", SchoolFemale as "SCH Female", SchoolTotal as "SCH Total", 
+BoardingSchoolMale as "B-SCH Male", BoardingSchoolFemale as "B-SCH Female", BoardingSchoolTotal as "B-SCH Total" from 
 ({{#indicators}}SELECT {{displayOrder}} DisplayOrder, '{{indicator}}' AS Indicator,
  {{aggregateFn}} FILTER (WHERE {{genderColumn}} = 'Male' and {{addressTypeColumn}} = 'Village') AS VillageMale, 
  {{aggregateFn}} FILTER (WHERE {{genderColumn}} = 'Female' and {{addressTypeColumn}} = 'Village') AS VillageFemale, 

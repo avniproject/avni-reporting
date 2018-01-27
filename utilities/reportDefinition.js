@@ -1,7 +1,9 @@
 const bases = require('./bases');
 const render = require('./renderer').render;
 
-const serviceDelivery = {
+module.exports = {};
+
+module.exports.serviceDelivery = {
     indicators: [
         {
             displayOrder: 1,
@@ -17,7 +19,7 @@ const serviceDelivery = {
             genderColumn: 'gender_name',
             addressTypeColumn: 'address_level_type',
             aggregateFn: 'count(CASE WHEN has_problem THEN 1 END)',
-            from: render(bases.programEncounterFunctionTemplate, {fact: 'bool_and(has_problem(program_encounter.observations)) AS has_problem'})
+            from: render(bases.programEncounterFunctionTemplate, {fact: 'bool_or(has_problem(program_encounter.observations)) AS has_problem'})
         },
         {
             displayOrder: 3,
@@ -25,7 +27,7 @@ const serviceDelivery = {
             genderColumn: 'gender_name',
             addressTypeColumn: 'address_level_type',
             aggregateFn: 'count(CASE WHEN is_counselled THEN 1 END)',
-            from: render(bases.programEncounterFunctionTemplate, {fact: 'bool_and(is_counselled(program_encounter.observations)) AS is_counselled'})
+            from: render(bases.programEncounterFunctionTemplate, {fact: 'bool_or(is_counselled(program_encounter.observations)) AS is_counselled'})
         },
         {
             displayOrder: 4,
@@ -33,7 +35,7 @@ const serviceDelivery = {
             genderColumn: 'gender_name',
             addressTypeColumn: 'address_level_type',
             aggregateFn: 'count(CASE WHEN has_dropped_out THEN 1 END)',
-            from: render(bases.programEncounterFunctionTemplate, {fact: 'bool_and(has_dropped_out(program_enrolment.observations, program_encounter.observations)) AS has_dropped_out'})
+            from: render(bases.programEncounterFunctionTemplate, {fact: 'bool_or(has_dropped_out(program_enrolment.observations, program_encounter.observations)) AS has_dropped_out'})
         },
         {
             displayOrder: 5,
@@ -41,7 +43,7 @@ const serviceDelivery = {
             genderColumn: 'gender_name',
             addressTypeColumn: 'address_level_type',
             aggregateFn: 'count(CASE WHEN home_visit_done THEN 1 END)',
-            from: render(bases.programEncounterFunctionTemplate, {fact: `bool_and(encounter_type.name = 'Dropout Home Visit') AS home_visit_done`})
+            from: render(bases.programEncounterFunctionTemplate, {fact: `bool_or(encounter_type.name = 'Dropout Home Visit') AS home_visit_done`})
         },
         {
             displayOrder: 6,
@@ -49,11 +51,44 @@ const serviceDelivery = {
             genderColumn: 'gender_name',
             addressTypeColumn: 'address_level_type',
             aggregateFn: 'count(CASE WHEN is_referred THEN 1 END)',
-            from: render(bases.programEncounterFunctionTemplate, {fact: `bool_and(coded_obs_exists(program_encounter, 'Refer to hospital for')) AS is_referred`})
+            from: render(bases.programEncounterFunctionTemplate, {fact: `bool_or(coded_obs_exists(program_encounter, 'Refer to hospital for')) AS is_referred`})
         }
     ]
 };
 
-module.exports = {
-    serviceDelivery: serviceDelivery
+module.exports.addiction = {
+    indicators: [
+        {
+            displayOrder: 1,
+            indicator: 'Total adolescents addicted of tobacco',
+            genderColumn: 'gender_name',
+            addressTypeColumn: 'address_level_type',
+            aggregateFn: 'count(CASE WHEN is_referred THEN 1 END)',
+            from: render(bases.programEncounterFunctionTemplate, {fact: `bool_or(coded_obs_contains(program_encounter.observations, 'Addiction Details', ARRAY ['Tobacco'])) AS is_referred`})
+        },
+        {
+            displayOrder: 2,
+            indicator: 'Total adolescents addicted of alcohol',
+            genderColumn: 'gender_name',
+            addressTypeColumn: 'address_level_type',
+            aggregateFn: 'count(CASE WHEN is_referred THEN 1 END)',
+            from: render(bases.programEncounterFunctionTemplate, {fact: `bool_or(coded_obs_contains(program_encounter.observations, 'Addiction Details', ARRAY ['Alcohol'])) AS is_referred`})
+        },
+        {
+            displayOrder: 3,
+            indicator: 'Father\'\'s addiction',
+            genderColumn: 'gender_name',
+            addressTypeColumn: 'address_level_type',
+            aggregateFn: 'count(CASE WHEN is_referred THEN 1 END)',
+            from: render(bases.programEncounterFunctionTemplate, {fact: `bool_or(coded_obs_contains(program_encounter.observations, 'Father''s Addiction', ARRAY ['Tobacco', 'Alcohol', 'Both'])) AS is_referred`})
+        },
+        {
+            displayOrder: 4,
+            indicator: 'Mother\'\'s addiction',
+            genderColumn: 'gender_name',
+            addressTypeColumn: 'address_level_type',
+            aggregateFn: 'count(CASE WHEN is_referred THEN 1 END)',
+            from: render(bases.programEncounterFunctionTemplate, {fact: `bool_or(coded_obs_contains(program_encounter.observations, 'Mother''s Addiction', ARRAY ['Tobacco', 'Alcohol', 'Both'])) AS is_referred`})
+        }
+    ]
 };

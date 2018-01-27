@@ -25,7 +25,7 @@ WHERE program.name = 'Adolescent' UNION SELECT 2 DisplayOrder, 'Total adolescent
  count(CASE WHEN has_problem THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'Boarding School') AS BoardingSchoolMale, 
  count(CASE WHEN has_problem THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'Boarding School') AS BoardingSchoolFemale, 
  count(CASE WHEN has_problem THEN 1 END) FILTER (WHERE address_level_type = 'Boarding School') AS BoardingSchoolTotal
- from (SELECT bool_and(has_problem(program_encounter.observations)) AS has_problem, gender.name gender_name, address_level.type address_level_type from program_encounter
+ from (SELECT bool_or(has_problem(program_encounter.observations)) AS has_problem, gender.name gender_name, address_level.type address_level_type from program_encounter
 INNER JOIN program_enrolment ON program_encounter.program_enrolment_id = program_enrolment.id
 INNER JOIN encounter_type ON program_encounter.encounter_type_id = encounter_type.id INNER JOIN program ON program_enrolment.program_id = program.id
 INNER JOIN individual ON program_enrolment.individual_id = individual.id
@@ -41,7 +41,7 @@ WHERE program.name = 'Adolescent' GROUP BY program_encounter.program_enrolment_i
  count(CASE WHEN is_counselled THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'Boarding School') AS BoardingSchoolMale, 
  count(CASE WHEN is_counselled THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'Boarding School') AS BoardingSchoolFemale, 
  count(CASE WHEN is_counselled THEN 1 END) FILTER (WHERE address_level_type = 'Boarding School') AS BoardingSchoolTotal
- from (SELECT bool_and(is_counselled(program_encounter.observations)) AS is_counselled, gender.name gender_name, address_level.type address_level_type from program_encounter
+ from (SELECT bool_or(is_counselled(program_encounter.observations)) AS is_counselled, gender.name gender_name, address_level.type address_level_type from program_encounter
 INNER JOIN program_enrolment ON program_encounter.program_enrolment_id = program_enrolment.id
 INNER JOIN encounter_type ON program_encounter.encounter_type_id = encounter_type.id INNER JOIN program ON program_enrolment.program_id = program.id
 INNER JOIN individual ON program_enrolment.individual_id = individual.id
@@ -57,7 +57,7 @@ WHERE program.name = 'Adolescent' GROUP BY program_encounter.program_enrolment_i
  count(CASE WHEN has_dropped_out THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'Boarding School') AS BoardingSchoolMale, 
  count(CASE WHEN has_dropped_out THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'Boarding School') AS BoardingSchoolFemale, 
  count(CASE WHEN has_dropped_out THEN 1 END) FILTER (WHERE address_level_type = 'Boarding School') AS BoardingSchoolTotal
- from (SELECT bool_and(has_dropped_out(program_enrolment.observations, program_encounter.observations)) AS has_dropped_out, gender.name gender_name, address_level.type address_level_type from program_encounter
+ from (SELECT bool_or(has_dropped_out(program_enrolment.observations, program_encounter.observations)) AS has_dropped_out, gender.name gender_name, address_level.type address_level_type from program_encounter
 INNER JOIN program_enrolment ON program_encounter.program_enrolment_id = program_enrolment.id
 INNER JOIN encounter_type ON program_encounter.encounter_type_id = encounter_type.id INNER JOIN program ON program_enrolment.program_id = program.id
 INNER JOIN individual ON program_enrolment.individual_id = individual.id
@@ -73,7 +73,7 @@ WHERE program.name = 'Adolescent' GROUP BY program_encounter.program_enrolment_i
  count(CASE WHEN home_visit_done THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'Boarding School') AS BoardingSchoolMale, 
  count(CASE WHEN home_visit_done THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'Boarding School') AS BoardingSchoolFemale, 
  count(CASE WHEN home_visit_done THEN 1 END) FILTER (WHERE address_level_type = 'Boarding School') AS BoardingSchoolTotal
- from (SELECT bool_and(encounter_type.name = 'Dropout Home Visit') AS home_visit_done, gender.name gender_name, address_level.type address_level_type from program_encounter
+ from (SELECT bool_or(encounter_type.name = 'Dropout Home Visit') AS home_visit_done, gender.name gender_name, address_level.type address_level_type from program_encounter
 INNER JOIN program_enrolment ON program_encounter.program_enrolment_id = program_enrolment.id
 INNER JOIN encounter_type ON program_encounter.encounter_type_id = encounter_type.id INNER JOIN program ON program_enrolment.program_id = program.id
 INNER JOIN individual ON program_enrolment.individual_id = individual.id
@@ -89,7 +89,7 @@ WHERE program.name = 'Adolescent' GROUP BY program_encounter.program_enrolment_i
  count(CASE WHEN is_referred THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'Boarding School') AS BoardingSchoolMale, 
  count(CASE WHEN is_referred THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'Boarding School') AS BoardingSchoolFemale, 
  count(CASE WHEN is_referred THEN 1 END) FILTER (WHERE address_level_type = 'Boarding School') AS BoardingSchoolTotal
- from (SELECT bool_and(coded_obs_exists(program_encounter, 'Refer to hospital for')) AS is_referred, gender.name gender_name, address_level.type address_level_type from program_encounter
+ from (SELECT bool_or(coded_obs_exists(program_encounter, 'Refer to hospital for')) AS is_referred, gender.name gender_name, address_level.type address_level_type from program_encounter
 INNER JOIN program_enrolment ON program_encounter.program_enrolment_id = program_enrolment.id
 INNER JOIN encounter_type ON program_encounter.encounter_type_id = encounter_type.id INNER JOIN program ON program_enrolment.program_id = program.id
 INNER JOIN individual ON program_enrolment.individual_id = individual.id

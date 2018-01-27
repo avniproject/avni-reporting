@@ -20,9 +20,14 @@ BoardingSchoolMale as "B-SCH Male", BoardingSchoolFemale as "B-SCH Female", Boar
  from {{from}} UNION {{/indicators}}) AS Unordered ORDER BY Unordered.DisplayOrder`;
 
 
-let sql = render(masterTemplate, reportDefinition.serviceDelivery);
-sql = sql.replace(" UNION )", ")");
-fs.writeFileSync('generatedSQL/serviceDelivery.sql', sql);
+let generateSQL = function (report) {
+    let sql = render(masterTemplate, reportDefinition[report]);
+    sql = sql.replace(" UNION )", ")");
+    fs.writeFileSync(`generatedSQL/${report}.sql`, sql);
+};
+
+generateSQL('serviceDelivery');
+generateSQL('addiction');
 
 
 // coded_obs_exists(program_encounter, 'Refer to hospital for') referred,

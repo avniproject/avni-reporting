@@ -1,7 +1,4 @@
-SELECT Indicator, VillageMale as "VLG Male", VillageFemale as "VLG Female", VillageTotal as "VLG Total",
-SchoolMale as "SCH Male", SchoolFemale as "SCH Female", SchoolTotal as "SCH Total", 
-BoardingSchoolMale as "B-SCH Male", BoardingSchoolFemale as "B-SCH Female", BoardingSchoolTotal as "B-SCH Total" from 
-(SELECT 1 DisplayOrder, 'Total adolescents enrolled' AS Indicator,
+SELECT Indicator, concat(VillageMale, ' (',((VillageMale*100)/(CASE WHEN VillageTotal=0 THEN 1 ELSE VillageTotal END)), '%)') as "VLG Male", concat(VillageFemale, ' (',((VillageFemale*100)/(CASE WHEN VillageTotal=0 THEN 1 ELSE VillageTotal END)), '%)') as "VLG Female", VillageTotal as "VLG Total", concat(SchoolMale, ' (',((SchoolMale*100)/(CASE WHEN SchoolTotal=0 THEN 1 ELSE SchoolTotal END)), '%)') as "SCH Male", concat(SchoolFemale, ' (',((SchoolFemale*100)/(CASE WHEN SchoolTotal=0 THEN 1 ELSE SchoolTotal END)), '%)') as "SCH Female", SchoolTotal as "SCH Total", concat(BoardingSchoolFemale, ' (',((BoardingSchoolFemale*100)/(CASE WHEN BoardingSchoolTotal=0 THEN 1 ELSE BoardingSchoolTotal END)), '%)') as "B-SCH Male", concat(BoardingSchoolFemale, ' (',((BoardingSchoolFemale*100)/(CASE WHEN BoardingSchoolTotal=0 THEN 1 ELSE BoardingSchoolTotal END)), '%)') as "B-SCH Female", BoardingSchoolTotal as "B-SCH Total" from (SELECT 1 DisplayOrder, 'Total adolescents enrolled' AS Indicator,
  count(*) FILTER (WHERE gender.name = 'Male' and address_level.type = 'Village') AS VillageMale, 
  count(*) FILTER (WHERE gender.name = 'Female' and address_level.type = 'Village') AS VillageFemale, 
  count(*) FILTER (WHERE address_level.type = 'Village') AS VillageTotal, 

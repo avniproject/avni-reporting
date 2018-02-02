@@ -50,15 +50,15 @@ let masterTemplate = `SELECT Indicator, ${renderIndicatorColumn(nonTotalIndicato
  {{aggregateFn}} FILTER (WHERE {{genderColumn}} = 'Male' and {{addressTypeColumn}} = 'School') AS SchoolMale, 
  {{aggregateFn}} FILTER (WHERE {{genderColumn}} = 'Female' and {{addressTypeColumn}} = 'School') AS SchoolFemale, 
  {{aggregateFn}} FILTER (WHERE {{addressTypeColumn}} = 'School') AS SchoolTotal, 
- {{aggregateFn}} FILTER (WHERE {{genderColumn}} = 'Male' and {{addressTypeColumn}} = 'Boarding School') AS BoardingSchoolMale, 
- {{aggregateFn}} FILTER (WHERE {{genderColumn}} = 'Female' and {{addressTypeColumn}} = 'Boarding School') AS BoardingSchoolFemale, 
- {{aggregateFn}} FILTER (WHERE {{addressTypeColumn}} = 'Boarding School') AS BoardingSchoolTotal
+ {{aggregateFn}} FILTER (WHERE {{genderColumn}} = 'Male' and {{addressTypeColumn}} = 'Boarding') AS BoardingSchoolMale, 
+ {{aggregateFn}} FILTER (WHERE {{genderColumn}} = 'Female' and {{addressTypeColumn}} = 'Boarding') AS BoardingSchoolFemale, 
+ {{aggregateFn}} FILTER (WHERE {{addressTypeColumn}} = 'Boarding') AS BoardingSchoolTotal
  from {{from}} UNION {{/indicators}}) AS Unordered ORDER BY Unordered.DisplayOrder`;
 
 let masterFemaleOnlyTemplate = `SELECT Indicator, VillageFemale as "VLG Female", SchoolFemale as "SCH Female", BoardingSchoolFemale as "B-SCH Female" from ({{#indicators}}SELECT {{displayOrder}} DisplayOrder, '{{indicator}}' AS Indicator,
  {{aggregateFn}} FILTER (WHERE {{genderColumn}} = 'Female' and {{addressTypeColumn}} = 'Village') AS VillageFemale, 
  {{aggregateFn}} FILTER (WHERE {{genderColumn}} = 'Female' and {{addressTypeColumn}} = 'School') AS SchoolFemale, 
- {{aggregateFn}} FILTER (WHERE {{genderColumn}} = 'Female' and {{addressTypeColumn}} = 'Boarding School') AS BoardingSchoolFemale 
+ {{aggregateFn}} FILTER (WHERE {{genderColumn}} = 'Female' and {{addressTypeColumn}} = 'Boarding') AS BoardingSchoolFemale 
  from {{from}} UNION {{/indicators}}) AS Unordered ORDER BY Unordered.DisplayOrder`;
 
 _.keys(reportDefinition).forEach((key) => {

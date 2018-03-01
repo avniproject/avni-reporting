@@ -20,6 +20,12 @@ const serviceDeliveryReport = new ReportBuilder()
     .withSubReportWithDenominator("Total Adolescents Counselled",
         "totalAdolescentsCounselled.sql",
         "totalEnrolled.sql")
+    .withSubReportWithDenominator("Total Adolescents Dropped Out",
+        "totalAdolescentsDroppedOut.sql",
+        "totalEnrolled.sql")
+    .withSubReportWithDenominator("Total Adolescents With a Dropout Home Visit",
+        "totalIndividualsWithDropOutHomeVisit.sql",
+        "totalEnrolled.sql")
     .build();
 
 

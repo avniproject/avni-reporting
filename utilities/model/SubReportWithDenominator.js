@@ -11,7 +11,7 @@ class SubReportWithDenominator extends SubReport {
     }
 
     getDenominatorQuerySQL(reportName) {
-        return fs.readFileSync(['baseSQL', reportName, this.denominatorFileName].join('/'), 'utf-8');
+        return fs.readFileSync(['baseSQL', 'common', this.denominatorFileName].join('/'), 'utf-8');
     }
 
     getWrappedSQL(reportName) {

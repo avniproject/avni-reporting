@@ -1,65 +1,327 @@
-SELECT Indicator, concat(VillageMale, ' (',((VillageMale*100)/(CASE WHEN VillageTotal=0 THEN 1 ELSE VillageTotal END)), '%)') as "VLG Male", concat(VillageFemale, ' (',((VillageFemale*100)/(CASE WHEN VillageTotal=0 THEN 1 ELSE VillageTotal END)), '%)') as "VLG Female", VillageTotal as "VLG Total", concat(SchoolMale, ' (',((SchoolMale*100)/(CASE WHEN SchoolTotal=0 THEN 1 ELSE SchoolTotal END)), '%)') as "SCH Male", concat(SchoolFemale, ' (',((SchoolFemale*100)/(CASE WHEN SchoolTotal=0 THEN 1 ELSE SchoolTotal END)), '%)') as "SCH Female", SchoolTotal as "SCH Total", concat(BoardingSchoolMale, ' (',((BoardingSchoolMale*100)/(CASE WHEN BoardingSchoolTotal=0 THEN 1 ELSE BoardingSchoolTotal END)), '%)') as "B-SCH Male", concat(BoardingSchoolFemale, ' (',((BoardingSchoolFemale*100)/(CASE WHEN BoardingSchoolTotal=0 THEN 1 ELSE BoardingSchoolTotal END)), '%)') as "B-SCH Female", BoardingSchoolTotal as "B-SCH Total" from (SELECT 1 DisplayOrder, 'Adolescents addicted of tobacco' AS Indicator,
- count(CASE WHEN is_addicted_of_tobacco THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'Village') AS VillageMale, 
- count(CASE WHEN is_addicted_of_tobacco THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'Village') AS VillageFemale, 
- count(CASE WHEN is_addicted_of_tobacco THEN 1 END) FILTER (WHERE address_level_type = 'Village') AS VillageTotal, 
- count(CASE WHEN is_addicted_of_tobacco THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'School') AS SchoolMale, 
- count(CASE WHEN is_addicted_of_tobacco THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'School') AS SchoolFemale, 
- count(CASE WHEN is_addicted_of_tobacco THEN 1 END) FILTER (WHERE address_level_type = 'School') AS SchoolTotal, 
- count(CASE WHEN is_addicted_of_tobacco THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'Boarding School') AS BoardingSchoolMale, 
- count(CASE WHEN is_addicted_of_tobacco THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'Boarding School') AS BoardingSchoolFemale, 
- count(CASE WHEN is_addicted_of_tobacco THEN 1 END) FILTER (WHERE address_level_type = 'Boarding School') AS BoardingSchoolTotal
- from (SELECT bool_or(coded_obs_contains(program_encounter.observations, 'Addiction Details', ARRAY ['Tobacco'])) AS is_addicted_of_tobacco, gender.name gender_name, address_level.type address_level_type from program_encounter
-INNER JOIN program_enrolment ON program_encounter.program_enrolment_id = program_enrolment.id
-INNER JOIN encounter_type ON program_encounter.encounter_type_id = encounter_type.id INNER JOIN program ON program_enrolment.program_id = program.id
-INNER JOIN individual ON program_enrolment.individual_id = individual.id
-INNER JOIN gender ON individual.gender_id = gender.id
-INNER JOIN address_level ON address_level.id = individual.address_id
-WHERE program.name = 'Adolescent' GROUP BY program_encounter.program_enrolment_id, gender.name, address_level.type) AS encounter_function_output UNION SELECT 2 DisplayOrder, 'Adolescents addicted of alcohol' AS Indicator,
- count(CASE WHEN is_addicted_of_alcohol THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'Village') AS VillageMale, 
- count(CASE WHEN is_addicted_of_alcohol THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'Village') AS VillageFemale, 
- count(CASE WHEN is_addicted_of_alcohol THEN 1 END) FILTER (WHERE address_level_type = 'Village') AS VillageTotal, 
- count(CASE WHEN is_addicted_of_alcohol THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'School') AS SchoolMale, 
- count(CASE WHEN is_addicted_of_alcohol THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'School') AS SchoolFemale, 
- count(CASE WHEN is_addicted_of_alcohol THEN 1 END) FILTER (WHERE address_level_type = 'School') AS SchoolTotal, 
- count(CASE WHEN is_addicted_of_alcohol THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'Boarding School') AS BoardingSchoolMale, 
- count(CASE WHEN is_addicted_of_alcohol THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'Boarding School') AS BoardingSchoolFemale, 
- count(CASE WHEN is_addicted_of_alcohol THEN 1 END) FILTER (WHERE address_level_type = 'Boarding School') AS BoardingSchoolTotal
- from (SELECT bool_or(coded_obs_contains(program_encounter.observations, 'Addiction Details', ARRAY ['Alcohol'])) AS is_addicted_of_alcohol, gender.name gender_name, address_level.type address_level_type from program_encounter
-INNER JOIN program_enrolment ON program_encounter.program_enrolment_id = program_enrolment.id
-INNER JOIN encounter_type ON program_encounter.encounter_type_id = encounter_type.id INNER JOIN program ON program_enrolment.program_id = program.id
-INNER JOIN individual ON program_enrolment.individual_id = individual.id
-INNER JOIN gender ON individual.gender_id = gender.id
-INNER JOIN address_level ON address_level.id = individual.address_id
-WHERE program.name = 'Adolescent' GROUP BY program_encounter.program_enrolment_id, gender.name, address_level.type) AS encounter_function_output UNION SELECT 3 DisplayOrder, 'Father''s addiction' AS Indicator,
- count(CASE WHEN is_father_addicted THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'Village') AS VillageMale, 
- count(CASE WHEN is_father_addicted THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'Village') AS VillageFemale, 
- count(CASE WHEN is_father_addicted THEN 1 END) FILTER (WHERE address_level_type = 'Village') AS VillageTotal, 
- count(CASE WHEN is_father_addicted THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'School') AS SchoolMale, 
- count(CASE WHEN is_father_addicted THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'School') AS SchoolFemale, 
- count(CASE WHEN is_father_addicted THEN 1 END) FILTER (WHERE address_level_type = 'School') AS SchoolTotal, 
- count(CASE WHEN is_father_addicted THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'Boarding School') AS BoardingSchoolMale, 
- count(CASE WHEN is_father_addicted THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'Boarding School') AS BoardingSchoolFemale, 
- count(CASE WHEN is_father_addicted THEN 1 END) FILTER (WHERE address_level_type = 'Boarding School') AS BoardingSchoolTotal
- from (SELECT bool_or(coded_obs_contains(program_encounter.observations, 'Father''s Addiction', ARRAY ['Tobacco', 'Alcohol', 'Both'])) AS is_father_addicted, gender.name gender_name, address_level.type address_level_type from program_encounter
-INNER JOIN program_enrolment ON program_encounter.program_enrolment_id = program_enrolment.id
-INNER JOIN encounter_type ON program_encounter.encounter_type_id = encounter_type.id INNER JOIN program ON program_enrolment.program_id = program.id
-INNER JOIN individual ON program_enrolment.individual_id = individual.id
-INNER JOIN gender ON individual.gender_id = gender.id
-INNER JOIN address_level ON address_level.id = individual.address_id
-WHERE program.name = 'Adolescent' GROUP BY program_encounter.program_enrolment_id, gender.name, address_level.type) AS encounter_function_output UNION SELECT 4 DisplayOrder, 'Mother''s addiction' AS Indicator,
- count(CASE WHEN is_mother_addicted THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'Village') AS VillageMale, 
- count(CASE WHEN is_mother_addicted THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'Village') AS VillageFemale, 
- count(CASE WHEN is_mother_addicted THEN 1 END) FILTER (WHERE address_level_type = 'Village') AS VillageTotal, 
- count(CASE WHEN is_mother_addicted THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'School') AS SchoolMale, 
- count(CASE WHEN is_mother_addicted THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'School') AS SchoolFemale, 
- count(CASE WHEN is_mother_addicted THEN 1 END) FILTER (WHERE address_level_type = 'School') AS SchoolTotal, 
- count(CASE WHEN is_mother_addicted THEN 1 END) FILTER (WHERE gender_name = 'Male' and address_level_type = 'Boarding School') AS BoardingSchoolMale, 
- count(CASE WHEN is_mother_addicted THEN 1 END) FILTER (WHERE gender_name = 'Female' and address_level_type = 'Boarding School') AS BoardingSchoolFemale, 
- count(CASE WHEN is_mother_addicted THEN 1 END) FILTER (WHERE address_level_type = 'Boarding School') AS BoardingSchoolTotal
- from (SELECT bool_or(coded_obs_contains(program_encounter.observations, 'Mother''s Addiction', ARRAY ['Tobacco', 'Alcohol', 'Both'])) AS is_mother_addicted, gender.name gender_name, address_level.type address_level_type from program_encounter
-INNER JOIN program_enrolment ON program_encounter.program_enrolment_id = program_enrolment.id
-INNER JOIN encounter_type ON program_encounter.encounter_type_id = encounter_type.id INNER JOIN program ON program_enrolment.program_id = program.id
-INNER JOIN individual ON program_enrolment.individual_id = individual.id
-INNER JOIN gender ON individual.gender_id = gender.id
-INNER JOIN address_level ON address_level.id = individual.address_id
-WHERE program.name = 'Adolescent' GROUP BY program_encounter.program_enrolment_id, gender.name, address_level.type) AS encounter_function_output) AS Unordered ORDER BY Unordered.DisplayOrder
+SELECT * FROM crosstab('SELECT
+''Adolescents Addicted to Tobacco''                                          rowid,
+address_type || '' '' || gender AS                             attribute,
+total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
+FROM frequency_and_percentage(''WITH latest_program_all_encounters AS (
+    SELECT
+      i.uuid       AS             iuuid,
+      max(pe.encounter_date_time) edt,
+      et.name                     etname,
+      max(pe.uuid) AS             euuid,
+      e.uuid       AS             puuid
+    FROM program_encounter pe
+      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
+      INNER JOIN individual i ON e.individual_id = i.id
+      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
+      INNER JOIN program p ON p.id = e.program_id
+    WHERE p.name = ''''Adolescent''''
+          AND pe.encounter_date_time IS NOT NULL
+    GROUP BY i.uuid, e.uuid, et.name
+), latest_program_encounters AS (
+    SELECT
+      lpae.iuuid                                                 iuuid,
+      jsonb_merge(jsonb_agg(pe.observations)) obs
+    FROM latest_program_all_encounters lpae
+      INNER JOIN program_encounter pe ON pe.uuid = lpae.euuid
+    GROUP BY lpae.iuuid
+)
+SELECT
+  lpe.iuuid uuid,
+  g.name gender_name,
+  a.type address_type,
+  a.title address_name
+FROM latest_program_encounters lpe
+  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
+  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN gender g ON i.gender_id = g.id
+WHERE lpe.obs -> ''''2ebca9be-3be3-4d11-ada0-187563ff04f8'''' ?| ARRAY [''''ef29759b-5f74-4f5a-b186-fea7697cfb34'''']'', ''SELECT
+  distinct
+  i.uuid uuid,
+  g.name gender_name,
+  a.type address_type,
+  a.title address_name
+FROM
+  program_encounter pe
+  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
+  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
+  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
+  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
+  LEFT OUTER JOIN gender g ON g.id = i.gender_id
+  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+where p.name=''''Adolescent'''' and et.name=''''Annual Visit'''''')
+UNION ALL
+SELECT
+''Adolescents Addicted to Alcohol''                                          rowid,
+address_type || '' '' || gender AS                             attribute,
+total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
+FROM frequency_and_percentage(''WITH latest_program_all_encounters AS (
+    SELECT
+      i.uuid       AS             iuuid,
+      max(pe.encounter_date_time) edt,
+      et.name                     etname,
+      max(pe.uuid) AS             euuid,
+      e.uuid       AS             puuid
+    FROM program_encounter pe
+      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
+      INNER JOIN individual i ON e.individual_id = i.id
+      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
+      INNER JOIN program p ON p.id = e.program_id
+    WHERE p.name = ''''Adolescent''''
+          AND pe.encounter_date_time IS NOT NULL
+    GROUP BY i.uuid, e.uuid, et.name
+), latest_program_encounters AS (
+    SELECT
+      lpae.iuuid                                                 iuuid,
+      jsonb_merge(jsonb_agg(pe.observations)) obs
+    FROM latest_program_all_encounters lpae
+      INNER JOIN program_encounter pe ON pe.uuid = lpae.euuid
+    GROUP BY lpae.iuuid
+)
+SELECT
+  lpe.iuuid uuid,
+  g.name gender_name,
+  a.type address_type,
+  a.title address_name
+FROM latest_program_encounters lpe
+  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
+  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN gender g ON i.gender_id = g.id
+WHERE lpe.obs -> ''''2ebca9be-3be3-4d11-ada0-187563ff04f8'''' ?| ARRAY [''''92654fda-d485-4b6d-97c5-8a8fe2a9582a'''']'', ''SELECT
+  distinct
+  i.uuid uuid,
+  g.name gender_name,
+  a.type address_type,
+  a.title address_name
+FROM
+  program_encounter pe
+  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
+  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
+  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
+  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
+  LEFT OUTER JOIN gender g ON g.id = i.gender_id
+  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+where p.name=''''Adolescent'''' and et.name=''''Annual Visit'''''')
+UNION ALL
+SELECT
+''Adolescents Addicted to Both''                                          rowid,
+address_type || '' '' || gender AS                             attribute,
+total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
+FROM frequency_and_percentage(''WITH latest_program_all_encounters AS (
+    SELECT
+      i.uuid       AS             iuuid,
+      max(pe.encounter_date_time) edt,
+      et.name                     etname,
+      max(pe.uuid) AS             euuid,
+      e.uuid       AS             puuid
+    FROM program_encounter pe
+      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
+      INNER JOIN individual i ON e.individual_id = i.id
+      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
+      INNER JOIN program p ON p.id = e.program_id
+    WHERE p.name = ''''Adolescent''''
+          AND pe.encounter_date_time IS NOT NULL
+    GROUP BY i.uuid, e.uuid, et.name
+), latest_program_encounters AS (
+    SELECT
+      lpae.iuuid                                                 iuuid,
+      jsonb_merge(jsonb_agg(pe.observations)) obs
+    FROM latest_program_all_encounters lpae
+      INNER JOIN program_encounter pe ON pe.uuid = lpae.euuid
+    GROUP BY lpae.iuuid
+)
+SELECT
+  lpe.iuuid uuid,
+  g.name gender_name,
+  a.type address_type,
+  a.title address_name
+FROM latest_program_encounters lpe
+  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
+  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN gender g ON i.gender_id = g.id
+WHERE lpe.obs -> ''''2ebca9be-3be3-4d11-ada0-187563ff04f8'''' ?| ARRAY [''''246df73a-07d8-4924-8cf9-787dea8278fe'''']'', ''SELECT
+  distinct
+  i.uuid uuid,
+  g.name gender_name,
+  a.type address_type,
+  a.title address_name
+FROM
+  program_encounter pe
+  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
+  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
+  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
+  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
+  LEFT OUTER JOIN gender g ON g.id = i.gender_id
+  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+where p.name=''''Adolescent'''' and et.name=''''Annual Visit'''''')
+UNION ALL
+SELECT
+''Adolescents Addicted to Both''                                          rowid,
+address_type || '' '' || gender AS                             attribute,
+total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
+FROM frequency_and_percentage(''WITH latest_program_all_encounters AS (
+    SELECT
+      i.uuid       AS             iuuid,
+      max(pe.encounter_date_time) edt,
+      et.name                     etname,
+      max(pe.uuid) AS             euuid,
+      e.uuid       AS             puuid
+    FROM program_encounter pe
+      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
+      INNER JOIN individual i ON e.individual_id = i.id
+      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
+      INNER JOIN program p ON p.id = e.program_id
+    WHERE p.name = ''''Adolescent''''
+          AND pe.encounter_date_time IS NOT NULL
+    GROUP BY i.uuid, e.uuid, et.name
+), latest_program_encounters AS (
+    SELECT
+      lpae.iuuid                                                 iuuid,
+      jsonb_merge(jsonb_agg(pe.observations)) obs
+    FROM latest_program_all_encounters lpae
+      INNER JOIN program_encounter pe ON pe.uuid = lpae.euuid
+    GROUP BY lpae.iuuid
+)
+SELECT
+  lpe.iuuid uuid,
+  g.name gender_name,
+  a.type address_type,
+  a.title address_name
+FROM latest_program_encounters lpe
+  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
+  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN gender g ON i.gender_id = g.id
+WHERE lpe.obs -> ''''2ebca9be-3be3-4d11-ada0-187563ff04f8'''' ?| ARRAY [''''246df73a-07d8-4924-8cf9-787dea8278fe'''']'', ''SELECT
+  distinct
+  i.uuid uuid,
+  g.name gender_name,
+  a.type address_type,
+  a.title address_name
+FROM
+  program_encounter pe
+  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
+  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
+  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
+  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
+  LEFT OUTER JOIN gender g ON g.id = i.gender_id
+  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+where p.name=''''Adolescent'''' and et.name=''''Annual Visit'''''')
+UNION ALL
+SELECT
+''Fathers Addicted''                                          rowid,
+address_type || '' '' || gender AS                             attribute,
+total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
+FROM frequency_and_percentage(''WITH latest_program_all_encounters AS (
+    SELECT
+      i.uuid       AS             iuuid,
+      max(pe.encounter_date_time) edt,
+      et.name                     etname,
+      max(pe.uuid) AS             euuid,
+      e.uuid       AS             puuid
+    FROM program_encounter pe
+      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
+      INNER JOIN individual i ON e.individual_id = i.id
+      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
+      INNER JOIN program p ON p.id = e.program_id
+    WHERE p.name = ''''Adolescent''''
+          AND pe.encounter_date_time IS NOT NULL
+    GROUP BY i.uuid, e.uuid, et.name
+), latest_program_encounters AS (
+    SELECT
+      lpae.iuuid                                                 iuuid,
+      jsonb_merge(jsonb_agg(pe.observations)) obs
+    FROM latest_program_all_encounters lpae
+      INNER JOIN program_encounter pe ON pe.uuid = lpae.euuid
+    GROUP BY lpae.iuuid
+)
+SELECT
+  lpe.iuuid uuid,
+  g.name gender_name,
+  a.type address_type,
+  a.title address_name
+FROM latest_program_encounters lpe
+  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
+  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN gender g ON i.gender_id = g.id
+WHERE lpe.obs -> ''''e90dee68-0a5f-4dd3-ae26-9b6229c4a02a'''' ?| ARRAY [''''92654fda-d485-4b6d-97c5-8a8fe2a9582a'''',
+''''ef29759b-5f74-4f5a-b186-fea7697cfb34'''',
+''''246df73a-07d8-4924-8cf9-787dea8278fe'''']'', ''SELECT
+  distinct
+  i.uuid uuid,
+  g.name gender_name,
+  a.type address_type,
+  a.title address_name
+FROM
+  program_encounter pe
+  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
+  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
+  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
+  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
+  LEFT OUTER JOIN gender g ON g.id = i.gender_id
+  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+where p.name=''''Adolescent'''' and et.name=''''Annual Visit'''''')
+UNION ALL
+SELECT
+''Mothers Addicted''                                          rowid,
+address_type || '' '' || gender AS                             attribute,
+total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
+FROM frequency_and_percentage(''WITH latest_program_all_encounters AS (
+    SELECT
+      i.uuid       AS             iuuid,
+      max(pe.encounter_date_time) edt,
+      et.name                     etname,
+      max(pe.uuid) AS             euuid,
+      e.uuid       AS             puuid
+    FROM program_encounter pe
+      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
+      INNER JOIN individual i ON e.individual_id = i.id
+      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
+      INNER JOIN program p ON p.id = e.program_id
+    WHERE p.name = ''''Adolescent''''
+          AND pe.encounter_date_time IS NOT NULL
+    GROUP BY i.uuid, e.uuid, et.name
+), latest_program_encounters AS (
+    SELECT
+      lpae.iuuid                                                 iuuid,
+      jsonb_merge(jsonb_agg(pe.observations)) obs
+    FROM latest_program_all_encounters lpae
+      INNER JOIN program_encounter pe ON pe.uuid = lpae.euuid
+    GROUP BY lpae.iuuid
+)
+SELECT
+  lpe.iuuid uuid,
+  g.name gender_name,
+  a.type address_type,
+  a.title address_name
+FROM latest_program_encounters lpe
+  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
+  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN gender g ON i.gender_id = g.id
+WHERE lpe.obs -> ''''3d061485-5d64-447b-9a06-541795ede5ff'''' ?| ARRAY [''''92654fda-d485-4b6d-97c5-8a8fe2a9582a'''',
+''''ef29759b-5f74-4f5a-b186-fea7697cfb34'''',
+''''246df73a-07d8-4924-8cf9-787dea8278fe'''']'', ''SELECT
+  distinct
+  i.uuid uuid,
+  g.name gender_name,
+  a.type address_type,
+  a.title address_name
+FROM
+  program_encounter pe
+  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
+  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
+  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
+  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
+  LEFT OUTER JOIN gender g ON g.id = i.gender_id
+  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+where p.name=''''Adolescent'''' and et.name=''''Annual Visit'''''')') AS (
+rowid TEXT,
+"All Female " TEXT,
+"All Male " TEXT,
+"All Total " TEXT,
+"Boarding Female " TEXT,
+"Boarding Total " TEXT,
+"School Female " TEXT,
+"School Male " TEXT,
+"School Total " TEXT,
+"Village Female " TEXT,
+"Village Male " TEXT,
+"Village Total " TEXT);

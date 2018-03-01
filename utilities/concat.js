@@ -14,4 +14,4 @@ const serviceDeliveryReport = new ReportBuilder()
     .build();
 
 
-fs.writeFileSync(`generatedSQL/newServiceDelivery.sql`, serviceDeliveryReport.getSQL());
+serviceDeliveryReport.generate();

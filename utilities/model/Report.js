@@ -16,6 +16,10 @@ class Report {
         });
     }
 
+    generate() {
+        fs.writeFileSync(['generatedSQL', `${this.name}.sql`].join("/"), this.getSQL());
+    }
+
 }
 
 module.exports = Report;

@@ -40,5 +40,5 @@ const addictionReport = new ReportBuilder()
     .withSubReportWithDenominator("Mothers Addicted", "mothersAddiction.sql", "totalEnrolled.sql")
     .build();
 
-serviceDeliveryReport.generate();
-addictionReport.generate();
+
+[serviceDeliveryReport, addictionReport].map((report) => report.generate());

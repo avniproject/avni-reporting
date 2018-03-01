@@ -1,0 +1,5 @@
+SELECT
+  '{{{subreportName}}}'                                          rowid,
+  address_type || ' ' || gender AS                             attribute,
+  total :: VARCHAR || ' (' || percentage :: VARCHAR(5) || '%)' frequency_percentage
+FROM frequency_and_percentage('{{{mainQuery}}}')

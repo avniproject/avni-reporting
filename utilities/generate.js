@@ -37,9 +37,25 @@ const addictionReport = new ReportBuilder()
     .withSubReportWithDenominator("Mothers Addicted", "mothersAddiction.sql", "totalEnrolled.sql")
     .build();
 
+const educationReport = new ReportBuilder()
+    .withName("Education")
+    .withDirName("education")
+    .withSubReportWithDenominator("Adolescents who discontinued education", "totalAdolescentsDroppedOut.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Not interested in studies", "notInterestedInStudies.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Poor Economic Condition", "poorEconomicCondition.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Domestic Work", "domesticWork.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Migration", "migration.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Marriage", "marriage.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("No School in Village", "noSchoolInVillage.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Study Completed", "studyCompleted.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Other Reason", "otherReason.sql", "totalEnrolled.sql")
+    .build();
 
-const generate = () => [serviceDeliveryReport,
-    addictionReport]
-    .map((report) => report.generate());
+const generate = () =>
+    [
+        serviceDeliveryReport,
+        addictionReport,
+        educationReport
+    ].map((report) => report.generate());
 
 module.exports = generate;

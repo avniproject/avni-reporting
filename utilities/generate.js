@@ -1,5 +1,3 @@
-const fs = require('fs');
-const _ = require('lodash');
 const ReportBuilder = require('./builder/ReportBuilder');
 
 
@@ -40,4 +38,8 @@ const addictionReport = new ReportBuilder()
     .build();
 
 
-[serviceDeliveryReport, addictionReport].map((report) => report.generate());
+const generate = () => [serviceDeliveryReport,
+    addictionReport]
+    .map((report) => report.generate());
+
+module.exports = generate;

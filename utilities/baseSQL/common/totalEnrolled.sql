@@ -1,8 +1,8 @@
 SELECT
-  distinct
-  i.uuid uuid,
-  g.name gender_name,
-  a.type address_type,
+  DISTINCT
+  i.uuid  uuid,
+  g.name  gender_name,
+  a.type  address_type,
   a.title address_name
 FROM
   program_encounter pe
@@ -12,4 +12,4 @@ FROM
   LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
   LEFT OUTER JOIN gender g ON g.id = i.gender_id
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
-where p.name='Adolescent' and et.name='Annual Visit'
+WHERE p.name = 'Adolescent' AND et.name = 'Annual Visit'

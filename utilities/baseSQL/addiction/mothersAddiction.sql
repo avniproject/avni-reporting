@@ -15,7 +15,7 @@ WITH latest_program_all_encounters AS (
     GROUP BY i.uuid, e.uuid, et.name
 ), latest_program_encounters AS (
     SELECT
-      lpae.iuuid                                                 iuuid,
+      lpae.iuuid                              iuuid,
       jsonb_merge(jsonb_agg(pe.observations)) obs
     FROM latest_program_all_encounters lpae
       INNER JOIN program_encounter pe ON pe.uuid = lpae.euuid
@@ -23,9 +23,9 @@ WITH latest_program_all_encounters AS (
 )
 SELECT
   lpe.iuuid uuid,
-  g.name gender_name,
-  a.type address_type,
-  a.title address_name
+  g.name    gender_name,
+  a.type    address_type,
+  a.title   address_name
 FROM latest_program_encounters lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id

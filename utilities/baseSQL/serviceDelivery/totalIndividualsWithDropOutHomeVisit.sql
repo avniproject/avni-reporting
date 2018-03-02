@@ -10,4 +10,4 @@ FROM program_encounter pe
   INNER JOIN individual i ON enrolment.individual_id = i.id
   INNER JOIN gender g ON i.gender_id = g.id
   INNER JOIN address_level al ON i.address_id = al.id
-WHERE p.name = 'Adolescent' AND et.name = 'Dropout Home Visit' and pe.encounter_date_time is not null
+WHERE p.name = 'Adolescent' AND et.name = 'Dropout Home Visit' AND pe.encounter_date_time IS NOT NULL

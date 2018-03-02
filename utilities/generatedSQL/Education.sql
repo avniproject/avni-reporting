@@ -66,7 +66,7 @@ FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-where lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' ?| ARRAY [''''384bdb12-0761-414e-8459-962aed124ead'''']'', ''SELECT
+where lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' is not null and lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' ?| ARRAY [''''384bdb12-0761-414e-8459-962aed124ead'''']'', ''SELECT
   distinct
   i.uuid uuid,
   g.name gender_name,
@@ -108,7 +108,7 @@ FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-where lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' ?| ARRAY [''''0e84adb9-f99a-408d-9a40-44a5d00866a1'''']'', ''SELECT
+where lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' is not null and lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' ?| ARRAY [''''0e84adb9-f99a-408d-9a40-44a5d00866a1'''']'', ''SELECT
   distinct
   i.uuid uuid,
   g.name gender_name,
@@ -150,7 +150,8 @@ FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-where lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' ?| ARRAY [''''5c9520f7-85e3-4859-91c0-5c378821e389'''']'', ''SELECT
+where lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' is not null and
+lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' ?| ARRAY [''''5c9520f7-85e3-4859-91c0-5c378821e389'''']'', ''SELECT
   distinct
   i.uuid uuid,
   g.name gender_name,
@@ -192,7 +193,7 @@ FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-where lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' ?| ARRAY [''''229fac5f-468e-46f0-b812-bdcc56840b6c'''']'', ''SELECT
+where lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' is not null and lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' ?| ARRAY [''''229fac5f-468e-46f0-b812-bdcc56840b6c'''']'', ''SELECT
   distinct
   i.uuid uuid,
   g.name gender_name,
@@ -234,7 +235,7 @@ FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-where lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' ?| ARRAY [''''104c7ffb-fb43-45a0-876b-77fba9ee7759'''']'', ''SELECT
+where lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' is not null and lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' ?| ARRAY [''''104c7ffb-fb43-45a0-876b-77fba9ee7759'''']'', ''SELECT
   distinct
   i.uuid uuid,
   g.name gender_name,
@@ -276,7 +277,7 @@ FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-where lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' ?| ARRAY [''''af10b937-e9f2-4b9b-8cfe-1d59bc0b21f6'''']'', ''SELECT
+where lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' is not null and lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' ?| ARRAY [''''af10b937-e9f2-4b9b-8cfe-1d59bc0b21f6'''']'', ''SELECT
   distinct
   i.uuid uuid,
   g.name gender_name,
@@ -318,7 +319,7 @@ FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-where lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' ?| ARRAY [''''cd551661-1456-46bc-9855-7548e62c40f6'''']'', ''SELECT
+where lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' is not null and lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' ?| ARRAY [''''cd551661-1456-46bc-9855-7548e62c40f6'''']'', ''SELECT
   distinct
   i.uuid uuid,
   g.name gender_name,
@@ -360,7 +361,7 @@ FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-where lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' ?| ARRAY [''''05ea583c-51d2-412d-ad00-06c432ffe538'''']'', ''SELECT
+where lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' is not null and lpe.obs -> ''''7f0b8b27-af91-43c8-8b69-49402ba9681c'''' ?| ARRAY [''''05ea583c-51d2-412d-ad00-06c432ffe538'''']'', ''SELECT
   distinct
   i.uuid uuid,
   g.name gender_name,

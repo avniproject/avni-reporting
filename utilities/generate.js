@@ -97,6 +97,17 @@ const nutritionReport = new ReportBuilder()
     .withSubReport("Obese", "obese.sql")
     .build();
 
+const hemoglobinReport = new ReportBuilder()
+    .withName("Hemoglobin")
+    .withDirName("hemoglobin")
+    .withSubReport("< 7", "hb<7.sql")
+    .withSubReport("7.1 - 10.0", "hb>7hb<10.sql")
+    .withSubReport("10.1 - 11.9", "hb>10hb<11.9.sql")
+    .withSubReport("12", "hb=12.sql")
+    .withSubReport("12.1 - 13.0", "hb>12hb<13.sql")
+    .withSubReport("> 13", "hb>13.sql")
+    .build();
+
 const generate = () =>
     [
         serviceDeliveryReport,
@@ -105,7 +116,8 @@ const generate = () =>
         menstruationReport,
         absorbentMaterialUsedReport,
         treatmentTakenForMenstrualDisorderReport,
-        nutritionReport
+        nutritionReport,
+        hemoglobinReport
     ].map((report) => report.generate());
 
 module.exports = generate;

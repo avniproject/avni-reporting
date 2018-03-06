@@ -1,7 +1,7 @@
 SELECT * FROM crosstab('SELECT
-''Adolescents Addicted to Tobacco''                                          rowid,
-address_type || '' '' || gender AS                             attribute,
-total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
+  ''Old Cloth''                                          rowid,
+  address_type || '' '' || gender AS                             attribute,
+  total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''WITH latest_program_all_encounters AS (
     SELECT
       i.uuid       AS             iuuid,
@@ -34,26 +34,13 @@ FROM latest_program_encounters lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-WHERE lpe.obs -> ''''2ebca9be-3be3-4d11-ada0-187563ff04f8'''' ?| ARRAY [''''ef29759b-5f74-4f5a-b186-fea7697cfb34'''']'', ''SELECT
-  DISTINCT
-  i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
-FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
+WHERE lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' IS NOT NULL AND
+      lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' ?| ARRAY [''''968b26b8-a357-4960-8aa8-0db67a728481'''']'')
 UNION ALL
 SELECT
-''Adolescents Addicted to Alcohol''                                          rowid,
-address_type || '' '' || gender AS                             attribute,
-total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
+  ''Sanitary Pad''                                          rowid,
+  address_type || '' '' || gender AS                             attribute,
+  total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''WITH latest_program_all_encounters AS (
     SELECT
       i.uuid       AS             iuuid,
@@ -86,26 +73,13 @@ FROM latest_program_encounters lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-WHERE lpe.obs -> ''''2ebca9be-3be3-4d11-ada0-187563ff04f8'''' ?| ARRAY [''''92654fda-d485-4b6d-97c5-8a8fe2a9582a'''']'', ''SELECT
-  DISTINCT
-  i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
-FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
+WHERE lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' IS NOT NULL AND
+      lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' ?| ARRAY [''''fa118efa-116e-471e-a9cc-f39eabbc0a57'''']'')
 UNION ALL
 SELECT
-''Adolescents Addicted to Both''                                          rowid,
-address_type || '' '' || gender AS                             attribute,
-total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
+  ''Falalin''                                          rowid,
+  address_type || '' '' || gender AS                             attribute,
+  total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''WITH latest_program_all_encounters AS (
     SELECT
       i.uuid       AS             iuuid,
@@ -138,26 +112,13 @@ FROM latest_program_encounters lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-WHERE lpe.obs -> ''''2ebca9be-3be3-4d11-ada0-187563ff04f8'''' ?| ARRAY [''''246df73a-07d8-4924-8cf9-787dea8278fe'''']'', ''SELECT
-  DISTINCT
-  i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
-FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
+WHERE lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' IS NOT NULL AND
+      lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' ?| ARRAY [''''6ebf2af2-38c6-4703-98c2-cba9f234b8f5'''']'')
 UNION ALL
 SELECT
-''Fathers Addicted''                                          rowid,
-address_type || '' '' || gender AS                             attribute,
-total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
+  ''Kit Pad''                                          rowid,
+  address_type || '' '' || gender AS                             attribute,
+  total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''WITH latest_program_all_encounters AS (
     SELECT
       i.uuid       AS             iuuid,
@@ -190,35 +151,17 @@ FROM latest_program_encounters lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-WHERE lpe.obs -> ''''e90dee68-0a5f-4dd3-ae26-9b6229c4a02a'''' ?| ARRAY [''''92654fda-d485-4b6d-97c5-8a8fe2a9582a'''',
-''''ef29759b-5f74-4f5a-b186-fea7697cfb34'''',
-''''246df73a-07d8-4924-8cf9-787dea8278fe'''']'', ''SELECT
-  DISTINCT
-  i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
-FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
+WHERE lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' IS NOT NULL AND
+      lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' ?| ARRAY [''''99414d2a-b7b1-434d-9354-c3da69619d83'''']'')
 UNION ALL
 SELECT
-''Mothers Addicted''                                          rowid,
-address_type || '' '' || gender AS                             attribute,
-total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
-FROM frequency_and_percentage(''WITH latest_program_all_encounters AS (
+  ''MHM Kit Provided?''                                          rowid,
+  address_type || '' '' || gender AS                             attribute,
+  total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
+FROM frequency_and_percentage(''WITH all_program_entire_enrolment AS (
     SELECT
-      i.uuid       AS             iuuid,
-      max(pe.encounter_date_time) edt,
-      et.name                     etname,
-      max(pe.uuid) AS             euuid,
-      e.uuid       AS             puuid
+      i.uuid AS                                                 iuuid,
+      jsonb_merge(jsonb_agg(e.observations || pe.observations)) obs
     FROM program_encounter pe
       INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
       INNER JOIN individual i ON e.individual_id = i.id
@@ -226,41 +169,48 @@ FROM frequency_and_percentage(''WITH latest_program_all_encounters AS (
       INNER JOIN program p ON p.id = e.program_id
     WHERE p.name = ''''Adolescent''''
           AND pe.encounter_date_time IS NOT NULL
-    GROUP BY i.uuid, e.uuid, et.name
-), latest_program_encounters AS (
-    SELECT
-      lpae.iuuid                              iuuid,
-      jsonb_merge(jsonb_agg(pe.observations)) obs
-    FROM latest_program_all_encounters lpae
-      INNER JOIN program_encounter pe ON pe.uuid = lpae.euuid
-    GROUP BY lpae.iuuid
+    GROUP BY i.uuid
 )
 SELECT
   lpe.iuuid uuid,
   g.name    gender_name,
   a.type    address_type,
   a.title   address_name
-FROM latest_program_encounters lpe
+FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-WHERE lpe.obs -> ''''3d061485-5d64-447b-9a06-541795ede5ff'''' ?| ARRAY [''''92654fda-d485-4b6d-97c5-8a8fe2a9582a'''',
-''''ef29759b-5f74-4f5a-b186-fea7697cfb34'''',
-''''246df73a-07d8-4924-8cf9-787dea8278fe'''']'', ''SELECT
-  DISTINCT
-  i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
-FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
+WHERE lpe.obs -> ''''5b11c506-d17b-499c-902f-75405bfc1d67'''' IS NOT NULL AND
+      lpe.obs ->> ''''5b11c506-d17b-499c-902f-75405bfc1d67'''' = ''''04bb1773-c353-44a1-a68c-9b448e07ff70'''''')
+UNION ALL
+SELECT
+  ''MHM Kit Used''                                          rowid,
+  address_type || '' '' || gender AS                             attribute,
+  total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
+FROM frequency_and_percentage(''WITH all_program_entire_enrolment AS (
+    SELECT
+      i.uuid AS                                                 iuuid,
+      jsonb_merge(jsonb_agg(e.observations || pe.observations)) obs
+    FROM program_encounter pe
+      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
+      INNER JOIN individual i ON e.individual_id = i.id
+      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
+      INNER JOIN program p ON p.id = e.program_id
+    WHERE p.name = ''''Adolescent''''
+          AND pe.encounter_date_time IS NOT NULL
+    GROUP BY i.uuid
+)
+SELECT
+  lpe.iuuid uuid,
+  g.name    gender_name,
+  a.type    address_type,
+  a.title   address_name
+FROM all_program_entire_enrolment lpe
+  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')') AS (
+  LEFT OUTER JOIN gender g ON i.gender_id = g.id
+WHERE lpe.obs -> ''''7503cf02-c2e6-440b-a768-8e4cb1df4c68'''' IS NOT NULL AND
+      lpe.obs ->> ''''7503cf02-c2e6-440b-a768-8e4cb1df4c68'''' = ''''04bb1773-c353-44a1-a68c-9b448e07ff70'''''')') AS (
 rowid TEXT,
 "All Female" TEXT,
 "All Male" TEXT,

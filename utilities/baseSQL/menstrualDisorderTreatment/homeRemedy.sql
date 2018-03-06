@@ -1,7 +1,7 @@
 WITH all_program_entire_enrolment AS (
     SELECT
       i.uuid AS                                                 iuuid,
-      jsonb_merge(jsonb_agg(e.observations || pe.observations)) obs
+      jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
     FROM program_encounter pe
       INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
       INNER JOIN individual i ON e.individual_id = i.id

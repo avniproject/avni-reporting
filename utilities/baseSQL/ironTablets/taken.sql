@@ -1,6 +1,6 @@
-WITH all_program_all_encounters AS (
+WITH all_program_entire_enrolment AS (
     SELECT
-      i.uuid AS                               iuuid,
+      i.uuid AS                                                  iuuid,
       jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
     FROM program_encounter pe
       INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
@@ -16,9 +16,8 @@ SELECT
   g.name    gender_name,
   a.type    address_type,
   a.title   address_name
-FROM all_program_all_encounters lpe
+FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-WHERE cast(lpe.obs ->> '7ac0d759-c50d-4971-88e0-84274224c839' AS FLOAT) >= 14.5
-      AND cast(lpe.obs ->> '7ac0d759-c50d-4971-88e0-84274224c839' AS FLOAT) <= 18.5
+WHERE cast(lpe.obs ->> '56358db1-8d55-4fbf-89c5-fde97c819c2c' AS INT) > 0

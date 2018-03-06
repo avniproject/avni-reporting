@@ -108,6 +108,22 @@ const hemoglobinReport = new ReportBuilder()
     .withSubReport("> 13", "hb>13.sql")
     .build();
 
+const sicklingReport = new ReportBuilder()
+    .withName("Sickling Test")
+    .withDirName("sickling")
+    .withSubReport("Test Done", "sicklingTestDone.sql")
+    .withSubReport("Negative", "negative.sql")
+    .withSubReport("Trait", "trait.sql")
+    .withSubReport("Disease", "disease.sql")
+    .build();
+
+const ironTabletsReport = new ReportBuilder()
+    .withName("Iron Tables")
+    .withDirName("ironTablets")
+    .withSubReport("Received", "received.sql")
+    .withSubReport("Consumed", "taken.sql")
+    .build();
+
 const generate = () =>
     [
         serviceDeliveryReport,
@@ -117,7 +133,9 @@ const generate = () =>
         absorbentMaterialUsedReport,
         treatmentTakenForMenstrualDisorderReport,
         nutritionReport,
-        hemoglobinReport
+        hemoglobinReport,
+        sicklingReport,
+        ironTabletsReport
     ].map((report) => report.generate());
 
 module.exports = generate;

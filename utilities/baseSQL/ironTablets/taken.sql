@@ -20,4 +20,4 @@ FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-WHERE cast(lpe.obs ->> '56358db1-8d55-4fbf-89c5-fde97c819c2c' AS INT) > 0
+WHERE cast(lpe.obs ->> '56358db1-8d55-4fbf-89c5-fde97c819c2c' AS INT) > 1

@@ -56,7 +56,7 @@ FROM frequency_and_percentage(''WITH latest_program_all_encounters AS (
 ), latest_program_encounters AS (
     SELECT
       lpae.iuuid                              iuuid,
-      jsonb_merge(jsonb_agg(pe.observations)) obs
+      jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
     FROM latest_program_all_encounters lpae
       INNER JOIN program_encounter pe ON pe.uuid = lpae.euuid
     GROUP BY lpae.iuuid
@@ -124,7 +124,7 @@ total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_perce
 FROM frequency_and_percentage(''WITH all_program_all_encounters AS (
     SELECT
       i.uuid AS                               iuuid,
-      jsonb_merge(jsonb_agg(pe.observations)) obs
+      jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
     FROM program_encounter pe
       INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
       INNER JOIN individual i ON e.individual_id = i.id
@@ -166,7 +166,7 @@ total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_perce
 FROM frequency_and_percentage(''WITH all_program_all_encounters AS (
     SELECT
       i.uuid AS                               iuuid,
-      jsonb_merge(jsonb_agg(pe.observations)) obs
+      jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
     FROM program_encounter pe
       INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
       INNER JOIN individual i ON e.individual_id = i.id
@@ -215,7 +215,7 @@ total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_perce
 FROM frequency_and_percentage(''WITH all_program_all_encounters AS (
     SELECT
       i.uuid AS                               iuuid,
-      jsonb_merge(jsonb_agg(pe.observations)) obs
+      jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
     FROM program_encounter pe
       INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
       INNER JOIN individual i ON e.individual_id = i.id
@@ -264,7 +264,7 @@ total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_perce
 FROM frequency_and_percentage(''WITH all_program_entire_enrolment AS (
     SELECT
       i.uuid AS                                                 iuuid,
-      jsonb_merge(jsonb_agg(e.observations || pe.observations)) obs
+      jsonb_merge(jsonb_agg(e.observations || jsonb_strip_nulls(pe.observations))) obs
     FROM program_encounter pe
       INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
       INNER JOIN individual i ON e.individual_id = i.id

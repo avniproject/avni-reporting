@@ -87,6 +87,16 @@ const treatmentTakenForMenstrualDisorderReport = new ReportBuilder()
     .withSubReport("Tablet From Kit", "tabletFromKit.sql")
     .build();
 
+const nutritionReport = new ReportBuilder()
+    .withName("Nutrition")
+    .withDirName("nutrition")
+    .withSubReport("Severely Malnourished", "severelyMalnourished.sql")
+    .withSubReport("Malnourished", "malnourished.sql")
+    .withSubReport("Normal", "normal.sql")
+    .withSubReport("Overweight", "overweight.sql")
+    .withSubReport("Obese", "obese.sql")
+    .build();
+
 const generate = () =>
     [
         serviceDeliveryReport,
@@ -94,8 +104,8 @@ const generate = () =>
         educationReport,
         menstruationReport,
         absorbentMaterialUsedReport,
-        treatmentTakenForMenstrualDisorderReport
-
+        treatmentTakenForMenstrualDisorderReport,
+        nutritionReport
     ].map((report) => report.generate());
 
 module.exports = generate;

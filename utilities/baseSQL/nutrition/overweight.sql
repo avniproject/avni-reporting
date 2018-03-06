@@ -20,5 +20,5 @@ FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-WHERE lpe.obs -> '7f0b8b27-af91-43c8-8b69-49402ba9681c' IS NOT NULL AND
-      lpe.obs -> '7f0b8b27-af91-43c8-8b69-49402ba9681c' ?| ARRAY ['5c9520f7-85e3-4859-91c0-5c378821e389']
+WHERE cast(lpe.obs->>'7ac0d759-c50d-4971-88e0-84274224c839' as float) > 25
+      and cast(lpe.obs->>'7ac0d759-c50d-4971-88e0-84274224c839' as float) < 30

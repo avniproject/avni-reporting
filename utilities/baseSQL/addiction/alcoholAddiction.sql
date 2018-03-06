@@ -16,7 +16,7 @@ WITH latest_program_all_encounters AS (
 ), latest_program_encounters AS (
     SELECT
       lpae.iuuid                              iuuid,
-      jsonb_merge(jsonb_agg(pe.observations)) obs
+      jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
     FROM latest_program_all_encounters lpae
       INNER JOIN program_encounter pe ON pe.uuid = lpae.euuid
     GROUP BY lpae.iuuid

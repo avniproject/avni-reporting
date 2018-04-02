@@ -150,6 +150,17 @@ const standard = new ReportBuilder()
     .withSubReportWithDenominator("12", "12.sql", "discontinued.sql")
     .build();
 
+const followup = new ReportBuilder()
+    .withName("Follow Up visits")
+    .withDirName("followupVisit")
+    .withSubReportWithDenominator("Total Adolescents With Followup Visits", "all.sql", "adolescentsStartedSchool.sql")
+    .withSubReportWithDenominator("1 Visit", "1Visit.sql", "adolescentsStartedSchool.sql")
+    .withSubReportWithDenominator("2 Visit", "2Visit.sql", "adolescentsStartedSchool.sql")
+    .withSubReportWithDenominator("3 Visit", "3Visit.sql", "adolescentsStartedSchool.sql")
+    .withSubReportWithDenominator("4 Visit", "4Visit.sql", "adolescentsStartedSchool.sql")
+    .withSubReportWithDenominator("5 Visit", "5Visit.sql", "adolescentsStartedSchool.sql")
+    .build();
+
 const generate = () =>
     [
         serviceDeliveryReport,
@@ -163,7 +174,8 @@ const generate = () =>
         sicklingReport,
         ironTabletsReport,
         vulnerability,
-        standard
+        standard,
+        followup
     ].map((report) => report.generate());
 
 module.exports = generate;

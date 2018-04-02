@@ -127,6 +127,17 @@ const ironTabletsReport = new ReportBuilder()
     .withSubReportWithDenominator("Consumed", "taken.sql", "received.sql")
     .build();
 
+const vulnerability = new ReportBuilder()
+    .withName("Vulnerabilities")
+    .withDirName("vulnerability")
+    .withSubReportWithDenominator("Vulnerable Adolescents", "vulnerable.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("School Dropout", "dropout.sql", "vulnerable.sql")
+    .withSubReportWithDenominator("Addiction", "addiction.sql", "vulnerable.sql")
+    .withSubReportWithDenominator("Early Pregnancy and RTI", "rti.sql", "vulnerable.sql")
+    .withSubReportWithDenominator("Early Marriage", "earlyMarriage.sql", "vulnerable.sql")
+    .withSubReportWithDenominator("Road Traffic Accident", "accident.sql", "vulnerable.sql")
+    .build();
+
 const generate = () =>
     [
         serviceDeliveryReport,
@@ -138,7 +149,8 @@ const generate = () =>
         nutritionReport,
         hemoglobinReport,
         sicklingReport,
-        ironTabletsReport
+        ironTabletsReport,
+        vulnerability
     ].map((report) => report.generate());
 
 module.exports = generate;

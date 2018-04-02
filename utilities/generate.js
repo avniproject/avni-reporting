@@ -138,6 +138,18 @@ const vulnerability = new ReportBuilder()
     .withSubReportWithDenominator("Road Traffic Accident", "accident.sql", "vulnerable.sql")
     .build();
 
+const standard = new ReportBuilder()
+    .withName("Dropout Standard")
+    .withDirName("standard")
+    .withSubReportWithDenominator("<7", "6.sql", "discontinued.sql")
+    .withSubReportWithDenominator("7", "7.sql", "discontinued.sql")
+    .withSubReportWithDenominator("8", "8.sql", "discontinued.sql")
+    .withSubReportWithDenominator("9", "9.sql", "discontinued.sql")
+    .withSubReportWithDenominator("10", "10.sql", "discontinued.sql")
+    .withSubReportWithDenominator("11", "11.sql", "discontinued.sql")
+    .withSubReportWithDenominator("12", "12.sql", "discontinued.sql")
+    .build();
+
 const generate = () =>
     [
         serviceDeliveryReport,
@@ -150,7 +162,8 @@ const generate = () =>
         hemoglobinReport,
         sicklingReport,
         ironTabletsReport,
-        vulnerability
+        vulnerability,
+        standard
     ].map((report) => report.generate());
 
 module.exports = generate;

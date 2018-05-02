@@ -161,6 +161,16 @@ const followup = new ReportBuilder()
     .withSubReportWithDenominator("5 Visit", "5Visit.sql", "adolescentsStartedSchool.sql")
     .build();
 
+const parentsAndStayStatus = new ReportBuilder()
+    .withName("Status of Parents & Stay")
+    .withDirName("parentsAndStayStatus")
+    .withSubReportWithDenominator("Either only mother or father alive", "parentsAlive.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Both parents expired", "parentsExpired.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Staying With Parents", "stayingWithParents.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Staying In Hostel", "stayingInHostel.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Staying With Relatives", "stayingWithRelatives.sql", "totalEnrolled.sql")
+    .build();
+
 const generate = () =>
     [
         serviceDeliveryReport,
@@ -175,7 +185,8 @@ const generate = () =>
         ironTabletsReport,
         vulnerability,
         standard,
-        followup
+        followup,
+        parentsAndStayStatus
     ].map((report) => report.generate());
 
 module.exports = generate;

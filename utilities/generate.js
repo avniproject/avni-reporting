@@ -182,6 +182,15 @@ const rti = new ReportBuilder()
     .withSubReportWithDenominator("Abnormal discharge from vagina/penis", "abnormalDischarge.sql", "totalEnrolled.sql")
     .build();
 
+const rta = new ReportBuilder()
+    .withName("Risk of RTA")
+    .withDirName("rta")
+    .withSubReportWithDenominator("Driving Vehicle", "vehicle.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("With Helmet", "withHelmet.sql", "vehicle.sql")
+    .withSubReportWithDenominator("With License", "withLicense.sql", "vehicle.sql")
+    .withSubReportWithDenominator("Had Accident", "hadAccident.sql", "vehicle.sql")
+    .build();
+
 const generate = () =>
     [
         serviceDeliveryReport,
@@ -198,7 +207,8 @@ const generate = () =>
         standard,
         followup,
         parentsAndStayStatus,
-        rti
+        rti,
+        rta
     ].map((report) => report.generate());
 
 module.exports = generate;

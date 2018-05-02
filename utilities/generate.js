@@ -171,6 +171,17 @@ const parentsAndStayStatus = new ReportBuilder()
     .withSubReportWithDenominator("Staying With Relatives", "stayingWithRelatives.sql", "totalEnrolled.sql")
     .build();
 
+const rti = new ReportBuilder()
+    .withName("Signs of RTI & Risk of Early pregnancy")
+    .withDirName("rti")
+    .withSubReportWithDenominator("Sexually Active", "sexuallyActive.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Multiple Partners", "multiplePartners.sql", "sexuallyActive.sql")
+    .withSubReportWithDenominator("Unprotected Sex", "unprotectedSex.sql", "sexuallyActive.sql")
+    .withSubReportWithDenominator("Burning Micturition", "burningMicturition.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Ulcer over Genetalia", "ulcer.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Abnormal discharge from vagina/penis", "abnormalDischarge.sql", "totalEnrolled.sql")
+    .build();
+
 const generate = () =>
     [
         serviceDeliveryReport,
@@ -186,7 +197,8 @@ const generate = () =>
         vulnerability,
         standard,
         followup,
-        parentsAndStayStatus
+        parentsAndStayStatus,
+        rti
     ].map((report) => report.generate());
 
 module.exports = generate;

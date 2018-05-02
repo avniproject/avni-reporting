@@ -191,6 +191,13 @@ const rta = new ReportBuilder()
     .withSubReportWithDenominator("Had Accident", "hadAccident.sql", "vehicle.sql")
     .build();
 
+const helpline = new ReportBuilder()
+    .withName("Assessment of Helpline services")
+    .withDirName("helpline")
+    .withSubReportWithDenominator("Utilization of helpline", "utilised.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Satisfied with helpline", "satisfied.sql", "utilised.sql")
+    .build();
+
 const generate = () =>
     [
         serviceDeliveryReport,
@@ -208,7 +215,8 @@ const generate = () =>
         followup,
         parentsAndStayStatus,
         rti,
-        rta
+        rta,
+        helpline
     ].map((report) => report.generate());
 
 module.exports = generate;

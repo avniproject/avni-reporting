@@ -198,6 +198,51 @@ const helpline = new ReportBuilder()
     .withSubReportWithDenominator("Satisfied with helpline", "satisfied.sql", "utilised.sql")
     .build();
 
+const caste = new ReportBuilder()
+    .withName('Socio Demographics - caste')
+    .withDirName('caste')
+    .withSubReportWithDenominator('Caste ST', 'casteST.sql', 'everyone.sql')
+    .withSubReportWithDenominator('Caste SC', 'casteSC.sql', 'everyone.sql')
+    .withSubReportWithDenominator('Caste OBC', 'casteOBC.sql', 'everyone.sql')
+    .withSubReportWithDenominator('Caste General', 'casteGeneral.sql', 'everyone.sql')
+    .build();
+
+const age = new ReportBuilder()
+    .withName('Socio Demographics - age')
+    .withDirName('age')
+    .withSubReportWithDenominator('Age 10-14', 'age 10-14.sql', 'everyone.sql')
+    .withSubReportWithDenominator('Age 15-19', 'age 15-19.sql', 'everyone.sql')
+    .build();
+
+const religion = new ReportBuilder()
+    .withName('Socio Demographics - religion')
+    .withDirName('religion')
+    .withSubReportWithDenominator('Christian','christian.sql','everyone.sql')
+    .withSubReportWithDenominator('Hindu','hindu.sql','everyone.sql')
+    .withSubReportWithDenominator('Jain','jain.sql','everyone.sql')
+    .withSubReportWithDenominator('Muslim','muslim.sql','everyone.sql')
+    .withSubReportWithDenominator('Other','other.sql','everyone.sql')
+    .withSubReportWithDenominator('Sikh','sikh.sql','everyone.sql')
+    .build();
+
+const rationCard = new ReportBuilder()
+    .withName('Socio Demographics - ration card')
+    .withDirName('rationCard')
+    .withSubReportWithDenominator('APL','apl.sql','everyone.sql')
+    .withSubReportWithDenominator('BPL','bpl.sql','everyone.sql')
+    .withSubReportWithDenominator('Antyodaya','antyodaya.sql','everyone.sql')
+    .withSubReportWithDenominator('No','no.sql','everyone.sql')
+    .build();
+
+
+const standard_8_9_10 = new ReportBuilder()
+    .withName("Standard 8 9 10")
+    .withDirName("schoolGoing")
+    .withSubReportWithDenominator("8", "8.sql", "allSchoolGoing.sql")
+    .withSubReportWithDenominator("9", "9.sql", "allSchoolGoing.sql")
+    .withSubReportWithDenominator("10", "10.sql", "allSchoolGoing.sql")
+    .build();
+
 const generate = () =>
     [
         serviceDeliveryReport,
@@ -216,7 +261,12 @@ const generate = () =>
         parentsAndStayStatus,
         rti,
         rta,
-        helpline
+        helpline,
+        caste,
+        age,
+        religion,
+        rationCard,
+        standard_8_9_10
     ].map((report) => report.generate());
 
 module.exports = generate;

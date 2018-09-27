@@ -118,7 +118,7 @@ const sicklingReport = new ReportBuilder()
     .withSubReportWithDenominator("Negative", "negative.sql", "sicklingTestDone.sql")
     .withSubReportWithDenominator("Trait", "trait.sql", "sicklingTestDone.sql")
     .withSubReportWithDenominator("Disease", "disease.sql", "sicklingTestDone.sql")
-    .withSubReportWithDenominator("Counselling Done", "counsellingDone.sql", "disease.sql")
+    .withSubReportWithDenominator("Counselling Done", "counsellingDone.sql", "diseaseOrTrait.sql")
     .withSubReportWithDenominator("Referred", "referralForSickling.sql", "diseaseOrTrait.sql")
     .build();
 

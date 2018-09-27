@@ -218,7 +218,7 @@ FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs ->> ''''a32eeb3a-a36d-4f82-a02d-d8066c41a5b1'''' = ''''04bb1773-c353-44a1-a68c-9b448e07ff70'''''', ''WITH all_program_entire_enrolment AS (
     SELECT
-      i.uuid AS                                                 iuuid,
+      i.uuid AS                                                  iuuid,
       jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
     FROM program_encounter pe
       INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
@@ -238,7 +238,8 @@ FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
   LEFT OUTER JOIN address_level a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-WHERE lpe.obs ->> ''''b5daf90d-5b71-4b53-827f-edd4f6539d15''''=''''2c343c7a-db14-4531-902a-d7b169300073'''''')
+WHERE lpe.obs ->> ''''b5daf90d-5b71-4b53-827f-edd4f6539d15'''' = ''''2c343c7a-db14-4531-902a-d7b169300073''''
+      OR lpe.obs ->> ''''b5daf90d-5b71-4b53-827f-edd4f6539d15'''' = ''''d53a31d6-3c5e-496f-8b92-bc0f703d3b33'''''')
 UNION ALL
 SELECT
 ''Referred''                                          rowid,

@@ -13,7 +13,7 @@ FROM program_encounter pe
   LEFT OUTER JOIN encounter_type et ON pe.encounter_type_id = et.id
   LEFT OUTER JOIN individual i ON e.individual_id = i.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
 WHERE et.name = ''''Dropout Followup Visit'''' AND et.id IS NOT NULL AND p.name = ''''Adolescent''''
 GROUP BY i.uuid, g.name, a.type, a.title
 HAVING count(*) > 0;'', ''WITH all_program_entire_enrolment AS (
@@ -36,7 +36,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"28e76608-dddd-4914-bd44-3689eccfa5ca"}''''
       OR lpe.obs @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"9715936e-03f2-44da-900f-33588fe95250"}'''';'')
@@ -56,7 +56,7 @@ FROM program_encounter pe
   LEFT OUTER JOIN encounter_type et ON pe.encounter_type_id = et.id
   LEFT OUTER JOIN individual i ON e.individual_id = i.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
 WHERE et.name = ''''Dropout Followup Visit'''' AND et.id IS NOT NULL AND p.name = ''''Adolescent''''
 GROUP BY i.uuid, g.name, a.type, a.title
 HAVING count(*) = 1;'', ''WITH all_program_entire_enrolment AS (
@@ -79,7 +79,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"28e76608-dddd-4914-bd44-3689eccfa5ca"}''''
       OR lpe.obs @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"9715936e-03f2-44da-900f-33588fe95250"}'''';'')
@@ -99,7 +99,7 @@ FROM program_encounter pe
   LEFT OUTER JOIN encounter_type et ON pe.encounter_type_id = et.id
   LEFT OUTER JOIN individual i ON e.individual_id = i.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
 WHERE et.name = ''''Dropout Followup Visit'''' AND et.id IS NOT NULL AND p.name = ''''Adolescent''''
 GROUP BY i.uuid, g.name, a.type, a.title
 HAVING count(*) = 2;'', ''WITH all_program_entire_enrolment AS (
@@ -122,7 +122,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"28e76608-dddd-4914-bd44-3689eccfa5ca"}''''
       OR lpe.obs @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"9715936e-03f2-44da-900f-33588fe95250"}'''';'')
@@ -142,7 +142,7 @@ FROM program_encounter pe
   LEFT OUTER JOIN encounter_type et ON pe.encounter_type_id = et.id
   LEFT OUTER JOIN individual i ON e.individual_id = i.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
 WHERE et.name = ''''Dropout Followup Visit'''' AND et.id IS NOT NULL AND p.name = ''''Adolescent''''
 GROUP BY i.uuid, g.name, a.type, a.title
 HAVING count(*) = 3;'', ''WITH all_program_entire_enrolment AS (
@@ -165,7 +165,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"28e76608-dddd-4914-bd44-3689eccfa5ca"}''''
       OR lpe.obs @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"9715936e-03f2-44da-900f-33588fe95250"}'''';'')
@@ -185,7 +185,7 @@ FROM program_encounter pe
   LEFT OUTER JOIN encounter_type et ON pe.encounter_type_id = et.id
   LEFT OUTER JOIN individual i ON e.individual_id = i.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
 WHERE et.name = ''''Dropout Followup Visit'''' AND et.id IS NOT NULL AND p.name = ''''Adolescent''''
 GROUP BY i.uuid, g.name, a.type, a.title
 HAVING count(*) = 4;'', ''WITH all_program_entire_enrolment AS (
@@ -208,7 +208,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"28e76608-dddd-4914-bd44-3689eccfa5ca"}''''
       OR lpe.obs @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"9715936e-03f2-44da-900f-33588fe95250"}'''';'')
@@ -228,7 +228,7 @@ FROM program_encounter pe
   LEFT OUTER JOIN encounter_type et ON pe.encounter_type_id = et.id
   LEFT OUTER JOIN individual i ON e.individual_id = i.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
 WHERE et.name = ''''Dropout Followup Visit'''' AND et.id IS NOT NULL AND p.name = ''''Adolescent''''
 GROUP BY i.uuid, g.name, a.type, a.title
 HAVING count(*) = 5;'', ''WITH all_program_entire_enrolment AS (
@@ -251,7 +251,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"28e76608-dddd-4914-bd44-3689eccfa5ca"}''''
       OR lpe.obs @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"9715936e-03f2-44da-900f-33588fe95250"}'''';'')') AS (

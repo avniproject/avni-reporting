@@ -22,7 +22,7 @@ SELECT
   a.title   address_name
 FROM all_program_all_encounters lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE cast(lpe.obs->>''''7ac0d759-c50d-4971-88e0-84274224c839'''' as float) < 14.5'', ''SELECT
   DISTINCT
@@ -37,7 +37,7 @@ FROM
   LEFT OUTER JOIN program p ON enrolment.program_id = p.id
   LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
   LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
 WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
 UNION ALL
 SELECT
@@ -64,7 +64,7 @@ SELECT
   a.title   address_name
 FROM all_program_all_encounters lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE cast(lpe.obs ->> ''''7ac0d759-c50d-4971-88e0-84274224c839'''' AS FLOAT) >= 14.5
       AND cast(lpe.obs ->> ''''7ac0d759-c50d-4971-88e0-84274224c839'''' AS FLOAT) <= 18.5'', ''SELECT
@@ -80,7 +80,7 @@ FROM
   LEFT OUTER JOIN program p ON enrolment.program_id = p.id
   LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
   LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
 WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
 UNION ALL
 SELECT
@@ -107,7 +107,7 @@ SELECT
   a.title   address_name
 FROM all_program_all_encounters lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE cast(lpe.obs->>''''7ac0d759-c50d-4971-88e0-84274224c839'''' as float) > 18.5
       and cast(lpe.obs->>''''7ac0d759-c50d-4971-88e0-84274224c839'''' as float) < 25'', ''SELECT
@@ -123,7 +123,7 @@ FROM
   LEFT OUTER JOIN program p ON enrolment.program_id = p.id
   LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
   LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
 WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
 UNION ALL
 SELECT
@@ -150,7 +150,7 @@ SELECT
   a.title   address_name
 FROM all_program_all_encounters lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE cast(lpe.obs->>''''7ac0d759-c50d-4971-88e0-84274224c839'''' as float) > 25
       and cast(lpe.obs->>''''7ac0d759-c50d-4971-88e0-84274224c839'''' as float) < 30'', ''SELECT
@@ -166,7 +166,7 @@ FROM
   LEFT OUTER JOIN program p ON enrolment.program_id = p.id
   LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
   LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
 WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
 UNION ALL
 SELECT
@@ -193,7 +193,7 @@ SELECT
   a.title   address_name
 FROM all_program_all_encounters lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE cast(lpe.obs->>''''7ac0d759-c50d-4971-88e0-84274224c839'''' as float) >= 30'', ''SELECT
   DISTINCT
@@ -208,7 +208,7 @@ FROM
   LEFT OUTER JOIN program p ON enrolment.program_id = p.id
   LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
   LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
 WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')') AS (
 rowid TEXT,
 "All Female" TEXT,

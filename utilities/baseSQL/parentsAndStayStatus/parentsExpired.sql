@@ -18,6 +18,6 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs @> '{"9083aae8-0a78-4b5b-9177-dd993e6d088c":"0e7d6595-6217-4498-aa97-79c2edbb875a"}'

@@ -22,7 +22,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs @> ''''{"fda18675-59dc-4a69-82f7-4e137c274073":"d7443a73-80b7-4320-9c45-6558595be70a"}''''
 '', ''WITH all_program_entire_enrolment AS (
@@ -45,7 +45,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
   INNER JOIN concept c ON lpe.obs ->> ''''fda18675-59dc-4a69-82f7-4e137c274073'''' = c.uuid
 WHERE
@@ -76,7 +76,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs @> ''''{"fda18675-59dc-4a69-82f7-4e137c274073":"29d29318-6b0c-4a2b-85e3-5392bd5a668f"}''''
 '', ''WITH all_program_entire_enrolment AS (
@@ -99,7 +99,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
   INNER JOIN concept c ON lpe.obs ->> ''''fda18675-59dc-4a69-82f7-4e137c274073'''' = c.uuid
 WHERE
@@ -130,7 +130,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs @> ''''{"fda18675-59dc-4a69-82f7-4e137c274073":"7f0e1fbd-a1b9-4121-b630-dfec36a2dfd0"}''''
 '', ''WITH all_program_entire_enrolment AS (
@@ -153,7 +153,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
   INNER JOIN concept c ON lpe.obs ->> ''''fda18675-59dc-4a69-82f7-4e137c274073'''' = c.uuid
 WHERE

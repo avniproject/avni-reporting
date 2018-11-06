@@ -8,7 +8,7 @@ FROM frequency_and_percentage(''SELECT
   a.type    address_type,
   a.title   address_name
 FROM individual i
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE i.observations @>''''{"476a0b71-485b-4a0a-ba6f-4f3cf13568ca":"36008c2c-7748-426d-9784-ffc5a267db07"}''''
 '', ''SELECT
@@ -20,7 +20,7 @@ WHERE i.observations @>''''{"476a0b71-485b-4a0a-ba6f-4f3cf13568ca":"36008c2c-774
 FROM
     individual i
     LEFT OUTER JOIN gender g ON g.id = i.gender_id
-    LEFT OUTER JOIN address_level a ON i.address_id = a.id'')
+    LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id'')
 UNION ALL
 SELECT
 ''BPL''                                          rowid,
@@ -32,7 +32,7 @@ FROM frequency_and_percentage(''SELECT
   a.type    address_type,
   a.title   address_name
 FROM individual i
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE i.observations @>''''{"476a0b71-485b-4a0a-ba6f-4f3cf13568ca":"5c9f10e3-3e20-4a3b-a971-f43b40dd017c"}''''
 '', ''SELECT
@@ -44,7 +44,7 @@ WHERE i.observations @>''''{"476a0b71-485b-4a0a-ba6f-4f3cf13568ca":"5c9f10e3-3e2
 FROM
     individual i
     LEFT OUTER JOIN gender g ON g.id = i.gender_id
-    LEFT OUTER JOIN address_level a ON i.address_id = a.id'')
+    LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id'')
 UNION ALL
 SELECT
 ''Antyodaya''                                          rowid,
@@ -56,7 +56,7 @@ FROM frequency_and_percentage(''SELECT
   a.type    address_type,
   a.title   address_name
 FROM individual i
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE i.observations @>''''{"476a0b71-485b-4a0a-ba6f-4f3cf13568ca":"eace7aa2-8444-4c43-b5aa-8b5ec0b19a20"}''''
 '', ''SELECT
@@ -68,7 +68,7 @@ WHERE i.observations @>''''{"476a0b71-485b-4a0a-ba6f-4f3cf13568ca":"eace7aa2-844
 FROM
     individual i
     LEFT OUTER JOIN gender g ON g.id = i.gender_id
-    LEFT OUTER JOIN address_level a ON i.address_id = a.id'')
+    LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id'')
 UNION ALL
 SELECT
 ''No''                                          rowid,
@@ -80,7 +80,7 @@ FROM frequency_and_percentage(''SELECT
   a.type    address_type,
   a.title   address_name
 FROM individual i
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE i.observations @>''''{"476a0b71-485b-4a0a-ba6f-4f3cf13568ca":"e7b50c78-3d90-484d-a224-9887887780dc"}''''
 '', ''SELECT
@@ -92,7 +92,7 @@ WHERE i.observations @>''''{"476a0b71-485b-4a0a-ba6f-4f3cf13568ca":"e7b50c78-3d9
 FROM
     individual i
     LEFT OUTER JOIN gender g ON g.id = i.gender_id
-    LEFT OUTER JOIN address_level a ON i.address_id = a.id'')') AS (
+    LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id'')') AS (
 rowid TEXT,
 "All Female" TEXT,
 "All Male" TEXT,

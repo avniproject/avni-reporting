@@ -8,7 +8,7 @@ FROM frequency_and_percentage(''SELECT
   a.type    address_type,
   a.title   address_name
 FROM individual i
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE extract(YEAR FROM age(i.date_of_birth)) >= 10 AND extract(YEAR FROM age(i.date_of_birth)) <= 14'', ''SELECT
     DISTINCT
@@ -19,7 +19,7 @@ WHERE extract(YEAR FROM age(i.date_of_birth)) >= 10 AND extract(YEAR FROM age(i.
 FROM
     individual i
     LEFT OUTER JOIN gender g ON g.id = i.gender_id
-    LEFT OUTER JOIN address_level a ON i.address_id = a.id'')
+    LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id'')
 UNION ALL
 SELECT
 ''Age 15-19''                                          rowid,
@@ -31,7 +31,7 @@ FROM frequency_and_percentage(''SELECT
   a.type    address_type,
   a.title   address_name
 FROM individual i
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE extract(YEAR FROM age(i.date_of_birth)) > 14 AND extract(YEAR FROM age(i.date_of_birth)) <= 19'', ''SELECT
     DISTINCT
@@ -42,7 +42,7 @@ WHERE extract(YEAR FROM age(i.date_of_birth)) > 14 AND extract(YEAR FROM age(i.d
 FROM
     individual i
     LEFT OUTER JOIN gender g ON g.id = i.gender_id
-    LEFT OUTER JOIN address_level a ON i.address_id = a.id'')') AS (
+    LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id'')') AS (
 rowid TEXT,
 "All Female" TEXT,
 "All Male" TEXT,

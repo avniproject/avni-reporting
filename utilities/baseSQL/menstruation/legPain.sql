@@ -18,7 +18,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> '0f87eac1-cf6a-4632-8af2-29a935451fe4' IS NOT NULL AND
       lpe.obs -> '0f87eac1-cf6a-4632-8af2-29a935451fe4' ?| ARRAY ['1c478c50-4761-460c-b33c-a18d0c1500f7']

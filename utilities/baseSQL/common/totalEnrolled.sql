@@ -11,5 +11,5 @@ FROM
   LEFT OUTER JOIN program p ON enrolment.program_id = p.id
   LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
   LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
 WHERE p.name = 'Adolescent' AND et.name = 'Annual Visit'

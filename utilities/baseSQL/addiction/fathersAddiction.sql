@@ -28,7 +28,7 @@ SELECT
   a.title   address_name
 FROM latest_program_encounters lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> 'e90dee68-0a5f-4dd3-ae26-9b6229c4a02a' ?| ARRAY ['92654fda-d485-4b6d-97c5-8a8fe2a9582a',
 'ef29759b-5f74-4f5a-b186-fea7697cfb34',

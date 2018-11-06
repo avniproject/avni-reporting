@@ -22,7 +22,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' IS NOT NULL AND
       lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' ?| ARRAY [''''b5e3310a-7628-40d9-8bb3-961a6c302c84'''',
@@ -40,7 +40,7 @@ FROM
   LEFT OUTER JOIN program p ON enrolment.program_id = p.id
   LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
   LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
 WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
 UNION ALL
 SELECT
@@ -67,7 +67,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' IS NOT NULL AND
       lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' ?| ARRAY [''''b5e3310a-7628-40d9-8bb3-961a6c302c84'''']'', ''WITH all_program_entire_enrolment AS (
@@ -90,7 +90,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' IS NOT NULL AND
       lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' ?| ARRAY [''''b5e3310a-7628-40d9-8bb3-961a6c302c84'''',
@@ -121,7 +121,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' IS NOT NULL AND
       lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' ?| ARRAY [''''f8e3347d-5ffe-496d-9858-5ea8095d7c96'''']'', ''WITH all_program_entire_enrolment AS (
@@ -144,7 +144,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' IS NOT NULL AND
       lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' ?| ARRAY [''''b5e3310a-7628-40d9-8bb3-961a6c302c84'''',
@@ -175,7 +175,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' IS NOT NULL AND
       lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' ?| ARRAY [''''4f1c4d88-8d87-4a53-8e3a-1bb163e13b66'''']'', ''WITH all_program_entire_enrolment AS (
@@ -198,7 +198,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' IS NOT NULL AND
       lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' ?| ARRAY [''''b5e3310a-7628-40d9-8bb3-961a6c302c84'''',
@@ -229,7 +229,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' IS NOT NULL AND
       lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' ?| ARRAY [''''eb6254e5-ed09-43e8-bb0b-a4e7326e0300'''']'', ''WITH all_program_entire_enrolment AS (
@@ -252,7 +252,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' IS NOT NULL AND
       lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' ?| ARRAY [''''b5e3310a-7628-40d9-8bb3-961a6c302c84'''',
@@ -283,7 +283,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' IS NOT NULL AND
       lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' ?| ARRAY [''''8b6e4a90-aa59-4f80-acdd-a6f3c71163d9'''']'', ''WITH all_program_entire_enrolment AS (
@@ -306,7 +306,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' IS NOT NULL AND
       lpe.obs -> ''''2eb87840-160d-4ee0-bb4c-55dc00c8998a'''' ?| ARRAY [''''b5e3310a-7628-40d9-8bb3-961a6c302c84'''',

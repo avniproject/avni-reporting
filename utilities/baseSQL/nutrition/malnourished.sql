@@ -18,7 +18,7 @@ SELECT
   a.title   address_name
 FROM all_program_all_encounters lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE cast(lpe.obs ->> '7ac0d759-c50d-4971-88e0-84274224c839' AS FLOAT) >= 14.5
       AND cast(lpe.obs ->> '7ac0d759-c50d-4971-88e0-84274224c839' AS FLOAT) <= 18.5

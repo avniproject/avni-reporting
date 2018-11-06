@@ -8,7 +8,7 @@ FROM crosstab('(SELECT
    count(*)::NUMERIC
  FROM individual i
    INNER JOIN gender g ON i.gender_id = g.id
-   INNER JOIN address_level al ON i.address_id = al.id
+   INNER JOIN address_level_type_view al ON i.address_id = al.id
  GROUP BY al.type, g.name
  ORDER BY 1, 2)
 UNION ALL

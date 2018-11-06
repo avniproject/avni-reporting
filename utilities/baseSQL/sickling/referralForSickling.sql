@@ -18,7 +18,7 @@ SELECT
   a.title   address_name
 FROM all_program_all_encounters lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> '0e620ea5-1a80-499f-9d07-b972a9130d60' IS NOT NULL
       AND lpe.obs -> '0e620ea5-1a80-499f-9d07-b972a9130d60' ?| ARRAY ['2f5c7540-ef48-4f89-9fac-46e6a088e32f']

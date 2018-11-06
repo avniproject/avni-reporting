@@ -32,7 +32,7 @@ SELECT
   a.title   address_name
 FROM latest_program_encounters lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' IS NOT NULL AND
       lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' ?| ARRAY [''''968b26b8-a357-4960-8aa8-0db67a728481'''']'', ''WITH all_program_entire_enrolment AS (
@@ -55,7 +55,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''')
 UNION ALL
@@ -93,7 +93,7 @@ SELECT
   a.title   address_name
 FROM latest_program_encounters lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' IS NOT NULL AND
       lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' ?| ARRAY [''''fa118efa-116e-471e-a9cc-f39eabbc0a57'''']'', ''WITH all_program_entire_enrolment AS (
@@ -116,7 +116,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''')
 UNION ALL
@@ -154,7 +154,7 @@ SELECT
   a.title   address_name
 FROM latest_program_encounters lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' IS NOT NULL AND
       lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' ?| ARRAY [''''6ebf2af2-38c6-4703-98c2-cba9f234b8f5'''']'', ''WITH all_program_entire_enrolment AS (
@@ -177,7 +177,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''')
 UNION ALL
@@ -215,7 +215,7 @@ SELECT
   a.title   address_name
 FROM latest_program_encounters lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' IS NOT NULL AND
       lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' ?| ARRAY [''''99414d2a-b7b1-434d-9354-c3da69619d83'''']'', ''WITH all_program_entire_enrolment AS (
@@ -238,7 +238,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''')
 UNION ALL
@@ -266,7 +266,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''5b11c506-d17b-499c-902f-75405bfc1d67'''' IS NOT NULL AND
       lpe.obs ->> ''''5b11c506-d17b-499c-902f-75405bfc1d67'''' = ''''04bb1773-c353-44a1-a68c-9b448e07ff70'''''', ''WITH all_program_entire_enrolment AS (
@@ -289,7 +289,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''')
 UNION ALL
@@ -317,7 +317,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''7503cf02-c2e6-440b-a768-8e4cb1df4c68'''' IS NOT NULL AND
       lpe.obs ->> ''''7503cf02-c2e6-440b-a768-8e4cb1df4c68'''' = ''''04bb1773-c353-44a1-a68c-9b448e07ff70'''''', ''WITH all_program_entire_enrolment AS (
@@ -340,7 +340,7 @@ SELECT
   a.title   address_name
 FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level a ON i.address_id = a.id
+  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''5b11c506-d17b-499c-902f-75405bfc1d67'''' IS NOT NULL AND
       lpe.obs ->> ''''5b11c506-d17b-499c-902f-75405bfc1d67'''' = ''''04bb1773-c353-44a1-a68c-9b448e07ff70'''''')') AS (

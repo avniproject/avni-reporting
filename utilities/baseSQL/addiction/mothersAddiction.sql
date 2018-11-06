@@ -19,7 +19,7 @@ WITH latest_program_all_encounters AS (SELECT i.uuid       AS             iuuid,
 SELECT lpe.iuuid uuid, g.name gender_name, a.type address_type, a.title address_name
 FROM latest_program_encounters lpe
        LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-       LEFT OUTER JOIN address_level a ON i.address_id = a.id
+       LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
        LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> 'a3200784-2512-477b-9e78-f1c947d7dd75' ?| ARRAY ['92654fda-d485-4b6d-97c5-8a8fe2a9582a',
 'ef29759b-5f74-4f5a-b186-fea7697cfb34',

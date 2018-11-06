@@ -9,5 +9,5 @@ FROM program_encounter pe
   INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
   INNER JOIN individual i ON enrolment.individual_id = i.id
   INNER JOIN gender g ON i.gender_id = g.id
-  INNER JOIN address_level al ON i.address_id = al.id
+  INNER JOIN address_level_type_view al ON i.address_id = al.id
 WHERE p.name = 'Adolescent' AND et.name = 'Dropout Home Visit' AND pe.encounter_date_time IS NOT NULL

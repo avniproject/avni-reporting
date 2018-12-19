@@ -21,3 +21,11 @@ deps:
 test_env: ## Run unit tests
 	cd utilities && npm test
 # </env>
+
+run_repeatable_migrations_prod:
+	# to be tested
+	# ssh -i ~/.ssh/openchs-infra.pem -f -L 17777:serverdb.openchs.org:5432 prod-server-openchs sleep 5; \
+	# 	psql -U openchs -h localhost -p 17777 -d openchs < ./utilities/views/views.sql
+
+run_repeatable_migrations_dev:
+	-psql -U openchs -h localhost -p 5432 -d openchs < ./utilities/views/views.sql

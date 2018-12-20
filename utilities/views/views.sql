@@ -32,6 +32,12 @@ create view program_encounter_view as
          join encounter_type et on oet.encounter_type_id = et.id
   where pe.is_voided is not true;
 
+drop view if exists unplanned_program_encounter_view CASCADE;
+create view unplanned_program_encounter_view as
+  select *
+  from program_encounter_view
+  where encounter_date_time is not null;
+
 drop view if exists scheduled_program_encounter_view CASCADE;
 create view scheduled_program_encounter_view as
   select *
@@ -51,3 +57,62 @@ create view cancelled_scheduled_program_encounter_view as
   from program_encounter_view
   where cancel_date_time is not null
     and earliest_visit_date_time is not null;
+
+drop view if exists individual_gender_view cascade;
+create view individual_gender_view as
+  select i.*, g.name as gender
+  from individual i
+         join gender g on g.id = i.gender_id
+  where i.is_voided is not true;
+
+drop view if exists individual_gender_address_view cascade;
+create view individual_gender_address_view as
+  select i.*,
+         l.title      as addresslevel_name,
+         l.level      as addresslevel_level,
+         l.uuid       as addresslevel_uuid,
+         l.is_voided  as addresslevel_is_voided,
+         lt.name      as addresslevel_type,
+         lt.uuid      as addresslevel_type_uuid,
+         lt.is_voided as addresslevel_type_is_voided
+  from individual_gender_view i
+         join gender g on g.id = i.gender_id
+         join address_level l on i.address_id = l.id
+         join address_level_type lt on l.type_id = lt.id;
+
+drop view if exists individual_gender_catchment_view cascade;
+create view individual_gender_catchment_view as
+  select i.*,
+         c.id        as catchment_id,
+         c.name      as catchment_name,
+         c.uuid      as catchment_uuid,
+         c.is_voided as catchment_is_voided
+  from individual_gender_address_view i
+         join virtual_catchment_address_mapping_table vt on vt.addresslevel_id = i.address_id
+         join catchment c on c.id = vt.catchment_id;
+
+drop view if exists all_enrolment_unplanned_encounters_agg_view;
+create view all_enrolment_unplanned_encounters_agg_view AS
+  WITH agg as (
+      SELECT e.individual_id,
+             e.program_id,
+             jsonb_merge(jsonb_agg(e.observations || jsonb_strip_nulls(pe.observations))) obs
+      FROM program_encounter pe
+             JOIN program_enrolment e ON pe.program_enrolment_id = e.id
+      where e.is_voided is not true
+        and pe.is_voided is not true
+        and pe.encounter_date_time is not null
+      GROUP BY e.individual_id, e.program_id
+  )
+  select agg.individual_id,
+         agg.program_id,
+         agg.obs      as agg_obs,
+         op.uuid      as operational_program_uuid,
+         op.name      as operational_program_name,
+         op.is_voided as operational_program_is_voided,
+         p.uuid       as program_uuid,
+         p.name       as program_name,
+         p.is_voided  as program_is_voided
+  from agg
+         join operational_program op on op.program_id = agg.program_id
+         join program p on op.program_id = p.id;

@@ -60,12 +60,22 @@ create view cancelled_scheduled_program_encounter_view as
   where cancel_date_time is not null
     and earliest_visit_date_time is not null;
 
+drop view if exists individual_view cascade;
+create view individual_view as
+  select *, first_name || ' ' || last_name                                    as full_name,
+            to_char(date_of_birth, 'DD-MON-YYYY')                             AS d_o_b_formatted,
+            format('%s years, %s months',
+                   to_char(extract(year from age(date_of_birth)), 'FM9999'),
+                   to_char(extract(month from age(date_of_birth)), 'FM9999')) as age_years_months,
+            to_char(registration_date, 'DD-MON-YYYY')                         AS registration_date_formatted
+  from individual
+  where is_voided is not true;
+
 drop view if exists individual_gender_view cascade;
 create view individual_gender_view as
   select i.*, g.name as gender
-  from individual i
-         join gender g on g.id = i.gender_id
-  where i.is_voided is not true;
+  from individual_view i
+         join gender g on g.id = i.gender_id;
 
 drop view if exists individual_gender_address_view cascade;
 create view individual_gender_address_view as
@@ -78,7 +88,6 @@ create view individual_gender_address_view as
          lt.uuid      as addresslevel_type_uuid,
          lt.is_voided as addresslevel_type_is_voided
   from individual_gender_view i
-         join gender g on g.id = i.gender_id
          join address_level l on i.address_id = l.id
          join address_level_type lt on l.type_id = lt.id;
 

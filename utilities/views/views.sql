@@ -1,4 +1,6 @@
-drop view if exists program_enrolment_view CASCADE;
+set role demo;
+
+drop view if exists program_enrolment_view cascade;
 create view program_enrolment_view as
   select pe.*,
          op.uuid      as operational_program_uuid,
@@ -12,13 +14,13 @@ create view program_enrolment_view as
          join program p on op.program_id = p.id
   where pe.is_voided is not true; -- it is not same as '= false'
 
-drop view if exists non_exited_program_enrolment_view CASCADE;
+drop view if exists non_exited_program_enrolment_view cascade;
 create view non_exited_program_enrolment_view as
   select *
   from program_enrolment_view
   where program_exit_date_time isnull;
 
-drop view if exists program_encounter_view CASCADE;
+drop view if exists program_encounter_view cascade;
 create view program_encounter_view as
   select pe.*,
          oet.uuid      as operational_encounter_type_uuid,
@@ -32,26 +34,26 @@ create view program_encounter_view as
          join encounter_type et on oet.encounter_type_id = et.id
   where pe.is_voided is not true;
 
-drop view if exists unplanned_program_encounter_view CASCADE;
+drop view if exists unplanned_program_encounter_view cascade;
 create view unplanned_program_encounter_view as
   select *
   from program_encounter_view
   where encounter_date_time is not null;
 
-drop view if exists scheduled_program_encounter_view CASCADE;
+drop view if exists scheduled_program_encounter_view cascade;
 create view scheduled_program_encounter_view as
   select *
   from program_encounter_view
   where earliest_visit_date_time is not null;
 
-drop view if exists non_cancelled_scheduled_program_encounter_view CASCADE;
+drop view if exists non_cancelled_scheduled_program_encounter_view cascade;
 create view non_cancelled_scheduled_program_encounter_view as
   select *
   from program_encounter_view
   where cancel_date_time is null
     and earliest_visit_date_time is not null;
 
-drop view if exists cancelled_scheduled_program_encounter_view CASCADE;
+drop view if exists cancelled_scheduled_program_encounter_view cascade;
 create view cancelled_scheduled_program_encounter_view as
   select *
   from program_encounter_view
@@ -91,7 +93,7 @@ create view individual_gender_catchment_view as
          join virtual_catchment_address_mapping_table vt on vt.addresslevel_id = i.address_id
          join catchment c on c.id = vt.catchment_id;
 
-drop view if exists all_enrolment_unplanned_encounters_agg_view;
+drop view if exists all_enrolment_unplanned_encounters_agg_view cascade;
 create view all_enrolment_unplanned_encounters_agg_view AS
   WITH agg as (
       SELECT e.individual_id,
@@ -116,3 +118,9 @@ create view all_enrolment_unplanned_encounters_agg_view AS
   from agg
          join operational_program op on op.program_id = agg.program_id
          join program p on op.program_id = p.id;
+
+SELECT grant_all_on_all(a.rolname) FROM pg_roles a WHERE pg_has_role('openchs', a.oid, 'member')
+                                                     and a.rolsuper is false
+                                                     and a.rolname not like 'pg%'
+                                                     and a.rolname not like 'rds%'
+order by a.rolname;

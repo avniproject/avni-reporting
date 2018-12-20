@@ -1,17 +1,42 @@
 set role demo;
 
+drop view if exists operational_program_view cascade;
+create view operational_program_view as
+  select op.id                     as operational_program_id,
+         op.uuid                   as operational_program_uuid,
+         coalesce(op.name, p.name) as operational_program_name,
+         op.is_voided              as operational_program_is_voided,
+         p.id                      as program_id,
+         p.uuid                    as program_uuid,
+         p.name                    as program_name,
+         p.is_voided               as program_is_voided
+  from operational_program op
+         join program p on op.program_id = p.id;
+
+drop view if exists operational_encounter_type_view cascade;
+create view operational_encounter_type_view as
+  select oet.id                      as operational_encounter_type_id,
+         oet.uuid                    as operational_encounter_type_uuid,
+         coalesce(oet.name, et.name) as operational_encounter_type_name,
+         oet.is_voided               as operational_encounter_type_is_voided,
+         et.id                       as encounter_type_id,
+         et.uuid                     as encounter_type_uuid,
+         et.name                     as encounter_type_name,
+         et.is_voided                as encounter_type_is_voided
+  from operational_encounter_type oet
+         join encounter_type et on oet.encounter_type_id = et.id;
+
 drop view if exists program_enrolment_view cascade;
 create view program_enrolment_view as
   select pe.*,
-         op.uuid      as operational_program_uuid,
-         op.name      as operational_program_name,
-         op.is_voided as operational_program_is_voided,
-         p.uuid       as program_uuid,
-         p.name       as program_name,
-         p.is_voided  as program_is_voided
+         op.operational_program_uuid,
+         op.operational_program_name,
+         op.operational_program_is_voided,
+         op.program_uuid,
+         op.program_name,
+         op.program_is_voided
   from program_enrolment pe
-         join operational_program op on op.program_id = pe.program_id
-         join program p on op.program_id = p.id
+         join operational_program_view op on op.program_id = pe.program_id
   where pe.is_voided is not true; -- it is not same as '= false'
 
 drop view if exists non_exited_program_enrolment_view cascade;
@@ -23,15 +48,14 @@ create view non_exited_program_enrolment_view as
 drop view if exists program_encounter_view cascade;
 create view program_encounter_view as
   select pe.*,
-         oet.uuid      as operational_encounter_type_uuid,
-         oet.name      as operational_encounter_type_name,
-         oet.is_voided as operational_encounter_type_is_voided,
-         et.uuid       as encounter_type_uuid,
-         et.name       as encounter_type_name,
-         et.is_voided  as encounter_type_is_voided
+         oet.operational_encounter_type_uuid,
+         oet.operational_encounter_type_name,
+         oet.operational_encounter_type_is_voided,
+         oet.encounter_type_uuid,
+         oet.encounter_type_name,
+         oet.encounter_type_is_voided
   from program_encounter pe
-         join operational_encounter_type oet on oet.encounter_type_id = pe.encounter_type_id
-         join encounter_type et on oet.encounter_type_id = et.id
+         join operational_encounter_type_view oet on oet.encounter_type_id = pe.encounter_type_id
   where pe.is_voided is not true;
 
 drop view if exists unplanned_program_encounter_view cascade;
@@ -117,16 +141,15 @@ create view all_enrolment_unplanned_encounters_agg_view AS
   )
   select agg.individual_id,
          agg.program_id,
-         agg.obs      as agg_obs,
-         op.uuid      as operational_program_uuid,
-         op.name      as operational_program_name,
-         op.is_voided as operational_program_is_voided,
-         p.uuid       as program_uuid,
-         p.name       as program_name,
-         p.is_voided  as program_is_voided
+         agg.obs as agg_obs,
+         op.operational_program_uuid,
+         op.operational_program_name,
+         op.operational_program_is_voided,
+         op.program_uuid,
+         op.program_name,
+         op.program_is_voided
   from agg
-         join operational_program op on op.program_id = agg.program_id
-         join program p on op.program_id = p.id;
+         join operational_program_view op on op.program_id = agg.program_id;
 
 SELECT grant_all_on_all(a.rolname) FROM pg_roles a WHERE pg_has_role('openchs', a.oid, 'member')
                                                      and a.rolsuper is false

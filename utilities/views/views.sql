@@ -58,11 +58,17 @@ create view program_encounter_view as
          join operational_encounter_type_view oet on oet.encounter_type_id = pe.encounter_type_id
   where pe.is_voided is not true;
 
+drop view if exists encountered_program_encounter_view cascade;
+create view encountered_program_encounter_view as
+  select *
+  from program_encounter_view
+  where encounter_date_time is not null;
+
 drop view if exists unplanned_program_encounter_view cascade;
 create view unplanned_program_encounter_view as
   select *
   from program_encounter_view
-  where encounter_date_time is not null;
+  where earliest_visit_date_time is null;
 
 drop view if exists scheduled_program_encounter_view cascade;
 create view scheduled_program_encounter_view as
@@ -86,12 +92,7 @@ create view cancelled_scheduled_program_encounter_view as
 
 drop view if exists individual_view cascade;
 create view individual_view as
-  select *, first_name || ' ' || last_name                                    as full_name,
-            to_char(date_of_birth, 'DD-MON-YYYY')                             AS d_o_b_formatted,
-            format('%s years, %s months',
-                   to_char(extract(year from age(date_of_birth)), 'FM9999'),
-                   to_char(extract(month from age(date_of_birth)), 'FM9999')) as age_years_months,
-            to_char(registration_date, 'DD-MON-YYYY')                         AS registration_date_formatted
+  select *, first_name || ' ' || last_name as full_name
   from individual
   where is_voided is not true;
 

@@ -32,7 +32,7 @@ WHERE lpe.obs @> ''''{"9083aae8-0a78-4b5b-9177-dd993e6d088c":"1645d2d8-9dc8-4a6a
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  encountered_program_encounter_view pe
+  completed_program_encounter_view pe
   JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
@@ -70,7 +70,7 @@ WHERE lpe.obs @> ''''{"9083aae8-0a78-4b5b-9177-dd993e6d088c":"0e7d6595-6217-4498
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  encountered_program_encounter_view pe
+  completed_program_encounter_view pe
   JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
@@ -108,7 +108,7 @@ WHERE lpe.obs @> ''''{"eb47f6b7-1f64-4008-87f3-a781c7c342cd":"fdad6445-316c-4cb7
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  encountered_program_encounter_view pe
+  completed_program_encounter_view pe
   JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
@@ -146,7 +146,7 @@ WHERE lpe.obs @> ''''{"eb47f6b7-1f64-4008-87f3-a781c7c342cd":"b14dc6d9-c724-4005
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  encountered_program_encounter_view pe
+  completed_program_encounter_view pe
   JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
@@ -184,7 +184,7 @@ WHERE lpe.obs @> ''''{"eb47f6b7-1f64-4008-87f3-a781c7c342cd":"bf99bcf7-5046-4835
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  encountered_program_encounter_view pe
+  completed_program_encounter_view pe
   JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')') AS (

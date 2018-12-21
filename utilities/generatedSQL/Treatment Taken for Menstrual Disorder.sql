@@ -6,7 +6,7 @@ FROM frequency_and_percentage(''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent'''' AND
       lpe.agg_obs -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL AND
@@ -18,7 +18,7 @@ WHERE lpe.program_name = ''''Adolescent'''' AND
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent'''' AND
       lpe.agg_obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
@@ -32,7 +32,7 @@ FROM frequency_and_percentage(''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent'''' AND
       lpe.agg_obs -> ''''bd3d1ba3-0a85-4aa7-a62c-78254d8e0762'''' IS NOT NULL AND
@@ -41,7 +41,7 @@ WHERE lpe.program_name = ''''Adolescent'''' AND
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent'''' AND
       lpe.agg_obs -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL AND
@@ -59,7 +59,7 @@ FROM frequency_and_percentage(''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent'''' AND
       lpe.agg_obs -> ''''bd3d1ba3-0a85-4aa7-a62c-78254d8e0762'''' IS NOT NULL AND
@@ -67,7 +67,7 @@ WHERE lpe.program_name = ''''Adolescent'''' AND
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent'''' AND
       lpe.agg_obs -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL AND
@@ -85,7 +85,7 @@ FROM frequency_and_percentage(''SELECT i.uuid              as uuid,
        i.gender            as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
        JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent''''
   AND lpe.agg_obs -> ''''bd3d1ba3-0a85-4aa7-a62c-78254d8e0762'''' IS NOT NULL
@@ -94,7 +94,7 @@ WHERE lpe.program_name = ''''Adolescent''''
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent'''' AND
       lpe.agg_obs -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL AND
@@ -112,7 +112,7 @@ FROM frequency_and_percentage(''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent'''' AND
       lpe.agg_obs -> ''''bd3d1ba3-0a85-4aa7-a62c-78254d8e0762'''' IS NOT NULL AND
@@ -120,7 +120,7 @@ WHERE lpe.program_name = ''''Adolescent'''' AND
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent'''' AND
       lpe.agg_obs -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL AND
@@ -138,7 +138,7 @@ FROM frequency_and_percentage(''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent'''' AND
       lpe.agg_obs -> ''''bd3d1ba3-0a85-4aa7-a62c-78254d8e0762'''' IS NOT NULL AND
@@ -146,7 +146,7 @@ WHERE lpe.program_name = ''''Adolescent'''' AND
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent'''' AND
       lpe.agg_obs -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL AND

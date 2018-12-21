@@ -118,7 +118,7 @@ WHERE (lpe.obs @> ''''{"5af82adf-6be9-4792-9b3d-543b4b00f816":"04bb1773-c353-44a
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  encountered_program_encounter_view pe
+  completed_program_encounter_view pe
   JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
@@ -156,7 +156,7 @@ WHERE lpe.obs -> ''''0e620ea5-1a80-499f-9d07-b972a9130d60'''' IS NOT NULL'', ''S
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  encountered_program_encounter_view pe
+  completed_program_encounter_view pe
   JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
@@ -201,7 +201,7 @@ WHERE lpe.obs -> ''''e45d8168-c4a2-427b-85aa-d0f0e8467a8f'''' IS NOT NULL
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  encountered_program_encounter_view pe
+  completed_program_encounter_view pe
   JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
@@ -303,7 +303,7 @@ WHERE lpe.obs @> ''''{"575a29c3-a070-4c7d-ac96-fe58b6bddca3":"58f789aa-6570-4aea
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  encountered_program_encounter_view pe
+  completed_program_encounter_view pe
   JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')

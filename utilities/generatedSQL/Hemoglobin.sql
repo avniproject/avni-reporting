@@ -6,7 +6,7 @@ FROM frequency_and_percentage(''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent'''' AND
       cast(lpe.agg_obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) < 7'', ''SELECT
@@ -16,7 +16,7 @@ WHERE lpe.program_name = ''''Adolescent'''' AND
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  encountered_program_encounter_view pe
+  completed_program_encounter_view pe
   JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
@@ -29,7 +29,7 @@ FROM frequency_and_percentage(''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent'''' AND
       cast(lpe.agg_obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) > 7
@@ -40,7 +40,7 @@ WHERE lpe.program_name = ''''Adolescent'''' AND
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  encountered_program_encounter_view pe
+  completed_program_encounter_view pe
   JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
@@ -53,7 +53,7 @@ FROM frequency_and_percentage(''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent''''
       AND cast(lpe.agg_obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) > 10
@@ -64,7 +64,7 @@ WHERE lpe.program_name = ''''Adolescent''''
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  encountered_program_encounter_view pe
+  completed_program_encounter_view pe
   JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
@@ -77,7 +77,7 @@ FROM frequency_and_percentage(''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent''''
       AND cast(lpe.agg_obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) = 12'', ''SELECT
@@ -87,7 +87,7 @@ WHERE lpe.program_name = ''''Adolescent''''
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  encountered_program_encounter_view pe
+  completed_program_encounter_view pe
   JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
@@ -100,7 +100,7 @@ FROM frequency_and_percentage(''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent'''' 
       AND cast(lpe.agg_obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) > 12
@@ -111,7 +111,7 @@ WHERE lpe.program_name = ''''Adolescent''''
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  encountered_program_encounter_view pe
+  completed_program_encounter_view pe
   JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
@@ -124,7 +124,7 @@ FROM frequency_and_percentage(''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent''''
       AND cast(lpe.agg_obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) > 13'', ''SELECT
@@ -134,7 +134,7 @@ WHERE lpe.program_name = ''''Adolescent''''
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  encountered_program_encounter_view pe
+  completed_program_encounter_view pe
   JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')') AS (

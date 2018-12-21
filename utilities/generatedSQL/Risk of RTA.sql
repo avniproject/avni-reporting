@@ -7,7 +7,7 @@ SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent''''
       AND lpe.agg_obs @> ''''{"b573841e-83c4-4132-9a5d-92d227ce26a9":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
@@ -18,7 +18,7 @@ WHERE lpe.program_name = ''''Adolescent''''
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  encountered_program_encounter_view pe
+  completed_program_encounter_view pe
   JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
@@ -32,7 +32,7 @@ SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent''''
       AND lpe.agg_obs @> ''''{"c0d283e3-0b4a-4583-9666-a0c88e6465f7":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''', ''
@@ -40,7 +40,7 @@ SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent''''
       AND lpe.agg_obs @> ''''{"b573841e-83c4-4132-9a5d-92d227ce26a9":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
@@ -55,7 +55,7 @@ SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent''''
       AND lpe.agg_obs @> ''''{"524c431a-3cfd-410d-af6c-e5b39ddd85d3":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''', ''
@@ -63,7 +63,7 @@ SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent''''
       AND lpe.agg_obs @> ''''{"b573841e-83c4-4132-9a5d-92d227ce26a9":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
@@ -78,7 +78,7 @@ SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent''''
       AND lpe.agg_obs @> ''''{"e0340738-27fb-424d-8c8a-f783cd922659":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''', ''
@@ -86,7 +86,7 @@ SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM all_enrolment_encountered_encounters_agg_view lpe
+FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = ''''Adolescent''''
       AND lpe.agg_obs @> ''''{"b573841e-83c4-4132-9a5d-92d227ce26a9":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''

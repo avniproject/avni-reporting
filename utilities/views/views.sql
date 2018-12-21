@@ -128,7 +128,8 @@ create view individual_gender_catchment_view as
          join catchment c on c.id = vt.catchment_id;
 
 drop view if exists all_enrolment_unplanned_encounters_agg_view cascade;
-create view all_enrolment_unplanned_encounters_agg_view AS
+drop view if exists all_enrolment_encountered_encounters_agg_view cascade;
+create view all_enrolment_encountered_encounters_agg_view AS
   WITH agg as (
       SELECT e.individual_id,
              e.program_id,
@@ -151,6 +152,30 @@ create view all_enrolment_unplanned_encounters_agg_view AS
          op.program_is_voided
   from agg
          join operational_program_view op on op.program_id = agg.program_id;
+
+drop view if exists individual_relationship_view cascade;
+create view individual_relationship_view as
+  select ir.*, irt.uuid as type_uuid, a_is_to_b.name as a_is_to_b, b_is_to_a.name as b_is_to_a
+  from individual_relationship ir
+         join individual_relationship_type irt on ir.relationship_type_id = irt.id
+         join individual_relation a_is_to_b on irt.individual_a_is_to_b_relation_id = a_is_to_b.id
+         join individual_relation b_is_to_a on irt.individual_b_is_to_a_relation_id = b_is_to_a.id
+  where ir.is_voided is not true;
+
+drop view if exists individual_name_relationship_view cascade;
+create view individual_name_relationship_view as
+  select irv.*,
+         a.uuid       auuid,
+         a.first_name afirst_name,
+         a.last_name  alast_name,
+         a.full_name  afull_name,
+         b.uuid       buuid,
+         b.first_name bfirst_name,
+         b.last_name  blast_name,
+         b.full_name  bfull_name
+  from individual_relationship_view irv
+         join individual_view a on a.id = irv.individual_a_id
+         join individual_view b on b.id = irv.individual_b_id;
 
 SELECT grant_all_on_all(a.rolname)
 FROM pg_roles a

@@ -35,29 +35,15 @@ FROM latest_program_encounters lpe
   LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' IS NOT NULL AND
-      lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' ?| ARRAY [''''968b26b8-a357-4960-8aa8-0db67a728481'''']'', ''WITH all_program_entire_enrolment AS (
-    SELECT
-      i.uuid AS                                                 iuuid,
-      jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
-    FROM program_encounter pe
-      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual i ON e.individual_id = i.id
-      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
-      INNER JOIN program p ON p.id = e.program_id
-    WHERE p.name = ''''Adolescent''''
-          AND pe.encounter_date_time IS NOT NULL
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  g.name    gender_name,
-  a.type    address_type,
-  a.title   address_name
-FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-  LEFT OUTER JOIN gender g ON i.gender_id = g.id
-WHERE lpe.obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''')
+      lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' ?| ARRAY [''''968b26b8-a357-4960-8aa8-0db67a728481'''']'', ''SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM all_enrolment_encountered_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = ''''Adolescent'''' AND
+      lpe.agg_obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+'')
 UNION ALL
 SELECT
 ''Sanitary Pad''                                          rowid,
@@ -96,29 +82,15 @@ FROM latest_program_encounters lpe
   LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' IS NOT NULL AND
-      lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' ?| ARRAY [''''fa118efa-116e-471e-a9cc-f39eabbc0a57'''']'', ''WITH all_program_entire_enrolment AS (
-    SELECT
-      i.uuid AS                                                 iuuid,
-      jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
-    FROM program_encounter pe
-      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual i ON e.individual_id = i.id
-      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
-      INNER JOIN program p ON p.id = e.program_id
-    WHERE p.name = ''''Adolescent''''
-          AND pe.encounter_date_time IS NOT NULL
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  g.name    gender_name,
-  a.type    address_type,
-  a.title   address_name
-FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-  LEFT OUTER JOIN gender g ON i.gender_id = g.id
-WHERE lpe.obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''')
+      lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' ?| ARRAY [''''fa118efa-116e-471e-a9cc-f39eabbc0a57'''']'', ''SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM all_enrolment_encountered_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = ''''Adolescent'''' AND
+      lpe.agg_obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+'')
 UNION ALL
 SELECT
 ''Falalin''                                          rowid,
@@ -157,29 +129,15 @@ FROM latest_program_encounters lpe
   LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' IS NOT NULL AND
-      lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' ?| ARRAY [''''6ebf2af2-38c6-4703-98c2-cba9f234b8f5'''']'', ''WITH all_program_entire_enrolment AS (
-    SELECT
-      i.uuid AS                                                 iuuid,
-      jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
-    FROM program_encounter pe
-      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual i ON e.individual_id = i.id
-      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
-      INNER JOIN program p ON p.id = e.program_id
-    WHERE p.name = ''''Adolescent''''
-          AND pe.encounter_date_time IS NOT NULL
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  g.name    gender_name,
-  a.type    address_type,
-  a.title   address_name
-FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-  LEFT OUTER JOIN gender g ON i.gender_id = g.id
-WHERE lpe.obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''')
+      lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' ?| ARRAY [''''6ebf2af2-38c6-4703-98c2-cba9f234b8f5'''']'', ''SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM all_enrolment_encountered_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = ''''Adolescent'''' AND
+      lpe.agg_obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+'')
 UNION ALL
 SELECT
 ''Kit Pad''                                          rowid,
@@ -218,29 +176,15 @@ FROM latest_program_encounters lpe
   LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' IS NOT NULL AND
-      lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' ?| ARRAY [''''99414d2a-b7b1-434d-9354-c3da69619d83'''']'', ''WITH all_program_entire_enrolment AS (
-    SELECT
-      i.uuid AS                                                 iuuid,
-      jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
-    FROM program_encounter pe
-      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual i ON e.individual_id = i.id
-      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
-      INNER JOIN program p ON p.id = e.program_id
-    WHERE p.name = ''''Adolescent''''
-          AND pe.encounter_date_time IS NOT NULL
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  g.name    gender_name,
-  a.type    address_type,
-  a.title   address_name
-FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-  LEFT OUTER JOIN gender g ON i.gender_id = g.id
-WHERE lpe.obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''')
+      lpe.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' ?| ARRAY [''''99414d2a-b7b1-434d-9354-c3da69619d83'''']'', ''SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM all_enrolment_encountered_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = ''''Adolescent'''' AND
+      lpe.agg_obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+'')
 UNION ALL
 SELECT
 ''MHM Kit Provided?''                                          rowid,
@@ -269,29 +213,15 @@ FROM all_program_entire_enrolment lpe
   LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
   LEFT OUTER JOIN gender g ON i.gender_id = g.id
 WHERE lpe.obs -> ''''5b11c506-d17b-499c-902f-75405bfc1d67'''' IS NOT NULL AND
-      lpe.obs ->> ''''5b11c506-d17b-499c-902f-75405bfc1d67'''' = ''''04bb1773-c353-44a1-a68c-9b448e07ff70'''''', ''WITH all_program_entire_enrolment AS (
-    SELECT
-      i.uuid AS                                                 iuuid,
-      jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
-    FROM program_encounter pe
-      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual i ON e.individual_id = i.id
-      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
-      INNER JOIN program p ON p.id = e.program_id
-    WHERE p.name = ''''Adolescent''''
-          AND pe.encounter_date_time IS NOT NULL
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  g.name    gender_name,
-  a.type    address_type,
-  a.title   address_name
-FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-  LEFT OUTER JOIN gender g ON i.gender_id = g.id
-WHERE lpe.obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''')
+      lpe.obs ->> ''''5b11c506-d17b-499c-902f-75405bfc1d67'''' = ''''04bb1773-c353-44a1-a68c-9b448e07ff70'''''', ''SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM all_enrolment_encountered_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = ''''Adolescent'''' AND
+      lpe.agg_obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+'')
 UNION ALL
 SELECT
 ''MHM Kit Used''                                          rowid,

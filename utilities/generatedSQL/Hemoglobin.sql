@@ -27,18 +27,14 @@ FROM all_program_entire_enrolment lpe
 WHERE cast(lpe.obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) < 7'', ''SELECT
   DISTINCT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
+  i.gender  gender_name,
+  i.addresslevel_type  address_type,
+  i.addresslevel_name address_name
 FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
+  encountered_program_encounter_view pe
+  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
 UNION ALL
 SELECT
 ''7.1 - 10.0''                                          rowid,
@@ -70,18 +66,14 @@ WHERE cast(lpe.obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) > 
       AND cast(lpe.obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) <= 10'', ''SELECT
   DISTINCT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
+  i.gender  gender_name,
+  i.addresslevel_type  address_type,
+  i.addresslevel_name address_name
 FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
+  encountered_program_encounter_view pe
+  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
 UNION ALL
 SELECT
 ''10.1 - 11.9''                                          rowid,
@@ -113,18 +105,14 @@ WHERE cast(lpe.obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) > 
       AND cast(lpe.obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) < 12'', ''SELECT
   DISTINCT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
+  i.gender  gender_name,
+  i.addresslevel_type  address_type,
+  i.addresslevel_name address_name
 FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
+  encountered_program_encounter_view pe
+  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
 UNION ALL
 SELECT
 ''12''                                          rowid,
@@ -155,18 +143,14 @@ FROM all_program_entire_enrolment lpe
 WHERE cast(lpe.obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) = 12'', ''SELECT
   DISTINCT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
+  i.gender  gender_name,
+  i.addresslevel_type  address_type,
+  i.addresslevel_name address_name
 FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
+  encountered_program_encounter_view pe
+  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
 UNION ALL
 SELECT
 ''12.1 - 13.0''                                          rowid,
@@ -198,18 +182,14 @@ WHERE cast(lpe.obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) > 
       AND cast(lpe.obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) <= 13'', ''SELECT
   DISTINCT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
+  i.gender  gender_name,
+  i.addresslevel_type  address_type,
+  i.addresslevel_name address_name
 FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
+  encountered_program_encounter_view pe
+  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
 UNION ALL
 SELECT
 ''> 13''                                          rowid,
@@ -240,18 +220,14 @@ FROM all_program_entire_enrolment lpe
 WHERE cast(lpe.obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) > 13'', ''SELECT
   DISTINCT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
+  i.gender  gender_name,
+  i.addresslevel_type  address_type,
+  i.addresslevel_name address_name
 FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')') AS (
+  encountered_program_encounter_view pe
+  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')') AS (
 rowid TEXT,
 "All Female" TEXT,
 "All Male" TEXT,

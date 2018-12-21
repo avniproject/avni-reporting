@@ -114,18 +114,14 @@ WHERE (lpe.obs @> ''''{"5af82adf-6be9-4792-9b3d-543b4b00f816":"04bb1773-c353-44a
 ''''e27f4a35-c2ae-4d05-8930-e19e432221d1'''', ''''ce47ae12-e61c-49cc-8ccd-715f9d5cb76d''''])'', ''SELECT
   DISTINCT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
+  i.gender  gender_name,
+  i.addresslevel_type  address_type,
+  i.addresslevel_name address_name
 FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
+  encountered_program_encounter_view pe
+  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
 UNION ALL
 SELECT
 ''Total Adolescents Referred''                                          rowid,
@@ -156,18 +152,14 @@ FROM all_program_all_encounters lpe
 WHERE lpe.obs -> ''''0e620ea5-1a80-499f-9d07-b972a9130d60'''' IS NOT NULL'', ''SELECT
   DISTINCT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
+  i.gender  gender_name,
+  i.addresslevel_type  address_type,
+  i.addresslevel_name address_name
 FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
+  encountered_program_encounter_view pe
+  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
 UNION ALL
 SELECT
 ''Total Adolescents needed Counselling''                                          rowid,
@@ -205,18 +197,14 @@ WHERE lpe.obs -> ''''e45d8168-c4a2-427b-85aa-d0f0e8467a8f'''' IS NOT NULL
       OR lpe.obs -> ''''a53a6c13-8a84-4be5-958b-e07611426fe0'''' IS NOT NULL'', ''SELECT
   DISTINCT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
+  i.gender  gender_name,
+  i.addresslevel_type  address_type,
+  i.addresslevel_name address_name
 FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
+  encountered_program_encounter_view pe
+  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
 UNION ALL
 SELECT
 ''Total Adolescents Counselled''                                          rowid,
@@ -311,18 +299,14 @@ FROM all_program_entire_enrolment lpe
 WHERE lpe.obs @> ''''{"575a29c3-a070-4c7d-ac96-fe58b6bddca3":"58f789aa-6570-4aea-87a7-1f7651729c5a"}'''''', ''SELECT
   DISTINCT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
+  i.gender  gender_name,
+  i.addresslevel_type  address_type,
+  i.addresslevel_name address_name
 FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
+  encountered_program_encounter_view pe
+  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
 UNION ALL
 SELECT
 ''Total Adolescents With a Dropout Home Visit''                                          rowid,

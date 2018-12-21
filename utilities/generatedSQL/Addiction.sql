@@ -37,18 +37,14 @@ FROM latest_program_encounters lpe
 WHERE lpe.obs -> ''''2ebca9be-3be3-4d11-ada0-187563ff04f8'''' ?| ARRAY [''''ef29759b-5f74-4f5a-b186-fea7697cfb34'''']'', ''SELECT
   DISTINCT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
+  i.gender  gender_name,
+  i.addresslevel_type  address_type,
+  i.addresslevel_name address_name
 FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
+  encountered_program_encounter_view pe
+  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
 UNION ALL
 SELECT
 ''Adolescents Addicted to Alcohol''                                          rowid,
@@ -89,18 +85,14 @@ FROM latest_program_encounters lpe
 WHERE lpe.obs -> ''''2ebca9be-3be3-4d11-ada0-187563ff04f8'''' ?| ARRAY [''''92654fda-d485-4b6d-97c5-8a8fe2a9582a'''']'', ''SELECT
   DISTINCT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
+  i.gender  gender_name,
+  i.addresslevel_type  address_type,
+  i.addresslevel_name address_name
 FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
+  encountered_program_encounter_view pe
+  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
 UNION ALL
 SELECT
 ''Adolescents Addicted to Both''                                          rowid,
@@ -141,18 +133,14 @@ FROM latest_program_encounters lpe
 WHERE lpe.obs -> ''''2ebca9be-3be3-4d11-ada0-187563ff04f8'''' ?| ARRAY [''''246df73a-07d8-4924-8cf9-787dea8278fe'''']'', ''SELECT
   DISTINCT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
+  i.gender  gender_name,
+  i.addresslevel_type  address_type,
+  i.addresslevel_name address_name
 FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
+  encountered_program_encounter_view pe
+  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
 UNION ALL
 SELECT
 ''Fathers Addicted''                                          rowid,
@@ -195,18 +183,14 @@ WHERE lpe.obs -> ''''e90dee68-0a5f-4dd3-ae26-9b6229c4a02a'''' ?| ARRAY [''''9265
 ''''246df73a-07d8-4924-8cf9-787dea8278fe'''']'', ''SELECT
   DISTINCT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
+  i.gender  gender_name,
+  i.addresslevel_type  address_type,
+  i.addresslevel_name address_name
 FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')
+  encountered_program_encounter_view pe
+  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
 UNION ALL
 SELECT
 ''Mothers Addicted''                                          rowid,
@@ -240,18 +224,14 @@ WHERE lpe.obs -> ''''a3200784-2512-477b-9e78-f1c947d7dd75'''' ?| ARRAY [''''9265
 ''''246df73a-07d8-4924-8cf9-787dea8278fe''''];'', ''SELECT
   DISTINCT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
+  i.gender  gender_name,
+  i.addresslevel_type  address_type,
+  i.addresslevel_name address_name
 FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''')') AS (
+  encountered_program_encounter_view pe
+  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')') AS (
 rowid TEXT,
 "All Female" TEXT,
 "All Male" TEXT,

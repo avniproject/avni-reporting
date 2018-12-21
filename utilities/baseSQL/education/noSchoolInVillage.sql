@@ -1,24 +1,10 @@
-WITH all_program_entire_enrolment AS (
-    SELECT
-      i.uuid AS                                                 iuuid,
-      jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
-    FROM program_encounter pe
-      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual i ON e.individual_id = i.id
-      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
-      INNER JOIN program p ON p.id = e.program_id
-    WHERE p.name = 'Adolescent'
-          AND pe.encounter_date_time IS NOT NULL
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  g.name    gender_name,
-  a.type    address_type,
-  a.title   address_name
-FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-  LEFT OUTER JOIN gender g ON i.gender_id = g.id
-WHERE lpe.obs -> 'c9aceef5-fb03-49ed-a455-bfa603dddb28' IS NOT NULL AND
-      lpe.obs -> 'c9aceef5-fb03-49ed-a455-bfa603dddb28' ?| ARRAY ['af10b937-e9f2-4b9b-8cfe-1d59bc0b21f6']
+
+SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM all_enrolment_encountered_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = 'Adolescent'
+      AND lpe.agg_obs -> 'c9aceef5-fb03-49ed-a455-bfa603dddb28' IS NOT NULL AND
+      lpe.agg_obs -> 'c9aceef5-fb03-49ed-a455-bfa603dddb28' ?| ARRAY ['af10b937-e9f2-4b9b-8cfe-1d59bc0b21f6']

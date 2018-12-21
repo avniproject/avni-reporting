@@ -5,4 +5,4 @@ SELECT i.uuid as uuid,
 FROM all_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = 'Adolescent' AND
-      cast(lpe.obs ->> '56358db1-8d55-4fbf-89c5-fde97c819c2c' AS INT) > 1
+      cast(lpe.agg_obs ->> '56358db1-8d55-4fbf-89c5-fde97c819c2c' AS INT) > 1

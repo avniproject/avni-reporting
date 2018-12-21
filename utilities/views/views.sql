@@ -59,7 +59,8 @@ create view program_encounter_view as
   where pe.is_voided is not true;
 
 drop view if exists encountered_program_encounter_view cascade;
-create view encountered_program_encounter_view as
+drop view if exists completed_program_encounter_view cascade;
+create view completed_program_encounter_view as
   select *
   from program_encounter_view
   where encounter_date_time is not null;
@@ -71,20 +72,23 @@ create view unplanned_program_encounter_view as
   where earliest_visit_date_time is null;
 
 drop view if exists scheduled_program_encounter_view cascade;
-create view scheduled_program_encounter_view as
+drop view if exists planned_program_encounter_view cascade;
+create view planned_program_encounter_view as
   select *
   from program_encounter_view
   where earliest_visit_date_time is not null;
 
 drop view if exists non_cancelled_scheduled_program_encounter_view cascade;
-create view non_cancelled_scheduled_program_encounter_view as
+drop view if exists non_cancelled_planned_program_encounter_view cascade;
+create view non_cancelled_planned_program_encounter_view as
   select *
   from program_encounter_view
   where cancel_date_time is null
     and earliest_visit_date_time is not null;
 
 drop view if exists cancelled_scheduled_program_encounter_view cascade;
-create view cancelled_scheduled_program_encounter_view as
+drop view if exists cancelled_planned_program_encounter_view cascade;
+create view cancelled_planned_program_encounter_view as
   select *
   from program_encounter_view
   where cancel_date_time is not null
@@ -129,7 +133,8 @@ create view individual_gender_catchment_view as
 
 drop view if exists all_enrolment_unplanned_encounters_agg_view cascade;
 drop view if exists all_enrolment_encountered_encounters_agg_view cascade;
-create view all_enrolment_encountered_encounters_agg_view AS
+drop view if exists all_enrolment_completed_encounters_agg_view cascade;
+create view all_enrolment_completed_encounters_agg_view AS
   WITH agg as (
       SELECT e.individual_id,
              e.program_id,

@@ -188,6 +188,44 @@ create view encounter_view as
   from encounter
   where is_voided is not true;
 
+drop view if exists checklist_view cascade;
+create view checklist_view as
+  select cl.*,
+         cd.id        list_detail_id,
+         cd.uuid      list_detail_uuid,
+         cd.name      list_detail_name,
+         cd.is_voided list_detail_is_voided
+  from checklist cl
+         join checklist_detail cd on cl.checklist_detail_id = cd.id
+  where cl.is_voided is not true;
+
+drop view if exists checklist_item_view cascade;
+create view checklist_item_view as
+  select ci.*,
+         cid.uuid         item_detail_uuid,
+         cid.form_id      item_detail_form_id,
+         cic.name         item_detail_name,
+         cid.status       item_detail_status,
+         cid.dependent_on item_detail_dependent_on,
+         cid.is_voided    item_detail_is_voided
+  from checklist_item ci
+         join checklist_item_detail cid on ci.checklist_item_detail_id = cid.id
+         join concept cic on cid.concept_id = cic.id
+  where ci.is_voided is not true;
+
+drop view if exists checklist_item_checklist_view cascade;
+create view checklist_item_checklist_view as
+  select ci.*,
+         clv.uuid list_uuid,
+         clv.program_enrolment_id,
+         clv.base_date,
+         clv.list_detail_id,
+         clv.list_detail_uuid,
+         clv.list_detail_name,
+         clv.list_detail_is_voided
+  from checklist_item_view ci
+         join checklist_view clv on clv.id = ci.checklist_id;
+
 SELECT grant_all_on_all(a.rolname)
 FROM pg_roles a
 WHERE pg_has_role('openchs', a.oid, 'member')

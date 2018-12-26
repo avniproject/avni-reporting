@@ -182,6 +182,12 @@ create view individual_name_relationship_view as
          join individual_view a on a.id = irv.individual_a_id
          join individual_view b on b.id = irv.individual_b_id;
 
+drop view if exists encounter_view cascade;
+create view encounter_view as
+  select *
+  from encounter
+  where is_voided is not true;
+
 SELECT grant_all_on_all(a.rolname)
 FROM pg_roles a
 WHERE pg_has_role('openchs', a.oid, 'member')

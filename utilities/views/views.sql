@@ -1,4 +1,4 @@
-set role demo;
+set role _RANDOM_IMPL_;
 
 drop view if exists operational_program_view cascade;
 create view operational_program_view as

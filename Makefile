@@ -22,9 +22,24 @@ test_env: ## Run unit tests
 	cd utilities && npm test
 # </env>
 
+random-impl=demo
+
 run_repeatable_migrations_prod:
-	ssh -i ~/.ssh/openchs-infra.pem -f -L 17777:serverdb.openchs.org:5432 prod-server-openchs sleep 15; \
-		psql -U openchs -h localhost -p 17777 -d openchs < ./utilities/views/views.sql
+	ssh -i ~/.ssh/openchs-infra.pem -f -L 15432:serverdb.openchs.org:5432 prod-server-openchs sleep 15; \
+		make run_repeatable_migrations_at_port port=15432
+
+run_repeatable_migrations_staging:
+	ssh -i ~/.ssh/openchs-infra.pem -f -L 15432:stagingdb.openchs.org:5432 staging-server-openchs sleep 15; \
+		make run_repeatable_migrations_at_port port=15432
+
+#setup ssh reverse proxy before doing this
+#lbp server should be accessible at port 19999
+run_repeatable_migrations_lbp_server:
+	ssh -f -L 15432:localhost:5432 admin@localhost -p 19999 sleep 15; \
+		make run_repeatable_migrations_at_port port=15432 random-impl=lokbiradari_prakalp
+
+run_repeatable_migrations_at_port:
+	sed -e 's/_RANDOM_IMPL_/$(random-impl)/g' ./utilities/views/views.sql | psql -U openchs -h localhost -p $(port) -d openchs
 
 run_repeatable_migrations_dev:
-	-psql -U openchs -h localhost -p 5432 -d openchs < ./utilities/views/views.sql
+	make run_repeatable_migrations_at_port port=5432

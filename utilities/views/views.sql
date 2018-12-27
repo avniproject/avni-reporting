@@ -210,46 +210,60 @@ create type status_type as
 
 drop view if exists checklist_item_reference cascade;
 create or replace view checklist_item_reference as
-with time_mapping as (
-    select *
-    from (values ('day', 86400),
-                 ('days', 86400),
-                 ('week', 604800),
-                 ('weeks', 604800),
-                 ('month', 2592000),
-                 ('months', 2592000),
-                 ('year', 31556952),
-                 ('years', 31556952)) as tm
-), raw_status as (
-    select id,
-           (jsonb_each_text((jsonb_populate_recordset(null :: status_type, status)).to)).key     as tokey,
-           (jsonb_each_text((jsonb_populate_recordset(null :: status_type, status)).to)).value   as tovalue,
-           (jsonb_each_text((jsonb_populate_recordset(null :: status_type, status)).from)).key   as fromkey,
-           (jsonb_each_text((jsonb_populate_recordset(null :: status_type, status)).from)).value as fromvalue,
-           (jsonb_populate_recordset(null :: status_type, status)).state,
-           (jsonb_populate_recordset(null :: status_type, status))."displayOrder" as display_order
-    from checklist_item_detail
-), status_mapping as (
-    select rs.id, rs.tovalue :: int * tm1.column2 as to, rs.fromvalue :: int * tm2.column2 as from, rs.state as state,
-           rs.display_order
-    from raw_status rs
-           inner join time_mapping tm1 on tokey = tm1.column1
-           inner join time_mapping tm2 on fromkey = tm2.column1
-)
-select cid.id, cid.uuid, cid.form_id, cid.status, c.name, sm.to, sm.from, sm.state, sm.display_order, cid.dependent_on from checklist_item_detail cid
-left outer join status_mapping sm on sm.id=cid.id
-inner join concept c on c.id=cid.concept_id
+  with time_mapping as (
+      select *
+      from (values ('day', 86400),
+                   ('days', 86400),
+                   ('week', 604800),
+                   ('weeks', 604800),
+                   ('month', 2592000),
+                   ('months', 2592000),
+                   ('year', 31556952),
+                   ('years', 31556952)) as tm
+  ), raw_status as (
+      select id,
+             (jsonb_each_text((jsonb_populate_recordset(null :: status_type, status)).to)).key     as tokey,
+             (jsonb_each_text((jsonb_populate_recordset(null :: status_type, status)).to)).value   as tovalue,
+             (jsonb_each_text((jsonb_populate_recordset(null :: status_type, status)).from)).key   as fromkey,
+             (jsonb_each_text((jsonb_populate_recordset(null :: status_type, status)).from)).value as fromvalue,
+             (jsonb_populate_recordset(null :: status_type, status)).state,
+             (jsonb_populate_recordset(null :: status_type, status))."displayOrder"                as display_order
+      from checklist_item_detail
+  ), status_mapping as (
+      select rs.id,
+             rs.tovalue :: int * tm1.column2   as to,
+             rs.fromvalue :: int * tm2.column2 as from,
+             rs.state                          as state,
+             rs.display_order
+      from raw_status rs
+             inner join time_mapping tm1 on tokey = tm1.column1
+             inner join time_mapping tm2 on fromkey = tm2.column1
+  )
+  select cid.id,
+         cid.uuid,
+         cid.form_id,
+         cid.status,
+         c.name,
+         sm.to,
+         sm.from,
+         sm.state,
+         sm.display_order,
+         cid.dependent_on,
+         cid.is_voided
+  from checklist_item_detail cid
+         left outer join status_mapping sm on sm.id = cid.id
+         inner join concept c on c.id = cid.concept_id
 where cid.is_voided is not true;
 
 drop view if exists checklist_item_view cascade;
 create view checklist_item_view as
   select ci.*,
-         cid.uuid         item_detail_uuid,
-         cid.form_id      item_detail_form_id,
-         cid.name         item_detail_name,
-         cid.status       item_detail_status,
-         cid.dependent_on item_detail_dependent_on,
-         cid.is_voided    item_detail_is_voided,
+         cid.uuid          item_detail_uuid,
+         cid.form_id       item_detail_form_id,
+         cid.name          item_detail_name,
+         cid.status        item_detail_status,
+         cid.dependent_on  item_detail_dependent_on,
+         cid.is_voided     item_detail_is_voided,
          cid.to            item_detail_to,
          cid.from          item_detail_from,
          cid.state         item_detail_state,

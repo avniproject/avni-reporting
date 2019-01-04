@@ -4,15 +4,12 @@ SELECT * FROM crosstab('SELECT
   total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''SELECT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
-FROM individual i
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  INNER JOIN address_level_type_view a ON i.address_id = a.id
-  INNER JOIN program_enrolment enrolment ON i.id = enrolment.individual_id
-  INNER JOIN program p ON enrolment.program_id = p.id
-WHERE p.name = ''''Adolescent'''''')
+  i.gender as gender_name,
+  i.addresslevel_type as address_type,
+  i.addresslevel_name as address_name
+FROM non_exited_program_enrolment_view pe
+      JOIN individual_gender_address_view i ON i.id = pe.individual_id
+WHERE pe.program_name = ''''Adolescent'''''')
 UNION ALL
 SELECT
 ''Total Adolescents Enrolled''                                          rowid,
@@ -21,28 +18,21 @@ total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_perce
 FROM frequency_and_percentage(''SELECT
   DISTINCT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
+  i.gender  gender_name,
+  i.addresslevel_type  address_type,
+  i.addresslevel_name address_name
 FROM
-  program_encounter pe
-  LEFT OUTER JOIN encounter_type et ON et.id = pe.encounter_type_id
-  LEFT OUTER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  LEFT OUTER JOIN program p ON enrolment.program_id = p.id
-  LEFT OUTER JOIN individual i ON enrolment.individual_id = i.id
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Annual Visit'''''', ''SELECT
+  completed_program_encounter_view pe
+  LEFT OUTER JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''', ''SELECT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
-FROM individual i
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  INNER JOIN address_level_type_view a ON i.address_id = a.id
-  INNER JOIN program_enrolment enrolment ON i.id = enrolment.individual_id
-  INNER JOIN program p ON enrolment.program_id = p.id
-WHERE p.name = ''''Adolescent'''''')
+  i.gender as gender_name,
+  i.addresslevel_type as address_type,
+  i.addresslevel_name as address_name
+FROM non_exited_program_enrolment_view pe
+      JOIN individual_gender_address_view i ON i.id = pe.individual_id
+WHERE pe.program_name = ''''Adolescent'''''')
 UNION ALL
 SELECT
 ''Total Adolescents With Problems''                                          rowid,
@@ -51,36 +41,30 @@ total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_perce
 FROM frequency_and_percentage(''WITH latest_program_all_encounters AS (
     SELECT
       i.uuid       AS             iuuid,
-      max(pe.encounter_date_time) edt,
-      et.name                     etname,
-      max(pe.uuid) AS             euuid,
-      e.uuid       AS             puuid
-    FROM program_encounter pe
-      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual i ON e.individual_id = i.id
-      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
-      INNER JOIN program p ON p.id = e.program_id
-    WHERE p.name = ''''Adolescent''''
-          AND pe.encounter_date_time IS NOT NULL
-    GROUP BY i.uuid, e.uuid, et.name
+      row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) rank,
+      pe.uuid      AS             euuid
+    FROM completed_program_encounter_view pe
+      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
+      INNER JOIN individual_view i ON e.individual_id = i.id
+    WHERE e.program_name = ''''Adolescent''''
+    GROUP BY i.uuid, pe.encounter_type_name, pe.encounter_date_time, pe.uuid
 ), latest_program_encounters AS (
     SELECT
       lpae.iuuid                              iuuid,
       jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
     FROM latest_program_all_encounters lpae
       INNER JOIN program_encounter pe ON pe.uuid = lpae.euuid
+    WHERE lpae.rank = 1
     GROUP BY lpae.iuuid
 )
 SELECT
   lpe.iuuid uuid,
-  g.name    gender_name,
-  a.type    address_type,
-  a.title   address_name
+  i.gender    gender_name,
+  i.addresslevel_type   address_type,
+  i.addresslevel_name   address_name
 FROM latest_program_encounters lpe
-  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-  LEFT OUTER JOIN gender g ON i.gender_id = g.id
-WHERE (lpe.obs @> ''''{"5af82adf-6be9-4792-9b3d-543b4b00f816":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
+  WHERE (lpe.obs @> ''''{"5af82adf-6be9-4792-9b3d-543b4b00f816":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
        OR lpe.obs @> ''''{"cbcfdd44-dac8-435f-9cd9-35f20db1f367":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
        OR lpe.obs @> ''''{"f621f0e0-f73f-4443-b02f-0b9d7cb5a5a6":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
        OR lpe.obs @> ''''{"4f29a019-05f5-4d50-a255-81ab7e12b4a3":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
@@ -119,7 +103,7 @@ WHERE (lpe.obs @> ''''{"5af82adf-6be9-4792-9b3d-543b4b00f816":"04bb1773-c353-44a
   i.addresslevel_name address_name
 FROM
   completed_program_encounter_view pe
-  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
 UNION ALL
@@ -131,24 +115,19 @@ FROM frequency_and_percentage(''WITH all_program_all_encounters AS (
     SELECT
       i.uuid AS                               iuuid,
       jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
-    FROM program_encounter pe
-      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual i ON e.individual_id = i.id
-      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
-      INNER JOIN program p ON p.id = e.program_id
-    WHERE p.name = ''''Adolescent''''
-          AND pe.encounter_date_time IS NOT NULL
+    FROM completed_program_encounter_view pe
+      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
+      INNER JOIN individual_view i ON e.individual_id = i.id
+    WHERE e.program_name = ''''Adolescent''''
     GROUP BY i.uuid
 )
 SELECT
   lpe.iuuid uuid,
-  g.name    gender_name,
-  a.type    address_type,
-  a.title   address_name
+  i.gender    gender_name,
+  i.addresslevel_type   address_type,
+  i.addresslevel_name   address_name
 FROM all_program_all_encounters lpe
-  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-  LEFT OUTER JOIN gender g ON i.gender_id = g.id
+  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
 WHERE lpe.obs -> ''''0e620ea5-1a80-499f-9d07-b972a9130d60'''' IS NOT NULL'', ''SELECT
   DISTINCT
   i.uuid  uuid,
@@ -157,7 +136,7 @@ WHERE lpe.obs -> ''''0e620ea5-1a80-499f-9d07-b972a9130d60'''' IS NOT NULL'', ''S
   i.addresslevel_name address_name
 FROM
   completed_program_encounter_view pe
-  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
 UNION ALL
@@ -169,24 +148,19 @@ FROM frequency_and_percentage(''WITH all_program_all_encounters AS (
     SELECT
       i.uuid AS                               iuuid,
       jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
-    FROM program_encounter pe
-      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual i ON e.individual_id = i.id
-      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
-      INNER JOIN program p ON p.id = e.program_id
-    WHERE p.name = ''''Adolescent''''
-          AND pe.encounter_date_time IS NOT NULL
+    FROM completed_program_encounter_view pe
+      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
+      INNER JOIN individual_view i ON e.individual_id = i.id
+    WHERE e.program_name = ''''Adolescent''''
     GROUP BY i.uuid
 )
 SELECT
   lpe.iuuid uuid,
-  g.name    gender_name,
-  a.type    address_type,
-  a.title   address_name
+  i.gender    gender_name,
+  i.addresslevel_type   address_type,
+  i.addresslevel_name   address_name
 FROM all_program_all_encounters lpe
-  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-  LEFT OUTER JOIN gender g ON i.gender_id = g.id
+  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
 WHERE lpe.obs -> ''''e45d8168-c4a2-427b-85aa-d0f0e8467a8f'''' IS NOT NULL
       OR lpe.obs -> ''''e31481f1-c719-46dc-b1de-a0f282b33d12'''' IS NOT NULL
       OR lpe.obs -> ''''6c0ed446-b555-4bb7-90f8-6da6f9827ab9'''' IS NOT NULL
@@ -202,7 +176,7 @@ WHERE lpe.obs -> ''''e45d8168-c4a2-427b-85aa-d0f0e8467a8f'''' IS NOT NULL
   i.addresslevel_name address_name
 FROM
   completed_program_encounter_view pe
-  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
 UNION ALL
@@ -214,24 +188,19 @@ FROM frequency_and_percentage(''WITH all_program_all_encounters AS (
     SELECT
       i.uuid AS                               iuuid,
       jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
-    FROM program_encounter pe
-      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual i ON e.individual_id = i.id
-      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
-      INNER JOIN program p ON p.id = e.program_id
-    WHERE p.name = ''''Adolescent''''
-          AND pe.encounter_date_time IS NOT NULL
+    FROM completed_program_encounter_view pe
+      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
+      INNER JOIN individual_view i ON e.individual_id = i.id
+    WHERE e.program_name = ''''Adolescent''''
     GROUP BY i.uuid
 )
 SELECT
   lpe.iuuid uuid,
-  g.name    gender_name,
-  a.type    address_type,
-  a.title   address_name
+  i.gender    gender_name,
+  i.addresslevel_type   address_type,
+  i.addresslevel_name   address_name
 FROM all_program_all_encounters lpe
-  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-  LEFT OUTER JOIN gender g ON i.gender_id = g.id
+  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
 WHERE lpe.obs @> ''''{"e45d8168-c4a2-427b-85aa-d0f0e8467a8f":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
       OR lpe.obs @> ''''{"e31481f1-c719-46dc-b1de-a0f282b33d12":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
       OR lpe.obs @> ''''{"6c0ed446-b555-4bb7-90f8-6da6f9827ab9":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
@@ -243,24 +212,19 @@ WHERE lpe.obs @> ''''{"e45d8168-c4a2-427b-85aa-d0f0e8467a8f":"04bb1773-c353-44a1
     SELECT
       i.uuid AS                               iuuid,
       jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
-    FROM program_encounter pe
-      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual i ON e.individual_id = i.id
-      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
-      INNER JOIN program p ON p.id = e.program_id
-    WHERE p.name = ''''Adolescent''''
-          AND pe.encounter_date_time IS NOT NULL
+    FROM completed_program_encounter_view pe
+      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
+      INNER JOIN individual_view i ON e.individual_id = i.id
+    WHERE e.program_name = ''''Adolescent''''
     GROUP BY i.uuid
 )
 SELECT
   lpe.iuuid uuid,
-  g.name    gender_name,
-  a.type    address_type,
-  a.title   address_name
+  i.gender    gender_name,
+  i.addresslevel_type   address_type,
+  i.addresslevel_name   address_name
 FROM all_program_all_encounters lpe
-  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-  LEFT OUTER JOIN gender g ON i.gender_id = g.id
+  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
 WHERE lpe.obs -> ''''e45d8168-c4a2-427b-85aa-d0f0e8467a8f'''' IS NOT NULL
       OR lpe.obs -> ''''e31481f1-c719-46dc-b1de-a0f282b33d12'''' IS NOT NULL
       OR lpe.obs -> ''''6c0ed446-b555-4bb7-90f8-6da6f9827ab9'''' IS NOT NULL
@@ -278,24 +242,19 @@ FROM frequency_and_percentage(''WITH all_program_entire_enrolment AS (
     SELECT
       i.uuid AS                                                 iuuid,
       jsonb_merge(jsonb_agg(e.observations || jsonb_strip_nulls(pe.observations))) obs
-    FROM program_encounter pe
-      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual i ON e.individual_id = i.id
-      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
-      INNER JOIN program p ON p.id = e.program_id
-    WHERE p.name = ''''Adolescent''''
-          AND pe.encounter_date_time IS NOT NULL
+    FROM completed_program_encounter_view pe
+      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
+      INNER JOIN individual_view i ON e.individual_id = i.id
+    WHERE e.program_name = ''''Adolescent''''
     GROUP BY i.uuid
 )
 SELECT
   lpe.iuuid uuid,
-  g.name    gender_name,
-  a.type    address_type,
-  a.title   address_name
+  i.gender    gender_name,
+  i.addresslevel_type   address_type,
+  i.addresslevel_name   address_name
 FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-  LEFT OUTER JOIN gender g ON i.gender_id = g.id
+  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
 WHERE lpe.obs @> ''''{"575a29c3-a070-4c7d-ac96-fe58b6bddca3":"58f789aa-6570-4aea-87a7-1f7651729c5a"}'''''', ''SELECT
   DISTINCT
   i.uuid  uuid,
@@ -304,7 +263,7 @@ WHERE lpe.obs @> ''''{"575a29c3-a070-4c7d-ac96-fe58b6bddca3":"58f789aa-6570-4aea
   i.addresslevel_name address_name
 FROM
   completed_program_encounter_view pe
-  JOIN program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
   JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
 UNION ALL
@@ -314,38 +273,29 @@ address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''SELECT DISTINCT
   i.uuid,
-  g.name,
-  al.type,
-  al.title
-FROM program_encounter pe
-  INNER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  INNER JOIN program p ON enrolment.program_id = p.id
-  INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
-  INNER JOIN individual i ON enrolment.individual_id = i.id
-  INNER JOIN gender g ON i.gender_id = g.id
-  INNER JOIN address_level_type_view al ON i.address_id = al.id
-WHERE p.name = ''''Adolescent'''' AND et.name = ''''Dropout Home Visit'''' AND pe.encounter_date_time IS NOT NULL'', ''WITH all_program_entire_enrolment AS (
+  i.gender,
+  i.addresslevel_type,
+  i.addresslevel_name
+FROM completed_program_encounter_view pe
+      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
+      INNER JOIN individual_gender_address_view i ON e.individual_id = i.id
+WHERE e.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Dropout Home Visit'''''', ''WITH all_program_entire_enrolment AS (
     SELECT
       i.uuid AS                                                 iuuid,
       jsonb_merge(jsonb_agg(e.observations || jsonb_strip_nulls(pe.observations))) obs
-    FROM program_encounter pe
-      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual i ON e.individual_id = i.id
-      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
-      INNER JOIN program p ON p.id = e.program_id
-    WHERE p.name = ''''Adolescent''''
-          AND pe.encounter_date_time IS NOT NULL
+    FROM completed_program_encounter_view pe
+      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
+      INNER JOIN individual_view i ON e.individual_id = i.id
+    WHERE e.program_name = ''''Adolescent''''
     GROUP BY i.uuid
 )
 SELECT
   lpe.iuuid uuid,
-  g.name    gender_name,
-  a.type    address_type,
-  a.title   address_name
+  i.gender    gender_name,
+  i.addresslevel_type   address_type,
+  i.addresslevel_name   address_name
 FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-  LEFT OUTER JOIN gender g ON i.gender_id = g.id
+  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
 WHERE lpe.obs @> ''''{"575a29c3-a070-4c7d-ac96-fe58b6bddca3":"58f789aa-6570-4aea-87a7-1f7651729c5a"}'''''')
 UNION ALL
 SELECT
@@ -356,47 +306,37 @@ FROM frequency_and_percentage(''WITH all_program_entire_enrolment AS (
     SELECT
       i.uuid AS                                                                    iuuid,
       jsonb_merge(jsonb_agg(e.observations || jsonb_strip_nulls(pe.observations))) obs
-    FROM program_encounter pe
-      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual i ON e.individual_id = i.id
-      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
-      INNER JOIN program p ON p.id = e.program_id
-    WHERE p.name = ''''Adolescent''''
-          AND pe.encounter_date_time IS NOT NULL
+    FROM completed_program_encounter_view pe
+      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
+      INNER JOIN individual_view i ON e.individual_id = i.id
+    WHERE e.program_name = ''''Adolescent''''
     GROUP BY i.uuid
 )
 SELECT
   lpe.iuuid uuid,
-  g.name    gender_name,
-  a.type    address_type,
-  a.title   address_name
+  i.gender    gender_name,
+  i.addresslevel_type   address_type,
+  i.addresslevel_name   address_name
 FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-  LEFT OUTER JOIN gender g ON i.gender_id = g.id
+  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
 WHERE lpe.obs @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"28e76608-dddd-4914-bd44-3689eccfa5ca"}''''
       OR lpe.obs @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"9715936e-03f2-44da-900f-33588fe95250"}'''';'', ''WITH all_program_entire_enrolment AS (
     SELECT
       i.uuid AS                                                 iuuid,
       jsonb_merge(jsonb_agg(e.observations || jsonb_strip_nulls(pe.observations))) obs
-    FROM program_encounter pe
-      INNER JOIN program_enrolment e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual i ON e.individual_id = i.id
-      INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
-      INNER JOIN program p ON p.id = e.program_id
-    WHERE p.name = ''''Adolescent''''
-          AND pe.encounter_date_time IS NOT NULL
+    FROM completed_program_encounter_view pe
+      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
+      INNER JOIN individual_view i ON e.individual_id = i.id
+    WHERE e.program_name = ''''Adolescent''''
     GROUP BY i.uuid
 )
 SELECT
   lpe.iuuid uuid,
-  g.name    gender_name,
-  a.type    address_type,
-  a.title   address_name
+  i.gender    gender_name,
+  i.addresslevel_type   address_type,
+  i.addresslevel_name   address_name
 FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual i ON i.uuid = lpe.iuuid
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-  LEFT OUTER JOIN gender g ON i.gender_id = g.id
+  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
 WHERE lpe.obs @> ''''{"575a29c3-a070-4c7d-ac96-fe58b6bddca3":"58f789aa-6570-4aea-87a7-1f7651729c5a"}'''''')') AS (
 rowid TEXT,
 "All Female" TEXT,

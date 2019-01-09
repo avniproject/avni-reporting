@@ -94,6 +94,12 @@ create view cancelled_planned_program_encounter_view as
   where cancel_date_time is not null
     and earliest_visit_date_time is not null;
 
+drop view if exists incomplete_planned_program_encounter_view cascade;
+create view incomplete_planned_program_encounter_view as
+  select *
+  from planned_program_encounter_view
+  where encounter_date_time is null and cancel_date_time is null;
+
 drop view if exists individual_view cascade;
 create view individual_view as
   select *, first_name || ' ' || last_name as full_name

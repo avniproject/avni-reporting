@@ -184,31 +184,23 @@ SELECT
 ''Total Adolescents Counselled''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
-FROM frequency_and_percentage(''WITH all_program_all_encounters AS (
-    SELECT
-      i.uuid AS                               iuuid,
-      jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
-    FROM completed_program_encounter_view pe
-      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual_view i ON e.individual_id = i.id
-    WHERE e.program_name = ''''Adolescent''''
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  i.gender    gender_name,
-  i.addresslevel_type   address_type,
-  i.addresslevel_name   address_name
-FROM all_program_all_encounters lpe
-  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
-WHERE lpe.obs @> ''''{"e45d8168-c4a2-427b-85aa-d0f0e8467a8f":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
-      OR lpe.obs @> ''''{"e31481f1-c719-46dc-b1de-a0f282b33d12":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
-      OR lpe.obs @> ''''{"6c0ed446-b555-4bb7-90f8-6da6f9827ab9":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
-      OR lpe.obs @> ''''{"ed9ea061-2e35-41b8-a50f-aa2b30b7fc3c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
-      OR lpe.obs @> ''''{"a32eeb3a-a36d-4f82-a02d-d8066c41a5b1":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
-      OR lpe.obs @> ''''{"c3aceea7-e0f0-46f1-855a-a664ecc4d063":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
-      OR lpe.obs @> ''''{"5a300ad8-13f3-4d1c-aa2d-6bc36dcb5ff6":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
-      OR lpe.obs @> ''''{"a53a6c13-8a84-4be5-958b-e07611426fe0":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''', ''WITH all_program_all_encounters AS (
+FROM frequency_and_percentage(''SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM non_exited_enrolment_completed_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = ''''Adolescent''''
+      AND (lpe.agg_obs @> ''''{"e45d8168-c4a2-427b-85aa-d0f0e8467a8f":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+      OR lpe.agg_obs @> ''''{"e31481f1-c719-46dc-b1de-a0f282b33d12":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+      OR lpe.agg_obs @> ''''{"6c0ed446-b555-4bb7-90f8-6da6f9827ab9":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+      OR lpe.agg_obs @> ''''{"ed9ea061-2e35-41b8-a50f-aa2b30b7fc3c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+      OR lpe.agg_obs @> ''''{"a32eeb3a-a36d-4f82-a02d-d8066c41a5b1":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+      OR lpe.agg_obs @> ''''{"c3aceea7-e0f0-46f1-855a-a664ecc4d063":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+      OR lpe.agg_obs @> ''''{"5a300ad8-13f3-4d1c-aa2d-6bc36dcb5ff6":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+      OR lpe.agg_obs @> ''''{"a53a6c13-8a84-4be5-958b-e07611426fe0":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''')
+
+'', ''WITH all_program_all_encounters AS (
     SELECT
       i.uuid AS                               iuuid,
       jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
@@ -238,24 +230,15 @@ SELECT
 ''Total Adolescents Dropped Out''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
-FROM frequency_and_percentage(''WITH all_program_entire_enrolment AS (
-    SELECT
-      i.uuid AS                                                 iuuid,
-      jsonb_merge(jsonb_agg(e.observations || jsonb_strip_nulls(pe.observations))) obs
-    FROM completed_program_encounter_view pe
-      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual_view i ON e.individual_id = i.id
-    WHERE e.program_name = ''''Adolescent''''
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  i.gender    gender_name,
-  i.addresslevel_type   address_type,
-  i.addresslevel_name   address_name
-FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
-WHERE lpe.obs @> ''''{"575a29c3-a070-4c7d-ac96-fe58b6bddca3":"58f789aa-6570-4aea-87a7-1f7651729c5a"}'''''', ''SELECT
+FROM frequency_and_percentage(''SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM non_exited_enrolment_completed_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = ''''Adolescent''''
+      AND lpe.agg_obs @> ''''{"575a29c3-a070-4c7d-ac96-fe58b6bddca3":"58f789aa-6570-4aea-87a7-1f7651729c5a"}'''';
+'', ''SELECT
   DISTINCT
   i.uuid  uuid,
   i.gender  gender_name,
@@ -279,65 +262,38 @@ FROM frequency_and_percentage(''SELECT DISTINCT
 FROM completed_program_encounter_view pe
       INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
       INNER JOIN individual_gender_address_view i ON e.individual_id = i.id
-WHERE e.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Dropout Home Visit'''''', ''WITH all_program_entire_enrolment AS (
-    SELECT
-      i.uuid AS                                                 iuuid,
-      jsonb_merge(jsonb_agg(e.observations || jsonb_strip_nulls(pe.observations))) obs
-    FROM completed_program_encounter_view pe
-      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual_view i ON e.individual_id = i.id
-    WHERE e.program_name = ''''Adolescent''''
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  i.gender    gender_name,
-  i.addresslevel_type   address_type,
-  i.addresslevel_name   address_name
-FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
-WHERE lpe.obs @> ''''{"575a29c3-a070-4c7d-ac96-fe58b6bddca3":"58f789aa-6570-4aea-87a7-1f7651729c5a"}'''''')
+WHERE e.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Dropout Home Visit'''''', ''SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM non_exited_enrolment_completed_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = ''''Adolescent''''
+      AND lpe.agg_obs @> ''''{"575a29c3-a070-4c7d-ac96-fe58b6bddca3":"58f789aa-6570-4aea-87a7-1f7651729c5a"}'''';
+'')
 UNION ALL
 SELECT
 ''Total Adolescents Started Going to School Again''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
-FROM frequency_and_percentage(''WITH all_program_entire_enrolment AS (
-    SELECT
-      i.uuid AS                                                                    iuuid,
-      jsonb_merge(jsonb_agg(e.observations || jsonb_strip_nulls(pe.observations))) obs
-    FROM completed_program_encounter_view pe
-      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual_view i ON e.individual_id = i.id
-    WHERE e.program_name = ''''Adolescent''''
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  i.gender    gender_name,
-  i.addresslevel_type   address_type,
-  i.addresslevel_name   address_name
-FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
-WHERE lpe.obs @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"28e76608-dddd-4914-bd44-3689eccfa5ca"}''''
-      OR lpe.obs @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"9715936e-03f2-44da-900f-33588fe95250"}'''';'', ''WITH all_program_entire_enrolment AS (
-    SELECT
-      i.uuid AS                                                 iuuid,
-      jsonb_merge(jsonb_agg(e.observations || jsonb_strip_nulls(pe.observations))) obs
-    FROM completed_program_encounter_view pe
-      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual_view i ON e.individual_id = i.id
-    WHERE e.program_name = ''''Adolescent''''
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  i.gender    gender_name,
-  i.addresslevel_type   address_type,
-  i.addresslevel_name   address_name
-FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
-WHERE lpe.obs @> ''''{"575a29c3-a070-4c7d-ac96-fe58b6bddca3":"58f789aa-6570-4aea-87a7-1f7651729c5a"}'''''')') AS (
+FROM frequency_and_percentage(''SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM non_exited_enrolment_completed_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = ''''Adolescent''''
+      AND (lpe.agg_obs @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"28e76608-dddd-4914-bd44-3689eccfa5ca"}''''
+      OR lpe.agg_obs @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"9715936e-03f2-44da-900f-33588fe95250"}'''');
+'', ''SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM non_exited_enrolment_completed_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = ''''Adolescent''''
+      AND lpe.agg_obs @> ''''{"575a29c3-a070-4c7d-ac96-fe58b6bddca3":"58f789aa-6570-4aea-87a7-1f7651729c5a"}'''';
+'')') AS (
 rowid TEXT,
 "All Female" TEXT,
 "All Male" TEXT,

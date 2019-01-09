@@ -2,24 +2,14 @@ SELECT * FROM crosstab('SELECT
 ''Sexually Active''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
-FROM frequency_and_percentage(''WITH all_program_entire_enrolment AS (
-    SELECT
-      i.uuid AS                                                                    iuuid,
-      jsonb_merge(jsonb_agg(e.observations || jsonb_strip_nulls(pe.observations))) obs
-    FROM completed_program_encounter_view pe
-      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual_view i ON e.individual_id = i.id
-    WHERE e.program_name = ''''Adolescent''''
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  i.gender    gender_name,
-  i.addresslevel_type    address_type,
-  i.addresslevel_name    address_name
-FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
-WHERE lpe.obs @> ''''{"cd637ed2-5a97-4f36-970a-3af1f27dfe78":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''', ''SELECT
+FROM frequency_and_percentage(''SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM non_exited_enrolment_completed_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = ''''Adolescent''''
+      AND lpe.agg_obs @> ''''{"cd637ed2-5a97-4f36-970a-3af1f27dfe78":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''', ''SELECT
   DISTINCT
   i.uuid  uuid,
   i.gender  gender_name,
@@ -35,104 +25,54 @@ SELECT
 ''Multiple Partners''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
-FROM frequency_and_percentage(''WITH all_program_entire_enrolment AS (
-    SELECT
-      i.uuid AS                                                                    iuuid,
-      jsonb_merge(jsonb_agg(e.observations || jsonb_strip_nulls(pe.observations))) obs
-    FROM completed_program_encounter_view pe
-      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual_view i ON e.individual_id = i.id
-    WHERE e.program_name = ''''Adolescent''''
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  i.gender    gender_name,
-  i.addresslevel_type   address_type,
-  i.addresslevel_name   address_name
-FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
-WHERE lpe.obs @> ''''{"84e60852-0d0b-4e8e-a3b0-f22d079d42d9":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''', ''WITH all_program_entire_enrolment AS (
-    SELECT
-      i.uuid AS                                                                    iuuid,
-      jsonb_merge(jsonb_agg(e.observations || jsonb_strip_nulls(pe.observations))) obs
-    FROM completed_program_encounter_view pe
-      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual_view i ON e.individual_id = i.id
-    WHERE e.program_name = ''''Adolescent''''
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  i.gender    gender_name,
-  i.addresslevel_type    address_type,
-  i.addresslevel_name    address_name
-FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
-WHERE lpe.obs @> ''''{"cd637ed2-5a97-4f36-970a-3af1f27dfe78":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''')
+FROM frequency_and_percentage(''SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM non_exited_enrolment_completed_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = ''''Adolescent''''
+      AND lpe.agg_obs @> ''''{"84e60852-0d0b-4e8e-a3b0-f22d079d42d9":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''', ''SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM non_exited_enrolment_completed_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = ''''Adolescent''''
+      AND lpe.agg_obs @> ''''{"cd637ed2-5a97-4f36-970a-3af1f27dfe78":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''')
 UNION ALL
 SELECT
 ''Unprotected Sex''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
-FROM frequency_and_percentage(''WITH all_program_entire_enrolment AS (
-    SELECT
-      i.uuid AS                                                                    iuuid,
-      jsonb_merge(jsonb_agg(e.observations || jsonb_strip_nulls(pe.observations))) obs
-    FROM completed_program_encounter_view pe
-      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual_view i ON e.individual_id = i.id
-    WHERE e.program_name = ''''Adolescent''''
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  i.gender    gender_name,
-  i.addresslevel_type   address_type,
-  i.addresslevel_name   address_name
-FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
-WHERE lpe.obs @> ''''{"672815aa-4c3f-457b-ac87-fa0b3924c957":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''', ''WITH all_program_entire_enrolment AS (
-    SELECT
-      i.uuid AS                                                                    iuuid,
-      jsonb_merge(jsonb_agg(e.observations || jsonb_strip_nulls(pe.observations))) obs
-    FROM completed_program_encounter_view pe
-      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual_view i ON e.individual_id = i.id
-    WHERE e.program_name = ''''Adolescent''''
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  i.gender    gender_name,
-  i.addresslevel_type    address_type,
-  i.addresslevel_name    address_name
-FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
-WHERE lpe.obs @> ''''{"cd637ed2-5a97-4f36-970a-3af1f27dfe78":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''')
+FROM frequency_and_percentage(''SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM non_exited_enrolment_completed_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = ''''Adolescent''''
+      AND lpe.obs @> ''''{"672815aa-4c3f-457b-ac87-fa0b3924c957":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''', ''SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM non_exited_enrolment_completed_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = ''''Adolescent''''
+      AND lpe.agg_obs @> ''''{"cd637ed2-5a97-4f36-970a-3af1f27dfe78":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''')
 UNION ALL
 SELECT
 ''Burning Micturition''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
-FROM frequency_and_percentage(''WITH all_program_entire_enrolment AS (
-    SELECT
-      i.uuid AS                                                                    iuuid,
-      jsonb_merge(jsonb_agg(e.observations || jsonb_strip_nulls(pe.observations))) obs
-    FROM completed_program_encounter_view pe
-      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual_view i ON e.individual_id = i.id
-    WHERE e.program_name = ''''Adolescent''''
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  i.gender    gender_name,
-  i.addresslevel_type   address_type,
-  i.addresslevel_name   address_name
-FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
-WHERE lpe.obs @> ''''{"d86fbdcd-cbd3-4c13-9067-3bbde010438f":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''', ''SELECT
+FROM frequency_and_percentage(''SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM non_exited_enrolment_completed_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = ''''Adolescent''''
+      AND lpe.agg_obs @> ''''{"d86fbdcd-cbd3-4c13-9067-3bbde010438f":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''', ''SELECT
   DISTINCT
   i.uuid  uuid,
   i.gender  gender_name,
@@ -148,24 +88,14 @@ SELECT
 ''Ulcer over Genetalia''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
-FROM frequency_and_percentage(''WITH all_program_entire_enrolment AS (
-    SELECT
-      i.uuid AS                                                                    iuuid,
-      jsonb_merge(jsonb_agg(e.observations || jsonb_strip_nulls(pe.observations))) obs
-    FROM completed_program_encounter_view pe
-      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual_view i ON e.individual_id = i.id
-    WHERE e.program_name = ''''Adolescent''''
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  i.gender    gender_name,
-  i.addresslevel_type   address_type,
-  i.addresslevel_name   address_name
-FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
-WHERE lpe.obs @> ''''{"66dd68ee-6118-47df-95ee-a0d115a75a12":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''', ''SELECT
+FROM frequency_and_percentage(''SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM non_exited_enrolment_completed_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = ''''Adolescent''''
+      AND lpe.agg_obs @> ''''{"66dd68ee-6118-47df-95ee-a0d115a75a12":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''', ''SELECT
   DISTINCT
   i.uuid  uuid,
   i.gender  gender_name,
@@ -181,24 +111,14 @@ SELECT
 ''Abnormal discharge from vagina/penis''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
-FROM frequency_and_percentage(''WITH all_program_entire_enrolment AS (
-    SELECT
-      i.uuid AS                                                                    iuuid,
-      jsonb_merge(jsonb_agg(e.observations || jsonb_strip_nulls(pe.observations))) obs
-    FROM completed_program_encounter_view pe
-      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual_view i ON e.individual_id = i.id
-    WHERE e.program_name = ''''Adolescent''''
-    GROUP BY i.uuid
-)
-SELECT
-  lpe.iuuid uuid,
-  i.gender    gender_name,
-  i.addresslevel_type   address_type,
-  i.addresslevel_name   address_name
-FROM all_program_entire_enrolment lpe
-  LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
-WHERE lpe.obs @> ''''{"65fe703a-9756-4688-96d7-6854e783caa1":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''', ''SELECT
+FROM frequency_and_percentage(''SELECT i.uuid as uuid,
+       i.gender as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM non_exited_enrolment_completed_encounters_agg_view lpe
+      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+WHERE lpe.program_name = ''''Adolescent''''
+      AND lpe.agg_obs @> ''''{"65fe703a-9756-4688-96d7-6854e783caa1":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'''''', ''SELECT
   DISTINCT
   i.uuid  uuid,
   i.gender  gender_name,

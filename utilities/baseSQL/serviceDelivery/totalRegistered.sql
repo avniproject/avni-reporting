@@ -1,11 +1,8 @@
 SELECT
   i.uuid  uuid,
-  g.name  gender_name,
-  a.type  address_type,
-  a.title address_name
-FROM individual i
-  LEFT OUTER JOIN gender g ON g.id = i.gender_id
-  INNER JOIN address_level_type_view a ON i.address_id = a.id
-  INNER JOIN program_enrolment enrolment ON i.id = enrolment.individual_id
-  INNER JOIN program p ON enrolment.program_id = p.id
-WHERE p.name = 'Adolescent'
+  i.gender as gender_name,
+  i.addresslevel_type as address_type,
+  i.addresslevel_name as address_name
+FROM non_exited_program_enrolment_view pe
+      JOIN individual_gender_address_view i ON i.id = pe.individual_id
+WHERE pe.program_name = 'Adolescent'

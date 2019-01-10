@@ -1,13 +1,9 @@
 SELECT DISTINCT
   i.uuid,
-  g.name,
-  al.type,
-  al.title
-FROM program_encounter pe
-  INNER JOIN program_enrolment enrolment ON pe.program_enrolment_id = enrolment.id
-  INNER JOIN program p ON enrolment.program_id = p.id
-  INNER JOIN encounter_type et ON pe.encounter_type_id = et.id
-  INNER JOIN individual i ON enrolment.individual_id = i.id
-  INNER JOIN gender g ON i.gender_id = g.id
-  INNER JOIN address_level_type_view al ON i.address_id = al.id
-WHERE p.name = 'Adolescent' AND et.name = 'Dropout Home Visit' AND pe.encounter_date_time IS NOT NULL
+  i.gender,
+  i.addresslevel_type,
+  i.addresslevel_name
+FROM completed_program_encounter_view pe
+      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
+      INNER JOIN individual_gender_address_view i ON e.individual_id = i.id
+WHERE e.program_name = 'Adolescent' AND pe.encounter_type_name = 'Dropout Home Visit'

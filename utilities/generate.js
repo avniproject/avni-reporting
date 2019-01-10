@@ -2,25 +2,25 @@ const ReportBuilder = require('./builder/ReportBuilder');
 
 
 const serviceDeliveryReport = new ReportBuilder()
-    .withName("Service Delivery")
+    .withName("ServiceDelivery")
     .withDirName("serviceDelivery")
     .withSubReport("Total Adolescents Registered", "totalRegistered.sql")
-    .withSubReportWithDenominator("Total Adolescents Enrolled", "totalEnrolled.sql", "totalRegistered.sql")
+    .withSubReportWithDenominator("Total Adolescents Enrolled", "totalNonExitedEnrolled.sql", "totalRegistered.sql")
     .withSubReportWithDenominator("Total Adolescents With Problems",
         "totalAdolescentsWithProblems.sql",
-        "totalEnrolled.sql")
+        "totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Total Adolescents Referred",
         "totalAdolescentsWithReferralAdvice.sql",
-        "totalEnrolled.sql")
+        "totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Total Adolescents needed Counselling",
         "totalAdolescentsWithCounsellingAdvice.sql",
-        "totalEnrolled.sql")
+        "totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Total Adolescents Counselled",
         "totalAdolescentsCounselled.sql",
         "totalAdolescentsWithCounsellingAdvice.sql")
     .withSubReportWithDenominator("Total Adolescents Dropped Out",
         "totalAdolescentsDroppedOut.sql",
-        "totalEnrolled.sql")
+        "totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Total Adolescents With a Dropout Home Visit",
         "totalIndividualsWithDropOutHomeVisit.sql",
         "totalAdolescentsDroppedOut.sql")
@@ -33,17 +33,17 @@ const serviceDeliveryReport = new ReportBuilder()
 const addictionReport = new ReportBuilder()
     .withName("Addiction")
     .withDirName("addiction")
-    .withSubReportWithDenominator("Adolescents Addicted to Tobacco", "tobaccoAddiction.sql", "totalEnrolled.sql")
-    .withSubReportWithDenominator("Adolescents Addicted to Alcohol", "alcoholAddiction.sql", "totalEnrolled.sql")
-    .withSubReportWithDenominator("Adolescents Addicted to Both", "alcoholAndTobaccoAddiction.sql", "totalEnrolled.sql")
-    .withSubReportWithDenominator("Fathers Addicted", "fathersAddiction.sql", "totalEnrolled.sql")
-    .withSubReportWithDenominator("Mothers Addicted", "mothersAddiction.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Adolescents Addicted to Tobacco", "tobaccoAddiction.sql", "totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Adolescents Addicted to Alcohol", "alcoholAddiction.sql", "totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Adolescents Addicted to Both", "alcoholAndTobaccoAddiction.sql", "totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Fathers Addicted", "fathersAddiction.sql", "totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Mothers Addicted", "mothersAddiction.sql", "totalNonExitedEnrolled.sql")
     .build();
 
 const educationReport = new ReportBuilder()
     .withName("Education")
     .withDirName("education")
-    .withSubReportWithDenominator("Adolescents who discontinued education", "totalAdolescentsDroppedOut.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Adolescents who discontinued education", "totalAdolescentsDroppedOut.sql", "totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Not interested in studies", "notInterestedInStudies.sql", "totalAdolescentsDroppedOut.sql")
     .withSubReportWithDenominator("Poor Economic Condition", "poorEconomicCondition.sql", "totalAdolescentsDroppedOut.sql")
     .withSubReportWithDenominator("Domestic Work", "domesticWork.sql", "totalAdolescentsDroppedOut.sql")
@@ -57,7 +57,7 @@ const educationReport = new ReportBuilder()
 const menstruationReport = new ReportBuilder()
     .withName("Menstruation")
     .withDirName("menstruation")
-    .withSubReportWithDenominator("Menstruation Started", "started.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Menstruation Started", "started.sql", "totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Menstrual Disorder", "disorder.sql", "started.sql")
     .withSubReportWithDenominator("Headache", "headache.sql", "disorder.sql")
     .withSubReportWithDenominator("Heavy Bleeding", "heavyBleeding.sql", "disorder.sql")
@@ -69,7 +69,7 @@ const menstruationReport = new ReportBuilder()
     .build();
 
 const absorbentMaterialUsedReport = new ReportBuilder()
-    .withName("Absorbent Material Used")
+    .withName("AbsorbentMaterialUsed")
     .withDirName("absorbentMaterialUsed")
     .withSubReportWithDenominator("Old Cloth", "oldCloth.sql", "started.sql")
     .withSubReportWithDenominator("Sanitary Pad", "sanitaryPad.sql", "started.sql")
@@ -80,7 +80,7 @@ const absorbentMaterialUsedReport = new ReportBuilder()
     .build();
 
 const treatmentTakenForMenstrualDisorderReport = new ReportBuilder()
-    .withName("Treatment Taken for Menstrual Disorder")
+    .withName("TreatmentTakenForMenstrualDisorder")
     .withDirName("menstrualDisorderTreatment")
     .withSubReportWithDenominator("Disorder", "disorder.sql", "started.sql")
     .withSubReportWithDenominator("Treament Taken", "takingTreatment.sql", "disorder.sql")
@@ -93,11 +93,11 @@ const treatmentTakenForMenstrualDisorderReport = new ReportBuilder()
 const nutritionReport = new ReportBuilder()
     .withName("Nutrition")
     .withDirName("nutrition")
-    .withSubReportWithDenominator("Severely Malnourished", "severelyMalnourished.sql", "totalEnrolled.sql")
-    .withSubReportWithDenominator("Malnourished", "malnourished.sql", "totalEnrolled.sql")
-    .withSubReportWithDenominator("Normal", "normal.sql", "totalEnrolled.sql")
-    .withSubReportWithDenominator("Overweight", "overweight.sql", "totalEnrolled.sql")
-    .withSubReportWithDenominator("Obese", "obese.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Severely Malnourished", "severelyMalnourished.sql", "totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Malnourished", "malnourished.sql", "totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Normal", "normal.sql", "totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Overweight", "overweight.sql", "totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Obese", "obese.sql", "totalNonExitedEnrolled.sql")
     .build();
 
 const hemoglobinReport = new ReportBuilder()
@@ -112,9 +112,9 @@ const hemoglobinReport = new ReportBuilder()
     .build();
 
 const sicklingReport = new ReportBuilder()
-    .withName("Sickling Test")
+    .withName("SicklingTest")
     .withDirName("sickling")
-    .withSubReportWithDenominator("Test Done", "sicklingTestDone.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Test Done", "sicklingTestDone.sql", "totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Negative", "negative.sql", "sicklingTestDone.sql")
     .withSubReportWithDenominator("Trait", "trait.sql", "sicklingTestDone.sql")
     .withSubReportWithDenominator("Disease", "disease.sql", "sicklingTestDone.sql")
@@ -123,17 +123,17 @@ const sicklingReport = new ReportBuilder()
     .build();
 
 const ironTabletsReport = new ReportBuilder()
-    .withName("Iron Tables")
+    .withName("IronTables")
     .withDirName("ironTablets")
-    .withSubReportWithDenominator("Received", "received.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Received", "received.sql", "totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Consumed", "taken.sql", "received.sql")
-    .withSubReportWithDenominator("Albandazole Tablets Received", "albendazole.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Albandazole Tablets Received", "albendazole.sql", "totalNonExitedEnrolled.sql")
     .build();
 
 const vulnerability = new ReportBuilder()
     .withName("Vulnerabilities")
     .withDirName("vulnerability")
-    .withSubReportWithDenominator("Vulnerable Adolescents", "vulnerable.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Vulnerable Adolescents", "vulnerable.sql", "totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("School Dropout", "dropout.sql", "vulnerable.sql")
     .withSubReportWithDenominator("Addiction", "addiction.sql", "vulnerable.sql")
     .withSubReportWithDenominator("Early Pregnancy and RTI", "rti.sql", "vulnerable.sql")
@@ -142,7 +142,7 @@ const vulnerability = new ReportBuilder()
     .build();
 
 const standard = new ReportBuilder()
-    .withName("Dropout Standard")
+    .withName("DropoutStandard")
     .withDirName("standard")
     .withSubReportWithDenominator("<7", "6.sql", "discontinued.sql")
     .withSubReportWithDenominator("7", "7.sql", "discontinued.sql")
@@ -154,7 +154,7 @@ const standard = new ReportBuilder()
     .build();
 
 const followup = new ReportBuilder()
-    .withName("Follow Up visits")
+    .withName("FollowUpVisits")
     .withDirName("followupVisit")
     .withSubReportWithDenominator("Total Adolescents With Followup Visits", "all.sql", "adolescentsStartedSchool.sql")
     .withSubReportWithDenominator("1 Visit", "1Visit.sql", "adolescentsStartedSchool.sql")
@@ -165,44 +165,44 @@ const followup = new ReportBuilder()
     .build();
 
 const parentsAndStayStatus = new ReportBuilder()
-    .withName("Status of Parents & Stay")
+    .withName("StatusOfParentsAndStay")
     .withDirName("parentsAndStayStatus")
-    .withSubReportWithDenominator("Either only mother or father alive", "parentsAlive.sql", "totalEnrolled.sql")
-    .withSubReportWithDenominator("Both parents expired", "parentsExpired.sql", "totalEnrolled.sql")
-    .withSubReportWithDenominator("Staying With Parents", "stayingWithParents.sql", "totalEnrolled.sql")
-    .withSubReportWithDenominator("Staying In Hostel", "stayingInHostel.sql", "totalEnrolled.sql")
-    .withSubReportWithDenominator("Staying With Relatives", "stayingWithRelatives.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Either only mother or father alive", "parentsAlive.sql", "totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Both parents expired", "parentsExpired.sql", "totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Staying With Parents", "stayingWithParents.sql", "totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Staying In Hostel", "stayingInHostel.sql", "totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Staying With Relatives", "stayingWithRelatives.sql", "totalNonExitedEnrolled.sql")
     .build();
 
 const rti = new ReportBuilder()
-    .withName("Signs of RTI & Risk of Early pregnancy")
+    .withName("SignsOfRTIAndRiskOfEarlyPregnancy")
     .withDirName("rti")
-    .withSubReportWithDenominator("Sexually Active", "sexuallyActive.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Sexually Active", "sexuallyActive.sql", "totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Multiple Partners", "multiplePartners.sql", "sexuallyActive.sql")
     .withSubReportWithDenominator("Unprotected Sex", "unprotectedSex.sql", "sexuallyActive.sql")
-    .withSubReportWithDenominator("Burning Micturition", "burningMicturition.sql", "totalEnrolled.sql")
-    .withSubReportWithDenominator("Ulcer over Genetalia", "ulcer.sql", "totalEnrolled.sql")
-    .withSubReportWithDenominator("Abnormal discharge from vagina/penis", "abnormalDischarge.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Burning Micturition", "burningMicturition.sql", "totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Ulcer over Genetalia", "ulcer.sql", "totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Abnormal discharge from vagina/penis", "abnormalDischarge.sql", "totalNonExitedEnrolled.sql")
     .build();
 
 const rta = new ReportBuilder()
-    .withName("Risk of RTA")
+    .withName("RiskOfRTA")
     .withDirName("rta")
-    .withSubReportWithDenominator("Driving Vehicle", "vehicle.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Driving Vehicle", "vehicle.sql", "totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("With Helmet", "withHelmet.sql", "vehicle.sql")
     .withSubReportWithDenominator("With License", "withLicense.sql", "vehicle.sql")
     .withSubReportWithDenominator("Had Accident", "hadAccident.sql", "vehicle.sql")
     .build();
 
 const helpline = new ReportBuilder()
-    .withName("Assessment of Helpline services")
+    .withName("AssessmentOfHelplineServices")
     .withDirName("helpline")
-    .withSubReportWithDenominator("Utilization of helpline", "utilised.sql", "totalEnrolled.sql")
+    .withSubReportWithDenominator("Utilization of helpline", "utilised.sql", "totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Satisfied with helpline", "satisfied.sql", "utilised.sql")
     .build();
 
 const caste = new ReportBuilder()
-    .withName('Socio Demographics - caste')
+    .withName('SocioDemographicsCaste')
     .withDirName('caste')
     .withSubReportWithDenominator('Caste ST', 'casteST.sql', 'everyone.sql')
     .withSubReportWithDenominator('Caste SC', 'casteSC.sql', 'everyone.sql')
@@ -211,14 +211,14 @@ const caste = new ReportBuilder()
     .build();
 
 const age = new ReportBuilder()
-    .withName('Socio Demographics - age')
+    .withName('SocioDemographicsAge')
     .withDirName('age')
-    .withSubReportWithDenominator('Age 10-14', 'age 10-14.sql', 'everyone.sql')
-    .withSubReportWithDenominator('Age 15-19', 'age 15-19.sql', 'everyone.sql')
+    .withSubReportWithDenominator('Age 10-14', 'ageFrom10To14.sql', 'everyone.sql')
+    .withSubReportWithDenominator('Age 15-19', 'ageFrom15To19.sql', 'everyone.sql')
     .build();
 
 const religion = new ReportBuilder()
-    .withName('Socio Demographics - religion')
+    .withName('SocioDemographicsReligion')
     .withDirName('religion')
     .withSubReportWithDenominator('Christian', 'christian.sql', 'everyone.sql')
     .withSubReportWithDenominator('Hindu', 'hindu.sql', 'everyone.sql')
@@ -229,7 +229,7 @@ const religion = new ReportBuilder()
     .build();
 
 const rationCard = new ReportBuilder()
-    .withName('Socio Demographics - ration card')
+    .withName('SocioDemographicsRationCard')
     .withDirName('rationCard')
     .withSubReportWithDenominator('APL', 'apl.sql', 'everyone.sql')
     .withSubReportWithDenominator('BPL', 'bpl.sql', 'everyone.sql')
@@ -239,7 +239,7 @@ const rationCard = new ReportBuilder()
 
 
 const standard_8_9_10 = new ReportBuilder()
-    .withName("Standard 8 9 10")
+    .withName("Standard8And9And10")
     .withDirName("schoolGoing")
     .withSubReportWithDenominator("8", "8.sql", "allSchoolGoing.sql")
     .withSubReportWithDenominator("9", "9.sql", "allSchoolGoing.sql")

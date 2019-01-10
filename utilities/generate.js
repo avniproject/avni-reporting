@@ -239,7 +239,7 @@ const rationCard = new ReportBuilder()
 
 
 const standard_8_9_10 = new ReportBuilder()
-    .withName("Standard8And9And10")
+    .withName("Standard_8_9_10")
     .withDirName("schoolGoing")
     .withSubReportWithDenominator("8", "8.sql", "allSchoolGoing.sql")
     .withSubReportWithDenominator("9", "9.sql", "allSchoolGoing.sql")

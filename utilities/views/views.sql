@@ -207,6 +207,19 @@ create view non_exited_enrolment_completed_encounters_agg_view AS
   from agg
          join operational_program_view op on op.program_id = agg.program_id;
 
+drop view if exists all_completed_encounters_per_enrolment_agg_view cascade;
+create view all_completed_encounters_per_enrolment_agg_view as
+with
+    completed_program_encounters as (
+        select program_enrolment_id, encounter_date_time, observations
+        from program_encounter
+        where is_voided is not true and encounter_date_time is not null
+        order by program_enrolment_id, encounter_date_time
+    )
+select program_enrolment_id, jsonb_merge(jsonb_agg(jsonb_strip_nulls(observations))) observations
+from completed_program_encounters
+group by program_enrolment_id;
+
 drop view if exists individual_relationship_view cascade;
 create view individual_relationship_view as
   select ir.*, irt.uuid as type_uuid, a_is_to_b.name as a_is_to_b, b_is_to_a.name as b_is_to_a

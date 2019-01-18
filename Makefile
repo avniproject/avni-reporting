@@ -43,7 +43,7 @@ run_repeatable_migrations_lbp_server:
 		make run_repeatable_migrations_at_port port=15432 random-impl=lokbiradari_prakalp
 
 run_repeatable_migrations_at_port:
-	sed -e 's/_RANDOM_IMPL_/$(random-impl)/g' ./utilities/views/views.sql | psql -U openchs -h localhost -p $(port) -d openchs
+	@bash ./migrations/R__All.sh $(random-impl) | psql -U openchs -h localhost -p $(port) -d openchs
 
 run_repeatable_migrations_dev:
 	make run_repeatable_migrations_at_port port=5432

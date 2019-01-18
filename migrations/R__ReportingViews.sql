@@ -1,21 +1,3 @@
-------------------------------------- JSONB FUNCTIONS ------------------------------------------------------------------
-DROP FUNCTION IF EXISTS jsonb_merge( JSONB ) CASCADE;
-
-CREATE OR REPLACE FUNCTION jsonb_merge(arr JSONB)
-  RETURNS JSONB AS $$
-DECLARE merged_jsonb JSONB;
-BEGIN
-  merged_jsonb := '{}' :: JSONB;
-  FOR i IN 0..(jsonb_array_length(arr)-1)
-  LOOP
-    merged_jsonb := (merged_jsonb || ((arr ->> i) :: JSONB));
-  END LOOP;
-  RETURN merged_jsonb;
-END
-$$
-LANGUAGE plpgsql;
-
-set role _RANDOM_IMPL_;
 
 drop view if exists operational_program_view cascade;
 create view operational_program_view as
@@ -346,11 +328,3 @@ create view checklist_item_checklist_view as
          clv.list_detail_is_voided
   from checklist_item_view ci
          join checklist_view clv on clv.id = ci.checklist_id;
-
-SELECT grant_all_on_all(a.rolname)
-FROM pg_roles a
-WHERE pg_has_role('openchs', a.oid, 'member')
-  and a.rolsuper is false
-  and a.rolname not like 'pg%'
-  and a.rolname not like 'rds%'
-order by a.rolname;

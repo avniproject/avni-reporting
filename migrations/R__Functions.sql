@@ -654,3 +654,19 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql IMMUTABLE;
+
+DROP FUNCTION IF EXISTS jsonb_merge( JSONB ) CASCADE;
+
+CREATE OR REPLACE FUNCTION jsonb_merge(arr JSONB)
+  RETURNS JSONB AS $$
+DECLARE merged_jsonb JSONB;
+BEGIN
+  merged_jsonb := '{}' :: JSONB;
+  FOR i IN 0..(jsonb_array_length(arr)-1)
+  LOOP
+    merged_jsonb := (merged_jsonb || ((arr ->> i) :: JSONB));
+  END LOOP;
+  RETURN merged_jsonb;
+END
+$$
+LANGUAGE plpgsql;

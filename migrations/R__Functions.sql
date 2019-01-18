@@ -612,6 +612,21 @@ BEGIN
   END;
 END $$ STABLE;
 
+CREATE OR REPLACE FUNCTION single_select_coded(obs JSONB)
+  RETURNS VARCHAR LANGUAGE plpgsql
+AS $$
+DECLARE result VARCHAR;
+BEGIN
+  BEGIN
+    IF JSONB_TYPEOF(obs) = 'array' THEN
+      SELECT name FROM concept WHERE (obs->>0) = uuid INTO result;
+    ELSEIF JSONB_TYPEOF(obs) = 'string' THEN
+      select name from concept where (array_to_json(array[obs])->>0) = uuid into result;
+    END IF;
+    RETURN result;
+  END;
+END $$ STABLE;
+
 
 drop function if exists checklist_itemstatus_starting(status jsonb);
 CREATE OR REPLACE FUNCTION checklist_itemstatus_starting(status jsonb)

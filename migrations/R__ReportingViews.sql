@@ -268,7 +268,7 @@ create or replace view checklist_item_reference as
       select id,
              (jsonb_each_text((jsonb_populate_recordset(null :: status_type, status)).to)).key     as tokey,
              (jsonb_each_text((jsonb_populate_recordset(null :: status_type, status)).to)).value   as tovalue,
-             (jsonb_each_text((jsonb_populate_recordset(null :: status_type, status)).from)).key   as fromkey,
+               (jsonb_each_text((jsonb_populate_recordset(null :: status_type, status)).from)).key   as fromkey,
              (jsonb_each_text((jsonb_populate_recordset(null :: status_type, status)).from)).value as fromvalue,
              (jsonb_populate_recordset(null :: status_type, status)).state,
              (jsonb_populate_recordset(null :: status_type, status))."displayOrder"                as display_order

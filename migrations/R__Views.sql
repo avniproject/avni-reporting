@@ -1,9 +1,7 @@
 DROP VIEW IF EXISTS mother_program_enrolments;
 DROP VIEW IF EXISTS mother_program_encounters;
-DROP VIEW IF EXISTS adolescent_visit_summary;
 DROP VIEW IF EXISTS adolescents;
 DROP VIEW IF EXISTS adolescent_visit;
-DROP VIEW IF EXISTS checklist_items;
 DROP VIEW IF EXISTS boolean;
 
 -- <RCH>

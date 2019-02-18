@@ -140,3 +140,5 @@ CREATE VIEW boolean AS
 (select 'Yes' as status
  union
 select 'No' as status);
+
+CREATE OR REPLACE VIEW boolean_na(status) AS (values ('Yes'), ('No'), ('Not Available'));

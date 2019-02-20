@@ -211,6 +211,12 @@ create view individual_relationship_view as
          join individual_relation b_is_to_a on irt.individual_b_is_to_a_relation_id = b_is_to_a.id
   where ir.is_voided is not true;
 
+drop view if exists individual_all_relationships_view cascade;
+create view individual_all_relationships_view(a, b, a_is_to_b, b_is_to_a) as
+  select individual_a_id, individual_b_id, a_is_to_b, b_is_to_a from individual_relationship_view
+  union all
+  select individual_b_id, individual_a_id, b_is_to_a, a_is_to_b from individual_relationship_view;
+
 drop view if exists individual_name_relationship_view cascade;
 create view individual_name_relationship_view as
   select irv.*,

@@ -538,7 +538,7 @@ BEGIN
     FROM denominator_query_output_%s qo', separator, separator);
 
   EXECUTE FORMAT('UPDATE aggregates_%s ag1
-  SET percentage = (SELECT coalesce(round(((ag2.total :: FLOAT / dag1.total) * 100) :: NUMERIC, 2), 100)
+  SET percentage = (SELECT coalesce(round((( ag2.total :: FLOAT / (CASE dag1.total when 0 then null else dag1.total end) ) * 100) :: NUMERIC, 2), 100)
                     FROM aggregates_%s ag2
                       INNER JOIN denominator_aggregates_%s dag1
                         ON ag2.address_type = dag1.address_type AND ag2.gender = dag1.gender

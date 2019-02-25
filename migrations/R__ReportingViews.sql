@@ -293,6 +293,8 @@ create or replace view checklist_item_reference as
          cid.uuid,
          cid.form_id,
          cid.status,
+         cid.min_days_from_start_date,
+         cid.schedule_on_expiry_of_dependency,
          c.name,
          sm.to,
          sm.from,
@@ -317,7 +319,9 @@ create view checklist_item_view as
          cid.to            item_detail_to,
          cid.from          item_detail_from,
          cid.state         item_detail_state,
-         cid.display_order item_detail_display_order
+         cid.display_order item_detail_display_order,
+         cid.min_days_from_start_date,
+         cid.schedule_on_expiry_of_dependency
   from checklist_item ci
          join checklist_item_reference cid on ci.checklist_item_detail_id = cid.id
   where ci.is_voided is not true;

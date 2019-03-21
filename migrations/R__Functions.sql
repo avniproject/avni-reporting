@@ -685,3 +685,18 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
+
+
+DROP FUNCTION IF EXISTS grant_all_on_common_views(text[],text);
+CREATE OR REPLACE FUNCTION grant_all_on_common_views(view_names text[], role text)
+    RETURNS text AS
+$body$
+DECLARE
+    view_names_string text;
+    each record;
+BEGIN
+    view_names_string := array_to_string(view_names, ',');
+    EXECUTE 'GRANT ALL ON ' || view_names_string || ' TO ' || quote_ident(role) || '';
+    RETURN 'ALL PERMISSION GRANTED ON specified views TO ' || quote_ident(role) || '';
+END;
+$body$ LANGUAGE plpgsql;

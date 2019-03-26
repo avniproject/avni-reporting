@@ -108,27 +108,6 @@ CREATE OR REPLACE VIEW adolescent_visit AS
   WHERE program.name = 'Adolescent';
 
 
-drop view if exists latest_program_encounter CASCADE;
-create view latest_program_encounter as
-  with latest_on_top as (
-    with encounter as (
-        select encounter.*,
-               enrolment.individual_id                                             individual_id,
-               coalesce(encounter.encounter_date_time, encounter.cancel_date_time) effective_date,
-               et.name                                                             encounter_type_name
-        from program_encounter encounter
-               join encounter_type et on encounter_type_id = et.id
-               join program_enrolment enrolment on enrolment.id = encounter.program_enrolment_id
-    )
-    select encounter.*, row_number() OVER (PARTITION BY individual_id ORDER BY effective_date desc) rank
-    from encounter
-    where effective_date is not null
-  )
-  select * from latest_on_top where rank = 1;
-
-
-
-
 CREATE OR REPLACE VIEW coded_concept AS
 select c2.id as id, c2.name as name, string_agg(c1.name, ', ') as answers
 from concept_answer ca

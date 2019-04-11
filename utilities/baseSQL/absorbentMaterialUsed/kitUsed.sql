@@ -1,7 +1,7 @@
 WITH all_program_entire_enrolment AS (
     SELECT
       i.uuid AS                                                 iuuid,
-      jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
+      jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations) order by pe.encounter_date_time asc)) obs
     FROM completed_program_encounter_view pe
       INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
       INNER JOIN individual_view i ON e.individual_id = i.id

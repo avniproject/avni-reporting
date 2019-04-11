@@ -115,9 +115,9 @@ from concept_answer ca
        inner join concept c2 on ca.concept_id = c2.id
 GROUP BY c2.id;
 
-CREATE VIEW boolean AS
-(select 'Yes' as status
- union
-select 'No' as status);
+CREATE OR REPLACE VIEW boolean AS
+  (select 'Yes' as status, true as bool
+   union
+   select 'No' as status, false as bool);
 
 CREATE OR REPLACE VIEW boolean_na(status) AS (values ('Yes'), ('No'), ('Not Available'));

@@ -254,6 +254,8 @@ create type status_type as
 (
   "to"           jsonb,
   "from"         jsonb,
+  "start"        integer,
+  "end"          integer,
   state          varchar,
   "displayOrder" numeric
 );
@@ -274,15 +276,19 @@ create or replace view checklist_item_reference as
       select id,
              (jsonb_each_text((jsonb_populate_recordset(null :: status_type, status)).to)).key     as tokey,
              (jsonb_each_text((jsonb_populate_recordset(null :: status_type, status)).to)).value   as tovalue,
-               (jsonb_each_text((jsonb_populate_recordset(null :: status_type, status)).from)).key   as fromkey,
+             (jsonb_each_text((jsonb_populate_recordset(null :: status_type, status)).from)).key   as fromkey,
              (jsonb_each_text((jsonb_populate_recordset(null :: status_type, status)).from)).value as fromvalue,
              (jsonb_populate_recordset(null :: status_type, status)).state,
-             (jsonb_populate_recordset(null :: status_type, status))."displayOrder"                as display_order
+             (jsonb_populate_recordset(null :: status_type, status))."displayOrder"                as display_order,
+             (jsonb_populate_recordset(null :: status_type, status)).start,
+             (jsonb_populate_recordset(null :: status_type, status)).end
       from checklist_item_detail
   ), status_mapping as (
       select rs.id,
              rs.tovalue :: int * tm1.column2   as to,
              rs.fromvalue :: int * tm2.column2 as from,
+             rs.start * 86400                  as start,
+             rs.end * 86400                    as end,
              rs.state                          as state,
              rs.display_order
       from raw_status rs
@@ -295,11 +301,15 @@ create or replace view checklist_item_reference as
          cid.status,
          cid.min_days_from_start_date,
          cid.schedule_on_expiry_of_dependency,
+         cid.expires_after,
+         cid.min_days_from_dependent,
          c.name,
          sm.to,
          sm.from,
          sm.state,
          sm.display_order,
+         sm.start,
+         sm.end,
          cid.dependent_on,
          cid.is_voided
   from checklist_item_detail cid
@@ -318,10 +328,14 @@ create view checklist_item_view as
          cid.is_voided     item_detail_is_voided,
          cid.to            item_detail_to,
          cid.from          item_detail_from,
+         cid.start         item_detail_start,
+         cid.end           item_detail_end,
          cid.state         item_detail_state,
          cid.display_order item_detail_display_order,
          cid.min_days_from_start_date,
-         cid.schedule_on_expiry_of_dependency
+         cid.schedule_on_expiry_of_dependency,
+         cid.expires_after,
+         cid.min_days_from_dependent
   from checklist_item ci
          join checklist_item_reference cid on ci.checklist_item_detail_id = cid.id
   where ci.is_voided is not true;

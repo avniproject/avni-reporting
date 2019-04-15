@@ -1,3 +1,6 @@
+-- Generated Report
+-- Name: Vulnerabilities
+
 SELECT * FROM crosstab('SELECT
 ''Vulnerable Adolescents''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

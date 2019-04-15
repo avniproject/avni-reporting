@@ -1,3 +1,6 @@
+-- Generated Report
+-- Name: SicklingTest
+
 SELECT * FROM crosstab('SELECT
 ''Test Done''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

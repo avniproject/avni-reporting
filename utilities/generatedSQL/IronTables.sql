@@ -1,3 +1,6 @@
+-- Generated Report
+-- Name: IronTables
+
 SELECT * FROM crosstab('SELECT
 ''Received''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

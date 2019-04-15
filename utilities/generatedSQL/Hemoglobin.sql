@@ -1,3 +1,6 @@
+-- Generated Report
+-- Name: Hemoglobin
+
 SELECT * FROM crosstab('SELECT
 ''< 7''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

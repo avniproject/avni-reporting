@@ -1,3 +1,6 @@
+-- Generated Report
+-- Name: SignsOfRTIAndRiskOfEarlyPregnancy
+
 SELECT * FROM crosstab('SELECT
 ''Sexually Active''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

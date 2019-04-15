@@ -1,3 +1,6 @@
+-- Generated Report
+-- Name: Menstruation
+
 SELECT * FROM crosstab('SELECT
 ''Menstruation Started''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

@@ -1,3 +1,6 @@
+-- Generated Report
+-- Name: SocioDemographicsCaste
+
 SELECT * FROM crosstab('SELECT
 ''Caste ST''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

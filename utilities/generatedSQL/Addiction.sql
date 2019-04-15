@@ -1,3 +1,6 @@
+-- Generated Report
+-- Name: Addiction
+
 SELECT * FROM crosstab('SELECT
 ''Adolescents Addicted to Tobacco''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

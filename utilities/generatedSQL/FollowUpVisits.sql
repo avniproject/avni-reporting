@@ -1,3 +1,6 @@
+-- Generated Report
+-- Name: FollowUpVisits
+
 SELECT * FROM crosstab('SELECT
 ''Total Adolescents With Followup Visits''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

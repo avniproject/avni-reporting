@@ -1,3 +1,6 @@
+-- Generated Report
+-- Name: SocioDemographicsReligion
+
 SELECT * FROM crosstab('SELECT
 ''Christian''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

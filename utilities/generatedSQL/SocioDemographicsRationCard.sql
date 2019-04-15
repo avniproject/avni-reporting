@@ -1,3 +1,6 @@
+-- Generated Report
+-- Name: SocioDemographicsRationCard
+
 SELECT * FROM crosstab('SELECT
 ''APL''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

@@ -1,3 +1,6 @@
+-- Generated Report
+-- Name: SocioDemographicsAge
+
 SELECT * FROM crosstab('SELECT
 ''Age 10-14''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

@@ -1,3 +1,6 @@
+-- Generated Report
+-- Name: TreatmentTakenForMenstrualDisorder
+
 SELECT * FROM crosstab('SELECT
 ''Disorder''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

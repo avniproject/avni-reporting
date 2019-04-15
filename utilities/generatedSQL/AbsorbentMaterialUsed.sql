@@ -1,3 +1,6 @@
+-- Generated Report
+-- Name: AbsorbentMaterialUsed
+
 SELECT * FROM crosstab('SELECT
 ''Old Cloth''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

@@ -1,3 +1,6 @@
+-- Generated Report
+-- Name: Education
+
 SELECT * FROM crosstab('SELECT
 ''Adolescents who discontinued education''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

@@ -1,3 +1,6 @@
+-- Generated Report
+-- Name: StatusOfParentsAndStay
+
 SELECT * FROM crosstab('SELECT
 ''Either only mother or father alive''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

@@ -1,3 +1,6 @@
+-- Generated Report
+-- Name: AssessmentOfHelplineServices
+
 SELECT * FROM crosstab('SELECT
 ''Utilization of helpline''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

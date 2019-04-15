@@ -1,3 +1,6 @@
+-- Generated Report
+-- Name: Nutrition
+
 SELECT * FROM crosstab('SELECT
 ''Severely Malnourished''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

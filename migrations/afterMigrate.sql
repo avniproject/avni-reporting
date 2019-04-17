@@ -25,7 +25,8 @@ select grant_all_on_common_views(array [
 'checklist_item_reference',
 'checklist_item_view',
 'checklist_item_checklist_view',
-'latest_program_encounter'
+'latest_program_encounter',
+'boolean'
 ], a.rolname)
 
 FROM pg_roles a

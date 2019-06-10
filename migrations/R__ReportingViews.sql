@@ -1,4 +1,3 @@
-
 drop view if exists operational_program_view cascade;
 create view operational_program_view as
   select op.id                     as operational_program_id,
@@ -97,7 +96,8 @@ drop view if exists incomplete_planned_program_encounter_view cascade;
 create view incomplete_planned_program_encounter_view as
   select *
   from planned_program_encounter_view
-  where encounter_date_time is null and cancel_date_time is null;
+  where encounter_date_time is null
+    and cancel_date_time is null;
 
 drop view if exists individual_view cascade;
 create view individual_view as
@@ -191,16 +191,17 @@ create view non_exited_enrolment_completed_encounters_agg_view AS
 
 drop view if exists all_completed_encounters_per_enrolment_agg_view cascade;
 create view all_completed_encounters_per_enrolment_agg_view as
-with
-    completed_program_encounters as (
+  with
+      completed_program_encounters as (
         select program_enrolment_id, encounter_date_time, observations
         from program_encounter
-        where is_voided is not true and encounter_date_time is not null
+        where is_voided is not true
+          and encounter_date_time is not null
         order by program_enrolment_id, encounter_date_time
     )
-select program_enrolment_id, jsonb_merge(jsonb_agg(jsonb_strip_nulls(observations))) observations
-from completed_program_encounters
-group by program_enrolment_id;
+  select program_enrolment_id, jsonb_merge(jsonb_agg(jsonb_strip_nulls(observations))) observations
+  from completed_program_encounters
+  group by program_enrolment_id;
 
 drop view if exists individual_relationship_view cascade;
 create view individual_relationship_view as
@@ -213,9 +214,11 @@ create view individual_relationship_view as
 
 drop view if exists individual_all_relationships_view cascade;
 create view individual_all_relationships_view(a, b, a_is_to_b, b_is_to_a) as
-  select individual_a_id, individual_b_id, a_is_to_b, b_is_to_a from individual_relationship_view
+  select individual_a_id, individual_b_id, a_is_to_b, b_is_to_a
+  from individual_relationship_view
   union all
-  select individual_b_id, individual_a_id, b_is_to_a, a_is_to_b from individual_relationship_view;
+  select individual_b_id, individual_a_id, b_is_to_a, a_is_to_b
+  from individual_relationship_view;
 
 drop view if exists individual_name_relationship_view cascade;
 create view individual_name_relationship_view as
@@ -315,7 +318,7 @@ create or replace view checklist_item_reference as
   from checklist_item_detail cid
          left outer join status_mapping sm on sm.id = cid.id
          inner join concept c on c.id = cid.concept_id
-where cid.is_voided is not true;
+  where cid.is_voided is not true;
 
 drop view if exists checklist_item_view cascade;
 create view checklist_item_view as
@@ -369,4 +372,27 @@ create view latest_program_encounter as
     from encounter
     where effective_date is not null
   )
-  select * from latest_on_top where rank = 1;
+  select *
+  from latest_on_top
+  where rank = 1;
+
+create or replace view location_view as
+  select top1.title top1,
+         top2.title top2,
+         top3.title top3,
+         top4.title top4,
+         top5.title top5,
+         top6.title top6,
+         top1.id    top1id,
+         top2.id    top2id,
+         top3.id    top3id,
+         top4.id    top4id,
+         top5.id    top5id,
+         top6.id    top6id
+  from address_level top1
+         left join address_level top2 on top2.parent_id = top1.id
+         left join address_level top3 on top3.parent_id = top2.id
+         left join address_level top4 on top4.parent_id = top3.id
+         left join address_level top5 on top5.parent_id = top4.id
+         left join address_level top6 on top6.parent_id = top5.id
+  where top1.parent_id is null;

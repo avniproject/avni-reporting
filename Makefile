@@ -32,6 +32,10 @@ run_repeatable_migrations_staging:
 	ssh -i ~/.ssh/openchs-infra.pem -f -L 15432:stagingdb.openchs.org:5432 staging-server-openchs sleep 15; \
 		make run_repeatable_migrations_at_port port=15432
 
+run_repeatable_migrations_prerelease:
+	ssh -i ~/.ssh/openchs-infra.pem -f -L 15432:prerelasedb.openchs.org:5432 prerelease-server-openchs sleep 15; \
+		make run_repeatable_migrations_at_port port=15432
+
 run_repeatable_migrations_uat:
 	ssh -i ~/.ssh/openchs-infra.pem -f -L 15432:uatdb.openchs.org:5432 uat-server-openchs sleep 15; \
 		make run_repeatable_migrations_at_port port=15432 random-impl=$(random-impl)

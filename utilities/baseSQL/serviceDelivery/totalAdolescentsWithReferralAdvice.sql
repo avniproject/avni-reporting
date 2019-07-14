@@ -5,7 +5,8 @@ WITH all_program_all_encounters AS (
     FROM completed_program_encounter_view pe
       INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
       INNER JOIN individual_view i ON e.individual_id = i.id
-    WHERE e.program_name = 'Adolescent'
+    WHERE e.program_name = 'Adolescent' [[and pe.encounter_date_time >=(q1 || q4 || quote_literal({{ start_date }}) || q4 || q1  ::DATE)]]
+      [[and pe.encounter_date_time <=q1 || q4 || quote_literal({{end_date}}) || q4 || q1 ::DATE]]
     GROUP BY i.uuid
 )
 SELECT

@@ -13,7 +13,10 @@ class Report {
         let allSubQueries = `${this.subReports.map((subReport) => subReport.getWrappedSQL(this.dirName)).join("\nUNION ALL\n")}`;
         return Mustache.render(pivotTemplate, {
             fileName: this.name,
-            allSubQueries: allSubQueries.replace(/'/g, "''")
+            allSubQueries: allSubQueries
+                .replace(/'/g, "''")
+                .replace(/q1/g, "'")
+                .replace(/q4/g, "''''")
         });
     }
 

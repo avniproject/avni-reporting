@@ -10,10 +10,10 @@ FROM frequency_and_percentage(''SELECT
   i.gender as gender_name,
   i.addresslevel_type as address_type,
   i.addresslevel_name as address_name
-FROM non_exited_program_enrolment_view pe
-      JOIN individual_gender_address_view i ON i.id = pe.individual_id
-WHERE pe.program_name = ''''Adolescent'''' [[and pe.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-  [[and pe.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'')
+FROM individual_gender_address_view i
+WHERE 1 = 1 [[ and i.registration_date >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+  [[and i.registration_date <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+'')
 UNION ALL
 SELECT
 ''Total Adolescents Enrolled''                                          rowid,
@@ -26,19 +26,19 @@ FROM frequency_and_percentage(''SELECT
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  completed_program_encounter_view pe
-  LEFT OUTER JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  non_exited_program_enrolment_view enrolment
   LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''' [[and pe.encounter_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'', ''SELECT
+WHERE enrolment.program_name = ''''Adolescent'''' [[and enrolment.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and enrolment.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+'', ''SELECT
   i.uuid  uuid,
   i.gender as gender_name,
   i.addresslevel_type as address_type,
   i.addresslevel_name as address_name
-FROM non_exited_program_enrolment_view pe
-      JOIN individual_gender_address_view i ON i.id = pe.individual_id
-WHERE pe.program_name = ''''Adolescent'''' [[and pe.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-  [[and pe.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'')
+FROM individual_gender_address_view i
+WHERE 1 = 1 [[ and i.registration_date >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+  [[and i.registration_date <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+'')
 UNION ALL
 SELECT
 ''Total Adolescents With Problems''                                          rowid,
@@ -48,21 +48,19 @@ FROM frequency_and_percentage(''WITH latest_program_all_encounters AS (
     SELECT
       i.uuid       AS             iuuid,
       row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) rank,
-      pe.uuid      AS             euuid
+      pe.uuid      AS             euuid,
+      pe.observations AS          observations
     FROM completed_program_encounter_view pe
       INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
       INNER JOIN individual_view i ON e.individual_id = i.id
     WHERE e.program_name = ''''Adolescent'''' [[and pe.encounter_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
       [[and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
-    GROUP BY i.uuid, pe.encounter_type_name, pe.encounter_date_time, pe.uuid
 ), latest_program_encounters AS (
     SELECT
       lpae.iuuid                              iuuid,
-      jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
+      lpae.observations                       obs
     FROM latest_program_all_encounters lpae
-      INNER JOIN program_encounter pe ON pe.uuid = lpae.euuid
     WHERE lpae.rank = 1
-    GROUP BY lpae.iuuid
 )
 SELECT
   lpe.iuuid uuid,
@@ -102,18 +100,19 @@ FROM latest_program_encounters lpe
 ''''1c478c50-4761-460c-b33c-a18d0c1500f7'''',
 ''''4085f165-ccb8-409b-9d6e-ea7755cf123e'''',
 ''''aa30fb91-4b64-438b-b09e-4c7ff2701d71'''',
-''''e27f4a35-c2ae-4d05-8930-e19e432221d1'''', ''''ce47ae12-e61c-49cc-8ccd-715f9d5cb76d''''])'', ''SELECT
+''''e27f4a35-c2ae-4d05-8930-e19e432221d1'''', ''''ce47ae12-e61c-49cc-8ccd-715f9d5cb76d''''])
+'', ''SELECT
   DISTINCT
   i.uuid  uuid,
   i.gender  gender_name,
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  completed_program_encounter_view pe
-  LEFT OUTER JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  non_exited_program_enrolment_view enrolment
   LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''' [[and pe.encounter_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'')
+WHERE enrolment.program_name = ''''Adolescent'''' [[and enrolment.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and enrolment.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+'')
 UNION ALL
 SELECT
 ''Total Adolescents Referred''                                          rowid,
@@ -122,13 +121,13 @@ total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_perce
 FROM frequency_and_percentage(''WITH all_program_all_encounters AS (
     SELECT
       i.uuid AS                               iuuid,
-      jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
+      row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) rank,
+      pe.observations obs
     FROM completed_program_encounter_view pe
       INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
       INNER JOIN individual_view i ON e.individual_id = i.id
     WHERE e.program_name = ''''Adolescent'''' [[and pe.encounter_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
       [[and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
-    GROUP BY i.uuid
 )
 SELECT
   lpe.iuuid uuid,
@@ -137,18 +136,20 @@ SELECT
   i.addresslevel_name   address_name
 FROM all_program_all_encounters lpe
   LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = lpe.iuuid
-WHERE lpe.obs -> ''''0e620ea5-1a80-499f-9d07-b972a9130d60'''' IS NOT NULL'', ''SELECT
+WHERE lpe.obs -> ''''0e620ea5-1a80-499f-9d07-b972a9130d60'''' IS NOT NULL
+  AND lpe.rank = 1
+'', ''SELECT
   DISTINCT
   i.uuid  uuid,
   i.gender  gender_name,
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  completed_program_encounter_view pe
-  LEFT OUTER JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  non_exited_program_enrolment_view enrolment
   LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''' [[and pe.encounter_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'')
+WHERE enrolment.program_name = ''''Adolescent'''' [[and enrolment.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and enrolment.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+'')
 UNION ALL
 SELECT
 ''Total Adolescents Dropped Out''                                          rowid,
@@ -171,11 +172,11 @@ WHERE e.program_name = ''''Adolescent'''' AND pe.observations @> ''''{"575a29c3-
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  completed_program_encounter_view pe
-  LEFT OUTER JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+  non_exited_program_enrolment_view enrolment
   LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''' [[and pe.encounter_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'')
+WHERE enrolment.program_name = ''''Adolescent'''' [[and enrolment.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and enrolment.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+'')
 UNION ALL
 SELECT
 ''Total Adolescents With a Dropout Home Visit''                                          rowid,

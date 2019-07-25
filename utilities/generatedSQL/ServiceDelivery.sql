@@ -165,7 +165,8 @@ FROM completed_program_encounter_view pe
        INNER JOIN individual_gender_address_view i ON e.individual_id = i.id
 WHERE e.program_name = ''''Adolescent'''' AND pe.observations @> ''''{"575a29c3-a070-4c7d-ac96-fe58b6bddca3":"58f789aa-6570-4aea-87a7-1f7651729c5a"}''''
    [[and pe.encounter_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'', ''SELECT
+    [[and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+'', ''SELECT
   DISTINCT
   i.uuid  uuid,
   i.gender  gender_name,
@@ -201,7 +202,8 @@ FROM completed_program_encounter_view pe
        INNER JOIN individual_gender_address_view i ON e.individual_id = i.id
 WHERE e.program_name = ''''Adolescent'''' AND pe.observations @> ''''{"575a29c3-a070-4c7d-ac96-fe58b6bddca3":"58f789aa-6570-4aea-87a7-1f7651729c5a"}''''
    [[and pe.encounter_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'')
+    [[and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+'')
 UNION ALL
 SELECT
 ''Total Adolescents Started Going to School Again''                                          rowid,
@@ -229,7 +231,8 @@ FROM completed_program_encounter_view pe
        INNER JOIN individual_gender_address_view i ON e.individual_id = i.id
 WHERE e.program_name = ''''Adolescent'''' AND pe.observations @> ''''{"575a29c3-a070-4c7d-ac96-fe58b6bddca3":"58f789aa-6570-4aea-87a7-1f7651729c5a"}''''
    [[and pe.encounter_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'')') AS (
+    [[and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+'')') AS (
 rowid TEXT,
 "All Female" TEXT,
 "All Male" TEXT,

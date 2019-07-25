@@ -2,7 +2,8 @@ WITH latest_program_all_encounters AS (
     SELECT
       i.uuid       AS             iuuid,
       row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) rank,
-      pe.uuid      AS             euuid
+      pe.uuid      AS             euuid,
+      pe.observations as observations
     FROM completed_program_encounter_view pe
       INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
       INNER JOIN individual_view i ON e.individual_id = i.id
@@ -12,9 +13,8 @@ WITH latest_program_all_encounters AS (
 ), latest_program_encounters AS (
     SELECT
       lpae.iuuid                              iuuid,
-      jsonb_merge(jsonb_agg(jsonb_strip_nulls(pe.observations))) obs
+      lpae.observations                       obs
     FROM latest_program_all_encounters lpae
-      INNER JOIN program_encounter pe ON pe.uuid = lpae.euuid
     WHERE lpae.rank = 1
     GROUP BY lpae.iuuid
 )

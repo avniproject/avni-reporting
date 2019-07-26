@@ -265,6 +265,13 @@ const schoolGoingChildren = new ReportBuilder()
     .withSubReportWithDenominator("Standard 10", "standard10.sql", "schoolGoingChildren/totalNonExitedEnrolled.sql")
     .build();
 
+const enrolledExited = new ReportBuilder()
+    .withName("EnrolledExited")
+    .withDirName("enrolledExited")
+    .withSubReportWithDenominator("In program", "totalInProgram.sql", "enrolledExited/totalRegistered.sql")
+    .withSubReportWithDenominator("Exited in this period", "totalExited.sql", "enrolledExited/totalInProgram.sql")
+    .build();
+
 const generate = () =>
     [
         serviceDeliveryReport,
@@ -290,7 +297,8 @@ const generate = () =>
         rationCard,
         standard_8_9_10,
         exitReason,
-        schoolGoingChildren
+        schoolGoingChildren,
+        enrolledExited
     ].map((report) => report.generate());
 
 module.exports = generate;

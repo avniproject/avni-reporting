@@ -254,6 +254,17 @@ const exitReason = new ReportBuilder()
     .withSubReportWithDenominator("Lost to follow-up", "lostToFollowUp.sql", "exitReason/totalExited.sql")
     .build();
 
+const schoolGoingChildren = new ReportBuilder()
+    .withName("SchoolGoingChildren")
+    .withDirName("schoolGoingChildren")
+    .withSubReportWithDenominator("Standard 5", "standard5.sql", "schoolGoingChildren/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Standard 6", "standard6.sql", "schoolGoingChildren/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Standard 7", "standard7.sql", "schoolGoingChildren/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Standard 8", "standard8.sql", "schoolGoingChildren/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Standard 9", "standard9.sql", "schoolGoingChildren/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Standard 10", "standard10.sql", "schoolGoingChildren/totalNonExitedEnrolled.sql")
+    .build();
+
 const generate = () =>
     [
         serviceDeliveryReport,
@@ -278,7 +289,8 @@ const generate = () =>
         religion,
         rationCard,
         standard_8_9_10,
-        exitReason
+        exitReason,
+        schoolGoingChildren
     ].map((report) => report.generate());
 
 module.exports = generate;

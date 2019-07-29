@@ -272,6 +272,23 @@ const enrolledExited = new ReportBuilder()
     .withSubReportWithDenominator("Exited in this period", "totalExited.sql", "enrolledExited/totalInProgram.sql")
     .build();
 
+const chronicSickness = new ReportBuilder()
+    .withName("ChronicSickness")
+    .withDirName("chronicSickness")
+    .withSubReportWithDenominator("Heart problem", "heartProblem.sql", "chronicSickness/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Kidney problem", "kidneyProblem.sql", "chronicSickness/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Other Problem", "otherProblem.sql", "chronicSickness/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Convulsion", "convulsion.sql", "chronicSickness/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Taking treatment regularly", "takingTreatment.sql", "chronicSickness/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Fever", "fever.sql", "chronicSickness/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Cough-cold", "coughCold.sql", "chronicSickness/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Jaundice", "jaundice.sql", "chronicSickness/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Abdominal pain", "abdominalPain.sql", "chronicSickness/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Diarrhoea", "diarrhoea.sql", "chronicSickness/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Other Sickness", "otherSickness.sql", "chronicSickness/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Hospitalization", "hospitalization.sql", "chronicSickness/totalNonExitedEnrolled.sql")
+    .build();
+
 const generate = () =>
     [
         serviceDeliveryReport,
@@ -298,7 +315,8 @@ const generate = () =>
         standard_8_9_10,
         exitReason,
         schoolGoingChildren,
-        enrolledExited
+        enrolledExited,
+        chronicSickness
     ].map((report) => report.generate());
 
 module.exports = generate;

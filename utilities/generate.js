@@ -289,6 +289,18 @@ const chronicSickness = new ReportBuilder()
     .withSubReportWithDenominator("Hospitalization", "hospitalization.sql", "chronicSickness/totalNonExitedEnrolled.sql")
     .build();
 
+const schoolDropoutAndReadmission = new ReportBuilder()
+    .withName("SchoolDropoutAndReadmission")
+    .withDirName("schoolDropoutAndReadmission")
+    .withSubReportWithDenominator("Adolescents who came back after one visit", "firstVisitReadmission.sql", "schoolDropoutAndReadmission/totalDroppedOut.sql")
+    .withSubReportWithDenominator("Adolescents who came back after two visit", "secondVisitReadmission.sql", "schoolDropoutAndReadmission/totalDroppedOut.sql")
+    .withSubReportWithDenominator("Adolescents who came back after three visit", "thirdVisitReadmission.sql", "schoolDropoutAndReadmission/totalDroppedOut.sql")
+    .withSubReportWithDenominator("Adolescents who came back after 4 visits", "fourthVisitReadmission.sql", "schoolDropoutAndReadmission/totalDroppedOut.sql")
+    .withSubReportWithDenominator("Adolescents who came back after 5 visits", "fifthVisitReadmission.sql", "schoolDropoutAndReadmission/totalDroppedOut.sql")
+    .withSubReportWithDenominator("Did not come back", "noReadmission.sql", "schoolDropoutAndReadmission/totalDroppedOut.sql")
+    .build();
+
+
 const generate = () =>
     [
         serviceDeliveryReport,
@@ -316,7 +328,8 @@ const generate = () =>
         exitReason,
         schoolGoingChildren,
         enrolledExited,
-        chronicSickness
+        chronicSickness,
+        schoolDropoutAndReadmission
     ].map((report) => report.generate());
 
 module.exports = generate;

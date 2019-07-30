@@ -1,6 +1,6 @@
 WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
-         row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) erank,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
          pe.uuid         AS                                                                                   euuid,
          pe.observations AS                                                                                   obs,
          pe.encounter_date_time
@@ -11,18 +11,13 @@ WITH individual_program_partitions AS (
     and (pe.encounter_type_name = 'Annual Visit' or pe.encounter_type_name = 'Quarterly Visit')
     [[and pe.encounter_date_time >=(q1 || q4 || quote_literal({{ start_date }}) || q4 || q1  ::DATE)]]
       [[and pe.encounter_date_time <=q1 || q4 || quote_literal({{end_date}}) || q4 || q1 ::DATE]]
-), individual_partitions AS (
-  select *,
-         row_number() OVER (PARTITION BY pe.iuuid ORDER BY pe.encounter_date_time desc) irank
-  from individual_program_partitions pe
-  where erank = 1
 )
 SELECT
   ip.iuuid            uuid,
   i.gender            gender_name,
   i.addresslevel_type address_type,
   i.addresslevel_name address_name
-FROM individual_partitions ip
+FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE (ip.obs @> '{"5af82adf-6be9-4792-9b3d-543b4b00f816":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'
   OR ip.obs @> '{"cbcfdd44-dac8-435f-9cd9-35f20db1f367":"04bb1773-c353-44a1-a68c-9b448e07ff70"}'
@@ -56,4 +51,4 @@ WHERE (ip.obs @> '{"5af82adf-6be9-4792-9b3d-543b4b00f816":"04bb1773-c353-44a1-a6
     '4085f165-ccb8-409b-9d6e-ea7755cf123e',
     'aa30fb91-4b64-438b-b09e-4c7ff2701d71',
     'e27f4a35-c2ae-4d05-8930-e19e432221d1', 'ce47ae12-e61c-49cc-8ccd-715f9d5cb76d'])
-  AND irank = 1
+  AND erank = 1

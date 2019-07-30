@@ -412,7 +412,7 @@ address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
-         row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) erank,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
          pe.uuid         AS                                                                                   euuid,
          pe.observations AS                                                                                   obs,
          pe.encounter_date_time
@@ -421,21 +421,16 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-), individual_partitions AS (
-  select *,
-         row_number() OVER (PARTITION BY pe.iuuid ORDER BY pe.encounter_date_time desc) irank
-  from individual_program_partitions pe
-  where erank = 1
 )
 SELECT
   ip.iuuid            uuid,
   i.gender            gender_name,
   i.addresslevel_type address_type,
   i.addresslevel_name address_name
-FROM individual_partitions ip
+FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.obs @> ''''{"342a4172-131a-41fd-a9c7-ae16603b582f": "04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
-  AND irank = 1
+  AND erank = 1
 '', ''SELECT
   DISTINCT
   i.uuid  uuid,

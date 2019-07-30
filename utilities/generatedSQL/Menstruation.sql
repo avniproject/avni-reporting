@@ -31,7 +31,7 @@ address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
-         row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) erank,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
          pe.uuid         AS                                                                                   euuid,
          pe.observations AS                                                                                   observations,
          pe.encounter_date_time
@@ -40,18 +40,12 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-),
-     individual_partitions AS (
-       select *,
-              row_number() OVER (PARTITION BY pe.iuuid ORDER BY pe.encounter_date_time desc) irank
-       from individual_program_partitions pe
-       where erank = 1
-     )
+)
 SELECT i.uuid  uuid,
        i.gender  gender_name,
        i.addresslevel_type  address_type,
        i.addresslevel_name address_name
-FROM individual_partitions ip
+FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL
   AND ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' ?| ARRAY [''''92ad8878-b476-4291-aa76-3377fa7cf19c'''',
@@ -59,7 +53,7 @@ WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NUL
   ''''761b7f7a-5db7-4115-aa84-32fcfce5ddfc'''', ''''4085f165-ccb8-409b-9d6e-ea7755cf123e'''',
   ''''aa30fb91-4b64-438b-b09e-4c7ff2701d71'''', ''''e27f4a35-c2ae-4d05-8930-e19e432221d1'''',
   ''''ce47ae12-e61c-49cc-8ccd-715f9d5cb76d'''']
-  AND irank = 1
+  AND erank = 1
 '', ''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
@@ -76,7 +70,7 @@ address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
-         row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) erank,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
          pe.uuid         AS                                                                                   euuid,
          pe.observations AS                                                                                   observations,
          pe.encounter_date_time
@@ -85,25 +79,19 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-),
-     individual_partitions AS (
-       select *,
-              row_number() OVER (PARTITION BY pe.iuuid ORDER BY pe.encounter_date_time desc) irank
-       from individual_program_partitions pe
-       where erank = 1
-     )
+)
 SELECT i.uuid  uuid,
        i.gender  gender_name,
        i.addresslevel_type  address_type,
        i.addresslevel_name address_name
-FROM individual_partitions ip
+FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL
   AND ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' ?| ARRAY [''''4085f165-ccb8-409b-9d6e-ea7755cf123e'''']
-  AND irank = 1
+  AND erank = 1
 '', ''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
-         row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) erank,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
          pe.uuid         AS                                                                                   euuid,
          pe.observations AS                                                                                   observations,
          pe.encounter_date_time
@@ -112,18 +100,12 @@ WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NUL
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-),
-     individual_partitions AS (
-       select *,
-              row_number() OVER (PARTITION BY pe.iuuid ORDER BY pe.encounter_date_time desc) irank
-       from individual_program_partitions pe
-       where erank = 1
-     )
+)
 SELECT i.uuid  uuid,
        i.gender  gender_name,
        i.addresslevel_type  address_type,
        i.addresslevel_name address_name
-FROM individual_partitions ip
+FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL
   AND ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' ?| ARRAY [''''92ad8878-b476-4291-aa76-3377fa7cf19c'''',
@@ -131,7 +113,7 @@ WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NUL
   ''''761b7f7a-5db7-4115-aa84-32fcfce5ddfc'''', ''''4085f165-ccb8-409b-9d6e-ea7755cf123e'''',
   ''''aa30fb91-4b64-438b-b09e-4c7ff2701d71'''', ''''e27f4a35-c2ae-4d05-8930-e19e432221d1'''',
   ''''ce47ae12-e61c-49cc-8ccd-715f9d5cb76d'''']
-  AND irank = 1
+  AND erank = 1
 '')
 UNION ALL
 SELECT
@@ -140,7 +122,7 @@ address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
-         row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) erank,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
          pe.uuid         AS                                                                                   euuid,
          pe.observations AS                                                                                   observations,
          pe.encounter_date_time
@@ -149,26 +131,20 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-),
-     individual_partitions AS (
-       select *,
-              row_number() OVER (PARTITION BY pe.iuuid ORDER BY pe.encounter_date_time desc) irank
-       from individual_program_partitions pe
-       where erank = 1
-     )
+)
 SELECT i.uuid  uuid,
        i.gender  gender_name,
        i.addresslevel_type  address_type,
        i.addresslevel_name address_name
-FROM individual_partitions ip
+FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL
   AND ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' ?| ARRAY [''''e27f4a35-c2ae-4d05-8930-e19e432221d1'''']
-  AND irank = 1
+  AND erank = 1
 
 '', ''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
-         row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) erank,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
          pe.uuid         AS                                                                                   euuid,
          pe.observations AS                                                                                   observations,
          pe.encounter_date_time
@@ -177,18 +153,12 @@ WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NUL
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-),
-     individual_partitions AS (
-       select *,
-              row_number() OVER (PARTITION BY pe.iuuid ORDER BY pe.encounter_date_time desc) irank
-       from individual_program_partitions pe
-       where erank = 1
-     )
+)
 SELECT i.uuid  uuid,
        i.gender  gender_name,
        i.addresslevel_type  address_type,
        i.addresslevel_name address_name
-FROM individual_partitions ip
+FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL
   AND ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' ?| ARRAY [''''92ad8878-b476-4291-aa76-3377fa7cf19c'''',
@@ -196,7 +166,7 @@ WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NUL
   ''''761b7f7a-5db7-4115-aa84-32fcfce5ddfc'''', ''''4085f165-ccb8-409b-9d6e-ea7755cf123e'''',
   ''''aa30fb91-4b64-438b-b09e-4c7ff2701d71'''', ''''e27f4a35-c2ae-4d05-8930-e19e432221d1'''',
   ''''ce47ae12-e61c-49cc-8ccd-715f9d5cb76d'''']
-  AND irank = 1
+  AND erank = 1
 '')
 UNION ALL
 SELECT
@@ -205,7 +175,7 @@ address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
-         row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) erank,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
          pe.uuid         AS                                                                                   euuid,
          pe.observations AS                                                                                   observations,
          pe.encounter_date_time
@@ -214,25 +184,19 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-),
-     individual_partitions AS (
-       select *,
-              row_number() OVER (PARTITION BY pe.iuuid ORDER BY pe.encounter_date_time desc) irank
-       from individual_program_partitions pe
-       where erank = 1
-     )
+)
 SELECT i.uuid  uuid,
        i.gender  gender_name,
        i.addresslevel_type  address_type,
        i.addresslevel_name address_name
-FROM individual_partitions ip
+FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL
   AND ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' ?| ARRAY [''''92ad8878-b476-4291-aa76-3377fa7cf19c'''']
-  AND irank = 1
+  AND erank = 1
 '', ''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
-         row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) erank,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
          pe.uuid         AS                                                                                   euuid,
          pe.observations AS                                                                                   observations,
          pe.encounter_date_time
@@ -241,18 +205,12 @@ WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NUL
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-),
-     individual_partitions AS (
-       select *,
-              row_number() OVER (PARTITION BY pe.iuuid ORDER BY pe.encounter_date_time desc) irank
-       from individual_program_partitions pe
-       where erank = 1
-     )
+)
 SELECT i.uuid  uuid,
        i.gender  gender_name,
        i.addresslevel_type  address_type,
        i.addresslevel_name address_name
-FROM individual_partitions ip
+FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL
   AND ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' ?| ARRAY [''''92ad8878-b476-4291-aa76-3377fa7cf19c'''',
@@ -260,7 +218,7 @@ WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NUL
   ''''761b7f7a-5db7-4115-aa84-32fcfce5ddfc'''', ''''4085f165-ccb8-409b-9d6e-ea7755cf123e'''',
   ''''aa30fb91-4b64-438b-b09e-4c7ff2701d71'''', ''''e27f4a35-c2ae-4d05-8930-e19e432221d1'''',
   ''''ce47ae12-e61c-49cc-8ccd-715f9d5cb76d'''']
-  AND irank = 1
+  AND erank = 1
 '')
 UNION ALL
 SELECT
@@ -269,7 +227,7 @@ address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
-         row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) erank,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
          pe.uuid         AS                                                                                   euuid,
          pe.observations AS                                                                                   observations,
          pe.encounter_date_time
@@ -278,25 +236,19 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-),
-     individual_partitions AS (
-       select *,
-              row_number() OVER (PARTITION BY pe.iuuid ORDER BY pe.encounter_date_time desc) irank
-       from individual_program_partitions pe
-       where erank = 1
-     )
+)
 SELECT i.uuid              as uuid,
        i.gender            as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM individual_partitions ip
+FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL
   AND ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' ?| ARRAY [''''aa30fb91-4b64-438b-b09e-4c7ff2701d71'''']
-  AND irank = 1
+  AND erank = 1
 '', ''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
-         row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) erank,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
          pe.uuid         AS                                                                                   euuid,
          pe.observations AS                                                                                   observations,
          pe.encounter_date_time
@@ -305,18 +257,12 @@ WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NUL
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-),
-     individual_partitions AS (
-       select *,
-              row_number() OVER (PARTITION BY pe.iuuid ORDER BY pe.encounter_date_time desc) irank
-       from individual_program_partitions pe
-       where erank = 1
-     )
+)
 SELECT i.uuid  uuid,
        i.gender  gender_name,
        i.addresslevel_type  address_type,
        i.addresslevel_name address_name
-FROM individual_partitions ip
+FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL
   AND ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' ?| ARRAY [''''92ad8878-b476-4291-aa76-3377fa7cf19c'''',
@@ -324,7 +270,7 @@ WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NUL
   ''''761b7f7a-5db7-4115-aa84-32fcfce5ddfc'''', ''''4085f165-ccb8-409b-9d6e-ea7755cf123e'''',
   ''''aa30fb91-4b64-438b-b09e-4c7ff2701d71'''', ''''e27f4a35-c2ae-4d05-8930-e19e432221d1'''',
   ''''ce47ae12-e61c-49cc-8ccd-715f9d5cb76d'''']
-  AND irank = 1
+  AND erank = 1
 '')
 UNION ALL
 SELECT
@@ -333,7 +279,7 @@ address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
-         row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) erank,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
          pe.uuid         AS                                                                                   euuid,
          pe.observations AS                                                                                   observations,
          pe.encounter_date_time
@@ -342,25 +288,19 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-),
-     individual_partitions AS (
-       select *,
-              row_number() OVER (PARTITION BY pe.iuuid ORDER BY pe.encounter_date_time desc) irank
-       from individual_program_partitions pe
-       where erank = 1
-     )
+)
 SELECT i.uuid  uuid,
        i.gender  gender_name,
        i.addresslevel_type  address_type,
        i.addresslevel_name address_name
-FROM individual_partitions ip
+FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL
   AND ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' ?| ARRAY [''''33385edf-93bc-4513-aa03-480ce3bc7b5c'''']
-  AND irank = 1
+  AND erank = 1
 '', ''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
-         row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) erank,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
          pe.uuid         AS                                                                                   euuid,
          pe.observations AS                                                                                   observations,
          pe.encounter_date_time
@@ -369,18 +309,12 @@ WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NUL
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-),
-     individual_partitions AS (
-       select *,
-              row_number() OVER (PARTITION BY pe.iuuid ORDER BY pe.encounter_date_time desc) irank
-       from individual_program_partitions pe
-       where erank = 1
-     )
+)
 SELECT i.uuid  uuid,
        i.gender  gender_name,
        i.addresslevel_type  address_type,
        i.addresslevel_name address_name
-FROM individual_partitions ip
+FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL
   AND ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' ?| ARRAY [''''92ad8878-b476-4291-aa76-3377fa7cf19c'''',
@@ -388,7 +322,7 @@ WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NUL
   ''''761b7f7a-5db7-4115-aa84-32fcfce5ddfc'''', ''''4085f165-ccb8-409b-9d6e-ea7755cf123e'''',
   ''''aa30fb91-4b64-438b-b09e-4c7ff2701d71'''', ''''e27f4a35-c2ae-4d05-8930-e19e432221d1'''',
   ''''ce47ae12-e61c-49cc-8ccd-715f9d5cb76d'''']
-  AND irank = 1
+  AND erank = 1
 '')
 UNION ALL
 SELECT
@@ -397,7 +331,7 @@ address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
-         row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) erank,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
          pe.uuid         AS                                                                                   euuid,
          pe.observations AS                                                                                   observations,
          pe.encounter_date_time
@@ -406,25 +340,19 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-),
-     individual_partitions AS (
-       select *,
-              row_number() OVER (PARTITION BY pe.iuuid ORDER BY pe.encounter_date_time desc) irank
-       from individual_program_partitions pe
-       where erank = 1
-     )
+)
 SELECT i.uuid  uuid,
        i.gender  gender_name,
        i.addresslevel_type  address_type,
        i.addresslevel_name address_name
-FROM individual_partitions ip
+FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL
   AND ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' ?| ARRAY [''''1c478c50-4761-460c-b33c-a18d0c1500f7'''']
-  AND irank = 1
+  AND erank = 1
 '', ''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
-         row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) erank,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
          pe.uuid         AS                                                                                   euuid,
          pe.observations AS                                                                                   observations,
          pe.encounter_date_time
@@ -433,18 +361,12 @@ WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NUL
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-),
-     individual_partitions AS (
-       select *,
-              row_number() OVER (PARTITION BY pe.iuuid ORDER BY pe.encounter_date_time desc) irank
-       from individual_program_partitions pe
-       where erank = 1
-     )
+)
 SELECT i.uuid  uuid,
        i.gender  gender_name,
        i.addresslevel_type  address_type,
        i.addresslevel_name address_name
-FROM individual_partitions ip
+FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL
   AND ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' ?| ARRAY [''''92ad8878-b476-4291-aa76-3377fa7cf19c'''',
@@ -452,7 +374,7 @@ WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NUL
   ''''761b7f7a-5db7-4115-aa84-32fcfce5ddfc'''', ''''4085f165-ccb8-409b-9d6e-ea7755cf123e'''',
   ''''aa30fb91-4b64-438b-b09e-4c7ff2701d71'''', ''''e27f4a35-c2ae-4d05-8930-e19e432221d1'''',
   ''''ce47ae12-e61c-49cc-8ccd-715f9d5cb76d'''']
-  AND irank = 1
+  AND erank = 1
 '')
 UNION ALL
 SELECT
@@ -461,7 +383,7 @@ address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
-         row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) erank,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
          pe.uuid         AS                                                                                   euuid,
          pe.observations AS                                                                                   observations,
          pe.encounter_date_time
@@ -470,25 +392,19 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-),
-     individual_partitions AS (
-       select *,
-              row_number() OVER (PARTITION BY pe.iuuid ORDER BY pe.encounter_date_time desc) irank
-       from individual_program_partitions pe
-       where erank = 1
-     )
+)
 SELECT i.uuid  uuid,
        i.gender  gender_name,
        i.addresslevel_type  address_type,
        i.addresslevel_name address_name
-FROM individual_partitions ip
+FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL AND
       ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' ?| ARRAY [''''761b7f7a-5db7-4115-aa84-32fcfce5ddfc''''] AND
-      irank = 1
+      erank = 1
 '', ''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
-         row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) erank,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
          pe.uuid         AS                                                                                   euuid,
          pe.observations AS                                                                                   observations,
          pe.encounter_date_time
@@ -497,18 +413,12 @@ WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NUL
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-),
-     individual_partitions AS (
-       select *,
-              row_number() OVER (PARTITION BY pe.iuuid ORDER BY pe.encounter_date_time desc) irank
-       from individual_program_partitions pe
-       where erank = 1
-     )
+)
 SELECT i.uuid  uuid,
        i.gender  gender_name,
        i.addresslevel_type  address_type,
        i.addresslevel_name address_name
-FROM individual_partitions ip
+FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NULL
   AND ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' ?| ARRAY [''''92ad8878-b476-4291-aa76-3377fa7cf19c'''',
@@ -516,7 +426,7 @@ WHERE ip.observations -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' IS NOT NUL
   ''''761b7f7a-5db7-4115-aa84-32fcfce5ddfc'''', ''''4085f165-ccb8-409b-9d6e-ea7755cf123e'''',
   ''''aa30fb91-4b64-438b-b09e-4c7ff2701d71'''', ''''e27f4a35-c2ae-4d05-8930-e19e432221d1'''',
   ''''ce47ae12-e61c-49cc-8ccd-715f9d5cb76d'''']
-  AND irank = 1
+  AND erank = 1
 '')') AS (
 rowid TEXT,
 "All Female" TEXT,

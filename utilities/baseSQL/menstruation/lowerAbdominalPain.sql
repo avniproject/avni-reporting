@@ -1,6 +1,6 @@
 WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
-         row_number() OVER (PARTITION BY i.uuid, pe.encounter_type_name ORDER BY pe.encounter_date_time desc) erank,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
          pe.uuid         AS                                                                                   euuid,
          pe.observations AS                                                                                   observations,
          pe.encounter_date_time
@@ -9,19 +9,13 @@ WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = 'Adolescent'
     and (pe.encounter_type_name = 'Annual Visit' or pe.encounter_type_name = 'Quarterly Visit')
-),
-     individual_partitions AS (
-       select *,
-              row_number() OVER (PARTITION BY pe.iuuid ORDER BY pe.encounter_date_time desc) irank
-       from individual_program_partitions pe
-       where erank = 1
-     )
+)
 SELECT i.uuid  uuid,
        i.gender  gender_name,
        i.addresslevel_type  address_type,
        i.addresslevel_name address_name
-FROM individual_partitions ip
+FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.observations -> '0f87eac1-cf6a-4632-8af2-29a935451fe4' IS NOT NULL
   AND ip.observations -> '0f87eac1-cf6a-4632-8af2-29a935451fe4' ?| ARRAY ['92ad8878-b476-4291-aa76-3377fa7cf19c']
-  AND irank = 1
+  AND erank = 1

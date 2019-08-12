@@ -5,14 +5,27 @@ SELECT * FROM crosstab('SELECT
 ''Severely Malnourished''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
-FROM frequency_and_percentage(''SELECT i.uuid as uuid,
-       i.gender as gender_name,
+FROM frequency_and_percentage(''WITH individual_program_partitions AS (
+  SELECT i.uuid          AS                                                           iuuid,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
+         pe.uuid         AS                                                           euuid,
+         pe.observations AS                                                           obs,
+         pe.encounter_date_time
+  FROM completed_program_encounter_view pe
+         INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
+         INNER JOIN individual_view i ON e.individual_id = i.id
+  WHERE e.program_name = ''''Adolescent''''
+    AND pe.encounter_type_name = ''''Annual Visit''''
+)
+SELECT i.uuid              as uuid,
+       i.gender            as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM non_exited_enrolment_completed_encounters_agg_view lpe
-      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
-WHERE lpe.program_name = ''''Adolescent''''
-      AND cast(lpe.agg_obs->>''''7ac0d759-c50d-4971-88e0-84274224c839'''' as float) < 14.5'', ''SELECT
+FROM individual_program_partitions ip
+       JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
+WHERE cast(ip.obs ->> ''''7ac0d759-c50d-4971-88e0-84274224c839'''' as float) < 14.5
+  AND erank = 1;
+'', ''SELECT
   DISTINCT
   i.uuid  uuid,
   i.gender  gender_name,
@@ -28,15 +41,28 @@ SELECT
 ''Malnourished''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
-FROM frequency_and_percentage(''SELECT i.uuid as uuid,
-       i.gender as gender_name,
+FROM frequency_and_percentage(''WITH individual_program_partitions AS (
+  SELECT i.uuid          AS                                                           iuuid,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
+         pe.uuid         AS                                                           euuid,
+         pe.observations AS                                                           obs,
+         pe.encounter_date_time
+  FROM completed_program_encounter_view pe
+         INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
+         INNER JOIN individual_view i ON e.individual_id = i.id
+  WHERE e.program_name = ''''Adolescent''''
+    AND pe.encounter_type_name = ''''Annual Visit''''
+)
+SELECT i.uuid              as uuid,
+       i.gender            as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM non_exited_enrolment_completed_encounters_agg_view lpe
-      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
-WHERE lpe.program_name = ''''Adolescent''''
-      AND cast(lpe.agg_obs ->> ''''7ac0d759-c50d-4971-88e0-84274224c839'''' AS FLOAT) >= 14.5
-      AND cast(lpe.agg_obs ->> ''''7ac0d759-c50d-4971-88e0-84274224c839'''' AS FLOAT) <= 18.5'', ''SELECT
+FROM individual_program_partitions ip
+       JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
+WHERE cast(ip.obs ->> ''''7ac0d759-c50d-4971-88e0-84274224c839'''' AS FLOAT) >= 14.5
+  AND cast(ip.obs ->> ''''7ac0d759-c50d-4971-88e0-84274224c839'''' AS FLOAT) <= 18.5
+  AND erank = 1
+'', ''SELECT
   DISTINCT
   i.uuid  uuid,
   i.gender  gender_name,
@@ -52,15 +78,28 @@ SELECT
 ''Normal''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
-FROM frequency_and_percentage(''SELECT i.uuid as uuid,
-       i.gender as gender_name,
+FROM frequency_and_percentage(''WITH individual_program_partitions AS (
+  SELECT i.uuid          AS                                                           iuuid,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
+         pe.uuid         AS                                                           euuid,
+         pe.observations AS                                                           obs,
+         pe.encounter_date_time
+  FROM completed_program_encounter_view pe
+         INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
+         INNER JOIN individual_view i ON e.individual_id = i.id
+  WHERE e.program_name = ''''Adolescent''''
+    AND pe.encounter_type_name = ''''Annual Visit''''
+)
+SELECT i.uuid              as uuid,
+       i.gender            as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM non_exited_enrolment_completed_encounters_agg_view lpe
-      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
-WHERE lpe.program_name = ''''Adolescent''''
-      AND cast(lpe.agg_obs->>''''7ac0d759-c50d-4971-88e0-84274224c839'''' as float) > 18.5
-      and cast(lpe.agg_obs->>''''7ac0d759-c50d-4971-88e0-84274224c839'''' as float) < 25'', ''SELECT
+FROM individual_program_partitions ip
+       JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
+WHERE cast(ip.obs ->> ''''7ac0d759-c50d-4971-88e0-84274224c839'''' as float) > 18.5
+  and cast(ip.obs ->> ''''7ac0d759-c50d-4971-88e0-84274224c839'''' as float) < 25
+  AND erank = 1
+'', ''SELECT
   DISTINCT
   i.uuid  uuid,
   i.gender  gender_name,
@@ -76,15 +115,28 @@ SELECT
 ''Overweight''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
-FROM frequency_and_percentage(''SELECT i.uuid as uuid,
-       i.gender as gender_name,
+FROM frequency_and_percentage(''WITH individual_program_partitions AS (
+  SELECT i.uuid          AS                                                           iuuid,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
+         pe.uuid         AS                                                           euuid,
+         pe.observations AS                                                           obs,
+         pe.encounter_date_time
+  FROM completed_program_encounter_view pe
+         INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
+         INNER JOIN individual_view i ON e.individual_id = i.id
+  WHERE e.program_name = ''''Adolescent''''
+    AND pe.encounter_type_name = ''''Annual Visit''''
+)
+SELECT i.uuid              as uuid,
+       i.gender            as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM non_exited_enrolment_completed_encounters_agg_view lpe
-      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
-WHERE lpe.program_name = ''''Adolescent''''
-      AND cast(lpe.agg_obs->>''''7ac0d759-c50d-4971-88e0-84274224c839'''' as float) > 25
-      and cast(lpe.agg_obs->>''''7ac0d759-c50d-4971-88e0-84274224c839'''' as float) < 30'', ''SELECT
+FROM individual_program_partitions ip
+       JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
+WHERE cast(ip.obs ->> ''''7ac0d759-c50d-4971-88e0-84274224c839'''' as float) > 25
+  and cast(ip.obs ->> ''''7ac0d759-c50d-4971-88e0-84274224c839'''' as float) < 30
+  AND erank = 1
+'', ''SELECT
   DISTINCT
   i.uuid  uuid,
   i.gender  gender_name,
@@ -100,14 +152,27 @@ SELECT
 ''Obese''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
-FROM frequency_and_percentage(''SELECT i.uuid as uuid,
-       i.gender as gender_name,
+FROM frequency_and_percentage(''WITH individual_program_partitions AS (
+  SELECT i.uuid          AS                                                           iuuid,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
+         pe.uuid         AS                                                           euuid,
+         pe.observations AS                                                           obs,
+         pe.encounter_date_time
+  FROM completed_program_encounter_view pe
+         INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
+         INNER JOIN individual_view i ON e.individual_id = i.id
+  WHERE e.program_name = ''''Adolescent''''
+    AND pe.encounter_type_name = ''''Annual Visit''''
+)
+SELECT i.uuid              as uuid,
+       i.gender            as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name
-FROM non_exited_enrolment_completed_encounters_agg_view lpe
-      JOIN individual_gender_address_view i ON i.id = lpe.individual_id
-WHERE lpe.program_name = ''''Adolescent''''
-      AND cast(lpe.agg_obs->>''''7ac0d759-c50d-4971-88e0-84274224c839'''' as float) >= 30'', ''SELECT
+FROM individual_program_partitions ip
+       JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
+WHERE cast(ip.obs ->> ''''7ac0d759-c50d-4971-88e0-84274224c839'''' as float) >= 30
+  AND erank = 1
+'', ''SELECT
   DISTINCT
   i.uuid  uuid,
   i.gender  gender_name,

@@ -36,6 +36,7 @@ const addictionReport = new ReportBuilder()
     .withSubReportWithDenominator("Mothers Addicted", "mothersAddiction.sql", "common/totalNonExitedEnrolled.sql")
     .build();
 
+//Reasons for school dropout
 const educationReport = new ReportBuilder()
     .withName("Education")
     .withDirName("education")
@@ -64,6 +65,7 @@ const menstruationReport = new ReportBuilder()
     .withSubReportWithDenominator("Nausea And Vomiting", "nauseaAndVomitting.sql", "menstruation/disorder.sql")
     .build();
 
+//Menstrual Hygiene Practices
 const absorbentMaterialUsedReport = new ReportBuilder()
     .withName("AbsorbentMaterialUsed")
     .withDirName("absorbentMaterialUsed")
@@ -86,6 +88,7 @@ const treatmentTakenForMenstrualDisorderReport = new ReportBuilder()
     .withSubReportWithDenominator("Tablet From Kit", "tabletFromKit.sql", "menstrualDisorderTreatment/disorder.sql")
     .build();
 
+//Prevalence of Malnutrition
 const nutritionReport = new ReportBuilder()
     .withName("Nutrition")
     .withDirName("nutrition")
@@ -96,6 +99,7 @@ const nutritionReport = new ReportBuilder()
     .withSubReportWithDenominator("Obese", "obese.sql", "common/totalNonExitedEnrolled.sql")
     .build();
 
+//Prevalence of Anemia
 const hemoglobinReport = new ReportBuilder()
     .withName("Hemoglobin")
     .withDirName("hemoglobin")
@@ -118,12 +122,37 @@ const sicklingReport = new ReportBuilder()
     .withSubReportWithDenominator("Referred", "referralForSickling.sql", "sickling/diseaseOrTrait.sql")
     .build();
 
-const ironTabletsReport = new ReportBuilder()
-    .withName("IronTables")
+//IFA distribution & Consumption
+const severeAnemiaIronTabletsReport = new ReportBuilder()
+    .withName("SevereAnemia")
     .withDirName("ironTablets")
-    .withSubReportWithDenominator("Received", "received.sql", "common/totalNonExitedEnrolled.sql")
-    .withSubReportWithDenominator("Consumed", "taken.sql", "ironTablets/received.sql")
-    .withSubReportWithDenominator("Albandazole Tablets Received", "albendazole.sql", "common/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Received", "severe/received.sql", "common/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Consumed", "severe/taken.sql", "ironTablets/severe/received.sql")
+    .withSubReportWithDenominator("Albandazole Tablets Received", "severe/albendazole.sql", "common/totalNonExitedEnrolled.sql")
+    .build();
+
+const moderateAnemiaIronTabletsReport = new ReportBuilder()
+    .withName("ModerateAnemia")
+    .withDirName("ironTablets")
+    .withSubReportWithDenominator("Received", "moderate/received.sql", "common/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Consumed", "moderate/taken.sql", "ironTablets/moderate/received.sql")
+    .withSubReportWithDenominator("Albandazole Tablets Received", "moderate/albendazole.sql", "common/totalNonExitedEnrolled.sql")
+    .build();
+
+const mildAnemiaIronTabletsReport = new ReportBuilder()
+    .withName("MildAnemia")
+    .withDirName("ironTablets")
+    .withSubReportWithDenominator("Received", "mild/received.sql", "common/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Consumed", "mild/taken.sql", "ironTablets/mild/received.sql")
+    .withSubReportWithDenominator("Albandazole Tablets Received", "mild/albendazole.sql", "common/totalNonExitedEnrolled.sql")
+    .build();
+
+const normalAnemiaIronTabletsReport = new ReportBuilder()
+    .withName("NormalAnemia")
+    .withDirName("ironTablets")
+    .withSubReportWithDenominator("Received", "normal/received.sql", "common/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Consumed", "normal/taken.sql", "ironTablets/normal/received.sql")
+    .withSubReportWithDenominator("Albandazole Tablets Received", "normal/albendazole.sql", "common/totalNonExitedEnrolled.sql")
     .build();
 
 const vulnerability = new ReportBuilder()
@@ -312,7 +341,7 @@ const generate = () =>
         nutritionReport,
         hemoglobinReport,
         sicklingReport,
-        ironTabletsReport,
+        severeAnemiaIronTabletsReport,
         vulnerability,
         standard,
         followup,
@@ -329,7 +358,10 @@ const generate = () =>
         schoolGoingChildren,
         enrolledExited,
         chronicSickness,
-        schoolDropoutAndReadmission
+        schoolDropoutAndReadmission,
+        moderateAnemiaIronTabletsReport,
+        mildAnemiaIronTabletsReport,
+        normalAnemiaIronTabletsReport
     ].map((report) => report.generate());
 
 module.exports = generate;

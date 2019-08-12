@@ -21,10 +21,10 @@ WHERE lpe.program_name = ''''Adolescent''''
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  completed_program_encounter_view pe
-  JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
-  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
+  non_exited_program_enrolment_view enrolment
+    LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent''''
+'')
 UNION ALL
 SELECT
 ''With Helmet''                                          rowid,

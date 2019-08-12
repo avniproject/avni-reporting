@@ -34,10 +34,10 @@ WHERE ip.obs ->> ''''2973890d-0142-41a6-a6f5-988e7eb36d79'''' = ''''04bb1773-c35
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  completed_program_encounter_view pe
-  JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
-  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
+  non_exited_program_enrolment_view enrolment
+    LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent''''
+'')
 UNION ALL
 SELECT
 ''Consumed''                                          rowid,
@@ -122,10 +122,10 @@ WHERE ip.obs ->> ''''a2e181c3-0827-4da2-9121-a59386449823'''' = ''''04bb1773-c35
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  completed_program_encounter_view pe
-  JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
-  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')') AS (
+  non_exited_program_enrolment_view enrolment
+    LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent''''
+'')') AS (
 rowid TEXT,
 "All Female" TEXT,
 "All Male" TEXT,

@@ -38,10 +38,10 @@ WHERE lpe.obs -> ''''2ebca9be-3be3-4d11-ada0-187563ff04f8'''' ?| ARRAY [''''ef29
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  completed_program_encounter_view pe
-  JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
-  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
+  non_exited_program_enrolment_view enrolment
+    LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent''''
+'')
 UNION ALL
 SELECT
 ''Adolescents Addicted to Alcohol''                                          rowid,
@@ -80,10 +80,10 @@ WHERE lpe.obs -> ''''2ebca9be-3be3-4d11-ada0-187563ff04f8'''' ?| ARRAY [''''9265
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  completed_program_encounter_view pe
-  JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
-  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
+  non_exited_program_enrolment_view enrolment
+    LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent''''
+'')
 UNION ALL
 SELECT
 ''Adolescents Addicted to Both''                                          rowid,
@@ -122,10 +122,10 @@ WHERE lpe.obs -> ''''2ebca9be-3be3-4d11-ada0-187563ff04f8'''' ?| ARRAY [''''246d
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  completed_program_encounter_view pe
-  JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
-  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
+  non_exited_program_enrolment_view enrolment
+    LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent''''
+'')
 UNION ALL
 SELECT
 ''Fathers Addicted''                                          rowid,
@@ -166,10 +166,10 @@ WHERE lpe.obs -> ''''e90dee68-0a5f-4dd3-ae26-9b6229c4a02a'''' ?| ARRAY [''''9265
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  completed_program_encounter_view pe
-  JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
-  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')
+  non_exited_program_enrolment_view enrolment
+    LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent''''
+'')
 UNION ALL
 SELECT
 ''Mothers Addicted''                                          rowid,
@@ -210,10 +210,10 @@ WHERE lpe.obs -> ''''a3200784-2512-477b-9e78-f1c947d7dd75'''' ?| ARRAY [''''9265
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
 FROM
-  completed_program_encounter_view pe
-  JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
-  JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Annual Visit'''''')') AS (
+  non_exited_program_enrolment_view enrolment
+    LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent''''
+'')') AS (
 rowid TEXT,
 "All Female" TEXT,
 "All Male" TEXT,

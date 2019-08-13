@@ -25,7 +25,6 @@ const serviceDeliveryReport = new ReportBuilder()
         "serviceDelivery/totalAdolescentsDroppedOut.sql")
     .build();
 
-//Prevalence of Substance misuse
 const addictionReport = new ReportBuilder()
     .withName("Addiction")
     .withDirName("addiction")
@@ -51,6 +50,7 @@ const educationReport = new ReportBuilder()
     .withSubReportWithDenominator("Other Reason", "otherReason.sql", "education/totalAdolescentsDroppedOut.sql")
     .build();
 
+//Menstrual disorders
 const menstruationReport = new ReportBuilder()
     .withName("Menstruation")
     .withDirName("menstruation")

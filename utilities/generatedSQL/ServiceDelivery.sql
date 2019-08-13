@@ -167,8 +167,8 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     AND (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-    [[ and ip.encounter_date_time >= (' || '''' || quote_literal({{ start_date }}) || '''' || ' ::DATE) ]]
-    [[ and ip.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE ]]
+    [[ and pe.encounter_date_time >= (' || '''' || quote_literal({{ start_date }}) || '''' || ' ::DATE) ]]
+    [[ and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE ]]
 )
 SELECT DISTINCT i.uuid,
                 i.gender,
@@ -216,8 +216,8 @@ WHERE e.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Dropo
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     AND (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-    [[ and ip.encounter_date_time >= (' || '''' || quote_literal({{ start_date }}) || '''' || ' ::DATE) ]]
-    [[ and ip.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE ]]
+    [[ and pe.encounter_date_time >= (' || '''' || quote_literal({{ start_date }}) || '''' || ' ::DATE) ]]
+    [[ and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE ]]
 )
 SELECT DISTINCT i.uuid,
                 i.gender,
@@ -257,8 +257,8 @@ WHERE e.program_name = ''''Adolescent''''
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     AND (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-    [[ and ip.encounter_date_time >= (' || '''' || quote_literal({{ start_date }}) || '''' || ' ::DATE) ]]
-    [[ and ip.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE ]]
+    [[ and pe.encounter_date_time >= (' || '''' || quote_literal({{ start_date }}) || '''' || ' ::DATE) ]]
+    [[ and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE ]]
 )
 SELECT DISTINCT i.uuid,
                 i.gender,

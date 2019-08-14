@@ -25,14 +25,14 @@ const serviceDeliveryReport = new ReportBuilder()
         "serviceDelivery/totalAdolescentsDroppedOut.sql")
     .build();
 
+//Prevalence of Substance misuse
 const addictionReport = new ReportBuilder()
     .withName("Addiction")
     .withDirName("addiction")
     .withSubReportWithDenominator("Adolescents Addicted to Tobacco", "tobaccoAddiction.sql", "common/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Adolescents Addicted to Alcohol", "alcoholAddiction.sql", "common/totalNonExitedEnrolled.sql")
-    .withSubReportWithDenominator("Adolescents Addicted to Both", "alcoholAndTobaccoAddiction.sql", "common/totalNonExitedEnrolled.sql")
-    .withSubReportWithDenominator("Fathers Addicted", "fathersAddiction.sql", "common/totalNonExitedEnrolled.sql")
-    .withSubReportWithDenominator("Mothers Addicted", "mothersAddiction.sql", "common/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Adolescents quited Tobacco", "tobaccoQuitter.sql", "addiction/tobaccoAddiction.sql")
+    .withSubReportWithDenominator("Adolescents quited Alcohol", "alcoholQuitter.sql", "addiction/alcoholAddiction.sql")
     .build();
 
 //Reasons for school dropout

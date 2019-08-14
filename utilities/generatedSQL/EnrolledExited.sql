@@ -14,8 +14,7 @@ FROM frequency_and_percentage(''SELECT
 FROM
   program_enrolment_view enrolment
   LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent'''' AND (program_exit_date_time ISNULL
-  [[ OR enrolment.program_exit_date_time > ' || '''' || quote_literal({{ end_date }}) || '''' || ' ::DATE ]])
+WHERE enrolment.program_name = ''''Adolescent''''
 '', ''SELECT
   DISTINCT
   i.uuid  uuid,
@@ -40,8 +39,6 @@ FROM
   LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent''''
   AND program_exit_date_time NOTNULL
-  [[ and enrolment.program_exit_date_time >= (' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE) ]]
-  [[ and enrolment.program_exit_date_time <= ' || '''' || quote_literal({{ end_date }}) || '''' || ' ::DATE ]]
 '', ''SELECT
   DISTINCT
   i.uuid  uuid,
@@ -51,8 +48,7 @@ WHERE enrolment.program_name = ''''Adolescent''''
 FROM
   program_enrolment_view enrolment
   LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent'''' AND (program_exit_date_time ISNULL
-  [[ OR enrolment.program_exit_date_time > ' || '''' || quote_literal({{ end_date }}) || '''' || ' ::DATE ]])
+WHERE enrolment.program_name = ''''Adolescent''''
 '')') AS (
 rowid TEXT,
 "All Female" TEXT,

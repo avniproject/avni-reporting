@@ -11,8 +11,7 @@ FROM frequency_and_percentage(''SELECT
   i.addresslevel_type as address_type,
   i.addresslevel_name as address_name
 FROM individual_gender_address_view i
-WHERE 1 = 1 [[ and i.registration_date >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-  [[and i.registration_date <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+WHERE 1 = 1
 '')
 UNION ALL
 SELECT
@@ -28,16 +27,14 @@ FROM frequency_and_percentage(''SELECT
 FROM
   non_exited_program_enrolment_view enrolment
   LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent'''' [[and enrolment.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and enrolment.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+WHERE enrolment.program_name = ''''Adolescent''''
 '', ''SELECT
   i.uuid  uuid,
   i.gender as gender_name,
   i.addresslevel_type as address_type,
   i.addresslevel_name as address_name
 FROM individual_gender_address_view i
-WHERE 1 = 1 [[ and i.registration_date >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-  [[and i.registration_date <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+WHERE 1 = 1
 '')
 UNION ALL
 SELECT
@@ -55,8 +52,6 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-    [[and pe.encounter_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-      [[and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 )
 SELECT
   ip.iuuid            uuid,
@@ -107,8 +102,7 @@ WHERE (ip.obs @> ''''{"5af82adf-6be9-4792-9b3d-543b4b00f816":"04bb1773-c353-44a1
 FROM
   non_exited_program_enrolment_view enrolment
   LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent'''' [[and enrolment.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and enrolment.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+WHERE enrolment.program_name = ''''Adolescent''''
 '')
 UNION ALL
 SELECT
@@ -126,8 +120,6 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-    [[and pe.encounter_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-      [[and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 )
 SELECT ip.iuuid            uuid,
        i.gender            gender_name,
@@ -148,8 +140,7 @@ WHERE erank = 1
 FROM
   non_exited_program_enrolment_view enrolment
   LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent'''' [[and enrolment.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and enrolment.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+WHERE enrolment.program_name = ''''Adolescent''''
 '')
 UNION ALL
 SELECT
@@ -167,8 +158,6 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     AND (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-    [[ and pe.encounter_date_time >= (' || '''' || quote_literal({{ start_date }}) || '''' || ' ::DATE) ]]
-    [[ and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE ]]
 )
 SELECT DISTINCT i.uuid,
                 i.gender,
@@ -187,8 +176,7 @@ WHERE ip.obs @> ''''{"575a29c3-a070-4c7d-ac96-fe58b6bddca3":"58f789aa-6570-4aea-
 FROM
   non_exited_program_enrolment_view enrolment
   LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent'''' [[and enrolment.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and enrolment.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+WHERE enrolment.program_name = ''''Adolescent''''
 '')
 UNION ALL
 SELECT
@@ -203,8 +191,7 @@ FROM frequency_and_percentage(''SELECT DISTINCT
 FROM completed_program_encounter_view pe
       INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
       INNER JOIN individual_gender_address_view i ON e.individual_id = i.id
-WHERE e.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Dropout Home Visit'''' [[and pe.encounter_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+WHERE e.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Dropout Home Visit''''
 '', ''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                           iuuid,
          row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
@@ -216,8 +203,6 @@ WHERE e.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Dropo
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     AND (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-    [[ and pe.encounter_date_time >= (' || '''' || quote_literal({{ start_date }}) || '''' || ' ::DATE) ]]
-    [[ and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE ]]
 )
 SELECT DISTINCT i.uuid,
                 i.gender,
@@ -244,8 +229,6 @@ FROM completed_program_encounter_view pe
 WHERE e.program_name = ''''Adolescent''''
   AND (pe.observations @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"28e76608-dddd-4914-bd44-3689eccfa5ca"}''''
   OR pe.observations @> ''''{"dcfc771a-0785-43be-bcb1-0d2755793e0e":"9715936e-03f2-44da-900f-33588fe95250"}'''')
-  [[and pe.encounter_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '', ''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                           iuuid,
          row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
@@ -257,8 +240,6 @@ WHERE e.program_name = ''''Adolescent''''
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     AND (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
-    [[ and pe.encounter_date_time >= (' || '''' || quote_literal({{ start_date }}) || '''' || ' ::DATE) ]]
-    [[ and pe.encounter_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE ]]
 )
 SELECT DISTINCT i.uuid,
                 i.gender,

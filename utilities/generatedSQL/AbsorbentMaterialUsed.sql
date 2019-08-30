@@ -16,6 +16,8 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     AND (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
+    [[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 )
 SELECT i.uuid              as uuid,
        i.gender            as gender_name,
@@ -32,8 +34,11 @@ WHERE ip.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' IS NOT NULL
                 i.addresslevel_name as address_name
 FROM non_exited_enrolment_completed_encounters_agg_view lpe
        JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+       JOIN non_exited_program_enrolment_view e ON e.individual_id = i.id
 WHERE lpe.program_name = ''''Adolescent''''
   AND lpe.agg_obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+    [[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '')
 UNION ALL
 SELECT
@@ -51,6 +56,8 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     AND (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
+    [[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 )
 SELECT i.uuid              as uuid,
        i.gender            as gender_name,
@@ -67,8 +74,11 @@ WHERE ip.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' IS NOT NULL
                 i.addresslevel_name as address_name
 FROM non_exited_enrolment_completed_encounters_agg_view lpe
        JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+       JOIN non_exited_program_enrolment_view e ON e.individual_id = i.id
 WHERE lpe.program_name = ''''Adolescent''''
   AND lpe.agg_obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+    [[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '')
 UNION ALL
 SELECT
@@ -86,6 +96,8 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     AND (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
+    [[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 )
 SELECT i.uuid              as uuid,
        i.gender            as gender_name,
@@ -102,8 +114,11 @@ WHERE ip.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' IS NOT NULL
                 i.addresslevel_name as address_name
 FROM non_exited_enrolment_completed_encounters_agg_view lpe
        JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+       JOIN non_exited_program_enrolment_view e ON e.individual_id = i.id
 WHERE lpe.program_name = ''''Adolescent''''
   AND lpe.agg_obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+    [[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '')
 UNION ALL
 SELECT
@@ -121,6 +136,8 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     AND (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
+    [[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 )
 SELECT i.uuid              as uuid,
        i.gender            as gender_name,
@@ -137,8 +154,11 @@ WHERE ip.obs -> ''''a54fcfad-8656-46ae-9706-671a600eabca'''' IS NOT NULL
                 i.addresslevel_name as address_name
 FROM non_exited_enrolment_completed_encounters_agg_view lpe
        JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+       JOIN non_exited_program_enrolment_view e ON e.individual_id = i.id
 WHERE lpe.program_name = ''''Adolescent''''
   AND lpe.agg_obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+    [[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '')
 UNION ALL
 SELECT
@@ -156,6 +176,8 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     AND (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
+    [[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 )
 SELECT i.uuid              as uuid,
        i.gender            as gender_name,
@@ -172,8 +194,11 @@ WHERE ip.obs -> ''''5b11c506-d17b-499c-902f-75405bfc1d67'''' IS NOT NULL
                 i.addresslevel_name as address_name
 FROM non_exited_enrolment_completed_encounters_agg_view lpe
        JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+       JOIN non_exited_program_enrolment_view e ON e.individual_id = i.id
 WHERE lpe.program_name = ''''Adolescent''''
   AND lpe.agg_obs @> ''''{"9cb4c266-0511-48f6-a058-d4f1fa3eb17c":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+    [[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '')
 UNION ALL
 SELECT
@@ -191,6 +216,8 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     AND (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
+    [[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 )
 SELECT i.uuid              as uuid,
        i.gender            as gender_name,
@@ -212,6 +239,8 @@ WHERE ip.obs -> ''''7503cf02-c2e6-440b-a768-8e4cb1df4c68'''' IS NOT NULL
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
     AND (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
+    [[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 )
 SELECT i.uuid              as uuid,
        i.gender            as gender_name,

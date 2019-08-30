@@ -4,5 +4,8 @@ SELECT i.uuid as uuid,
        i.addresslevel_name as address_name
 FROM non_exited_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+      JOIN non_exited_program_enrolment_view e ON e.individual_id = i.id
 WHERE lpe.program_name = 'Adolescent'
       AND lpe.agg_obs @> '{"fda18675-59dc-4a69-82f7-4e137c274073":"7f0e1fbd-a1b9-4121-b630-dfec36a2dfd0"}'
+      [[and e.enrolment_date_time >=(q1 || q4 || quote_literal({{ start_date }}) || q4 || q1  ::DATE)]]
+      [[and e.enrolment_date_time <=q1 || q4 || quote_literal({{end_date}}) || q4 || q1 ::DATE]]

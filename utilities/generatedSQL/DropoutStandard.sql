@@ -11,8 +11,11 @@ FROM frequency_and_percentage(''SELECT i.uuid as uuid,
        i.addresslevel_name as address_name
 FROM non_exited_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+      JOIN non_exited_program_enrolment_view e ON e.individual_id = i.id
 WHERE lpe.program_name = ''''Adolescent''''
       AND lpe.agg_obs @> ''''{"32005c85-c1de-4fc3-9314-6d6a10f34b57":"e9ce8718-ef32-4870-b3cb-b5e733fc115a"}''''
+      [[and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+      [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '', ''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
@@ -33,8 +36,11 @@ FROM frequency_and_percentage(''SELECT i.uuid as uuid,
        i.addresslevel_name as address_name
 FROM non_exited_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+      JOIN non_exited_program_enrolment_view e ON e.individual_id = i.id
 WHERE lpe.program_name = ''''Adolescent''''
       AND lpe.agg_obs @> ''''{"32005c85-c1de-4fc3-9314-6d6a10f34b57":"aafae271-765c-4347-be3b-3fc1e00e63a1"}''''
+      [[and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+      [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '', ''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
@@ -55,8 +61,11 @@ FROM frequency_and_percentage(''SELECT i.uuid as uuid,
        i.addresslevel_name as address_name
 FROM non_exited_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+      JOIN non_exited_program_enrolment_view e ON e.individual_id = i.id
 WHERE lpe.program_name = ''''Adolescent''''
       AND lpe.agg_obs @> ''''{"32005c85-c1de-4fc3-9314-6d6a10f34b57":"d7443a73-80b7-4320-9c45-6558595be70a"}''''
+      [[and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+      [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '', ''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
@@ -77,8 +86,11 @@ FROM frequency_and_percentage(''SELECT i.uuid as uuid,
        i.addresslevel_name as address_name
 FROM non_exited_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+      JOIN non_exited_program_enrolment_view e ON e.individual_id = i.id
 WHERE lpe.program_name = ''''Adolescent''''
       AND lpe.agg_obs @> ''''{"32005c85-c1de-4fc3-9314-6d6a10f34b57":"29d29318-6b0c-4a2b-85e3-5392bd5a668f"}''''
+      [[and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+      [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '', ''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
@@ -99,8 +111,11 @@ FROM frequency_and_percentage(''SELECT i.uuid as uuid,
        i.addresslevel_name as address_name
 FROM non_exited_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+      JOIN non_exited_program_enrolment_view e ON e.individual_id = i.id
 WHERE lpe.program_name = ''''Adolescent''''
       AND lpe.agg_obs @> ''''{"32005c85-c1de-4fc3-9314-6d6a10f34b57":"7f0e1fbd-a1b9-4121-b630-dfec36a2dfd0"}''''
+      [[and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+      [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '', ''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
@@ -121,8 +136,11 @@ FROM frequency_and_percentage(''SELECT i.uuid as uuid,
        i.addresslevel_name as address_name
 FROM non_exited_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+      JOIN non_exited_program_enrolment_view e ON e.individual_id = i.id
 WHERE lpe.program_name = ''''Adolescent''''
       AND lpe.agg_obs @> ''''{"32005c85-c1de-4fc3-9314-6d6a10f34b57":"72165544-dcef-4322-a07d-242a6e7771e0"}''''
+      [[and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+      [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '', ''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,
@@ -143,8 +161,11 @@ FROM frequency_and_percentage(''SELECT i.uuid as uuid,
        i.addresslevel_name as address_name
 FROM non_exited_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
+      JOIN non_exited_program_enrolment_view e ON e.individual_id = i.id
 WHERE lpe.program_name = ''''Adolescent''''
       AND lpe.agg_obs @> ''''{"32005c85-c1de-4fc3-9314-6d6a10f34b57":"9b141130-a1c7-4e3b-bc95-5b9b157f7160"}''''
+      [[and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+      [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '', ''SELECT i.uuid as uuid,
        i.gender as gender_name,
        i.addresslevel_type as address_type,

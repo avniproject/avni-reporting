@@ -9,6 +9,8 @@ WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = 'Adolescent'
     AND (pe.encounter_type_name = 'Annual Visit' or pe.encounter_type_name = 'Quarterly Visit')
+    [[ and e.enrolment_date_time >=(q1 || q4 || quote_literal({{ start_date }}) || q4 || q1  ::DATE)]]
+  [[and e.enrolment_date_time <=q1 || q4 || quote_literal({{end_date}}) || q4 || q1 ::DATE]]
 )
 SELECT DISTINCT i.uuid,
                 i.gender,

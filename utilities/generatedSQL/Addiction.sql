@@ -14,8 +14,12 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
   FROM completed_program_encounter_view pe
          INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
          INNER JOIN individual_view i ON e.individual_id = i.id
+         INNER JOIN address_level a ON a.id = i.address_id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
+    [[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+    [[and a.title = ' || '''' || quote_literal({{title}}) || '''' || ']]
 )
 SELECT ip.iuuid            uuid,
        i.gender            gender_name,
@@ -50,8 +54,12 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
   FROM completed_program_encounter_view pe
          INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
          INNER JOIN individual_view i ON e.individual_id = i.id
+         INNER JOIN address_level a ON a.id = i.address_id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
+    [[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+    [[and a.title = ' || '''' || quote_literal({{title}}) || '''' || ']]
 )
 SELECT ip.iuuid            uuid,
        i.gender            gender_name,
@@ -86,8 +94,12 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
   FROM completed_program_encounter_view pe
          INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
          INNER JOIN individual_view i ON e.individual_id = i.id
+         INNER JOIN address_level a ON a.id = i.address_id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
+    [[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+    [[and a.title = ' || '''' || quote_literal({{title}}) || '''' || ']]
 ),
      tobacco_takers as (SELECT ip.iuuid               iuuid,
                                ip.encounter_date_time encounter_date_time
@@ -117,8 +129,12 @@ Where e.program_name = ''''Adolescent''''
   FROM completed_program_encounter_view pe
          INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
          INNER JOIN individual_view i ON e.individual_id = i.id
+         INNER JOIN address_level a ON a.id = i.address_id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
+    [[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+    [[and a.title = ' || '''' || quote_literal({{title}}) || '''' || ']]
 )
 SELECT ip.iuuid            uuid,
        i.gender            gender_name,
@@ -143,8 +159,12 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
   FROM completed_program_encounter_view pe
          INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
          INNER JOIN individual_view i ON e.individual_id = i.id
+         INNER JOIN address_level a ON a.id = i.address_id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
+    [[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+    [[and a.title = ' || '''' || quote_literal({{title}}) || '''' || ']]
 ),
      alcohol_takers as (SELECT ip.iuuid               iuuid,
                                ip.encounter_date_time encounter_date_time
@@ -174,8 +194,12 @@ Where e.program_name = ''''Adolescent''''
   FROM completed_program_encounter_view pe
          INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
          INNER JOIN individual_view i ON e.individual_id = i.id
+         INNER JOIN address_level a ON a.id = i.address_id
   WHERE e.program_name = ''''Adolescent''''
     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
+    [[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+    [[and a.title = ' || '''' || quote_literal({{title}}) || '''' || ']]
 )
 SELECT ip.iuuid            uuid,
        i.gender            gender_name,

@@ -10,4 +10,3 @@ FROM
 WHERE enrolment.program_name = 'Adolescent'
     [[ and enrolment.enrolment_date_time >=(q1 || q4 || quote_literal({{ start_date }}) || q4 || q1  ::DATE)]]
     [[and enrolment.enrolment_date_time <=q1 || q4 || quote_literal({{end_date}}) || q4 || q1 ::DATE]]
-    [[and i.addresslevel_name = q1 || q4 || quote_literal({{title}}) || q4 || q1]]

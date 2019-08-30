@@ -198,7 +198,7 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
-    AND pe.encounter_type_name = ''''Annual Visit''''
+     and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
 )
 SELECT ip.iuuid            uuid,
        i.gender            gender_name,
@@ -206,8 +206,10 @@ SELECT ip.iuuid            uuid,
        i.addresslevel_name address_name
 FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
-WHERE ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' IS NOT NULL
-  AND ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' ?| ARRAY [''''0b7f3334-f81e-4d84-a13d-b35011e34456'''']
+WHERE (ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' IS NOT NULL
+  AND ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' ?| ARRAY [''''0b7f3334-f81e-4d84-a13d-b35011e34456''''])
+  OR  (ip.obs -> ''''49b70138-ea65-45ee-8f3f-676bb8a1f8d3'''' IS NOT NULL
+  AND ip.obs -> ''''49b70138-ea65-45ee-8f3f-676bb8a1f8d3'''' ?| ARRAY [''''0b7f3334-f81e-4d84-a13d-b35011e34456''''])
   AND erank = 1
 '', ''SELECT
   DISTINCT
@@ -235,7 +237,7 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
-    AND pe.encounter_type_name = ''''Annual Visit''''
+    and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
 )
 SELECT ip.iuuid            uuid,
        i.gender            gender_name,
@@ -243,8 +245,10 @@ SELECT ip.iuuid            uuid,
        i.addresslevel_name address_name
 FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
-WHERE ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' IS NOT NULL
-  AND ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' ?| ARRAY [''''48689220-7064-4a73-90c4-b8857445a0c8'''']
+WHERE (ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' IS NOT NULL
+  AND ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' ?| ARRAY [''''48689220-7064-4a73-90c4-b8857445a0c8''''])
+  OR  (ip.obs -> ''''49b70138-ea65-45ee-8f3f-676bb8a1f8d3'''' IS NOT NULL
+  AND ip.obs -> ''''49b70138-ea65-45ee-8f3f-676bb8a1f8d3'''' ?| ARRAY [''''48689220-7064-4a73-90c4-b8857445a0c8''''])
   AND erank = 1
 '', ''SELECT
   DISTINCT
@@ -272,7 +276,7 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
-    AND pe.encounter_type_name = ''''Annual Visit''''
+    and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
 )
 SELECT ip.iuuid            uuid,
        i.gender            gender_name,
@@ -280,8 +284,10 @@ SELECT ip.iuuid            uuid,
        i.addresslevel_name address_name
 FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
-WHERE ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' IS NOT NULL
-  AND ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' ?| ARRAY [''''352bb8a4-1569-492f-9a53-14e3b134c104'''']
+WHERE (ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' IS NOT NULL
+  AND ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' ?| ARRAY [''''352bb8a4-1569-492f-9a53-14e3b134c104''''])
+  OR  (ip.obs -> ''''49b70138-ea65-45ee-8f3f-676bb8a1f8d3'''' IS NOT NULL
+  AND ip.obs -> ''''49b70138-ea65-45ee-8f3f-676bb8a1f8d3'''' ?| ARRAY [''''352bb8a4-1569-492f-9a53-14e3b134c104''''])
   AND erank = 1
 '', ''SELECT
   DISTINCT
@@ -309,7 +315,7 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
-    AND pe.encounter_type_name = ''''Annual Visit''''
+    and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
 )
 SELECT ip.iuuid            uuid,
        i.gender            gender_name,
@@ -317,8 +323,10 @@ SELECT ip.iuuid            uuid,
        i.addresslevel_name address_name
 FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
-WHERE ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' IS NOT NULL
-  AND ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' ?| ARRAY [''''7b8829db-9a5a-4177-bab3-6f8e3bb3832c'''']
+WHERE (ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' IS NOT NULL
+  AND ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' ?| ARRAY [''''7b8829db-9a5a-4177-bab3-6f8e3bb3832c''''])
+  OR  (ip.obs -> ''''49b70138-ea65-45ee-8f3f-676bb8a1f8d3'''' IS NOT NULL
+  AND ip.obs -> ''''49b70138-ea65-45ee-8f3f-676bb8a1f8d3'''' ?| ARRAY [''''7b8829db-9a5a-4177-bab3-6f8e3bb3832c''''])
   AND erank = 1
 '', ''SELECT
   DISTINCT
@@ -346,7 +354,7 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
-    AND pe.encounter_type_name = ''''Annual Visit''''
+    and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
 )
 SELECT ip.iuuid            uuid,
        i.gender            gender_name,
@@ -354,8 +362,10 @@ SELECT ip.iuuid            uuid,
        i.addresslevel_name address_name
 FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
-WHERE ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' IS NOT NULL
-  AND ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' ?| ARRAY [''''88af3c67-3828-4f4b-8993-1497a86bf2bf'''']
+WHERE (ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' IS NOT NULL
+  AND ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' ?| ARRAY [''''88af3c67-3828-4f4b-8993-1497a86bf2bf''''])
+  OR  (ip.obs -> ''''49b70138-ea65-45ee-8f3f-676bb8a1f8d3'''' IS NOT NULL
+  AND ip.obs -> ''''49b70138-ea65-45ee-8f3f-676bb8a1f8d3'''' ?| ARRAY [''''88af3c67-3828-4f4b-8993-1497a86bf2bf''''])
   AND erank = 1
 '', ''SELECT
   DISTINCT
@@ -383,7 +393,7 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
          INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = ''''Adolescent''''
-    AND pe.encounter_type_name = ''''Annual Visit''''
+    and (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
 )
 SELECT ip.iuuid            uuid,
        i.gender            gender_name,
@@ -391,8 +401,10 @@ SELECT ip.iuuid            uuid,
        i.addresslevel_name address_name
 FROM individual_program_partitions ip
        LEFT OUTER JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
-WHERE ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' IS NOT NULL
-  AND ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' ?| ARRAY [''''05ea583c-51d2-412d-ad00-06c432ffe538'''']
+WHERE (ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' IS NOT NULL
+  AND ip.obs -> ''''0361d3b7-1187-414b-acb1-ed1da58e4e44'''' ?| ARRAY [''''05ea583c-51d2-412d-ad00-06c432ffe538''''])
+  OR  (ip.obs -> ''''49b70138-ea65-45ee-8f3f-676bb8a1f8d3'''' IS NOT NULL
+  AND ip.obs -> ''''49b70138-ea65-45ee-8f3f-676bb8a1f8d3'''' ?| ARRAY [''''05ea583c-51d2-412d-ad00-06c432ffe538''''])
   AND erank = 1
 '', ''SELECT
   DISTINCT

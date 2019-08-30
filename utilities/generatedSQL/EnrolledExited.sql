@@ -15,7 +15,9 @@ FROM
   program_enrolment_view enrolment
   LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent''''
-'', ''SELECT
+AND (program_exit_date_time ISNULL
+  [[ OR enrolment.program_exit_date_time < (' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE) ]]
+  [[ OR enrolment.program_exit_date_time > ' || '''' || quote_literal({{ end_date }}) || '''' || ' ::DATE ]])'', ''SELECT
   DISTINCT
   i.uuid  uuid,
   i.gender as gender_name,
@@ -39,7 +41,8 @@ FROM
   LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent''''
   AND program_exit_date_time NOTNULL
-'', ''SELECT
+  [[ and enrolment.program_exit_date_time >= (' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE) ]]
+  [[ and enrolment.program_exit_date_time <= ' || '''' || quote_literal({{ end_date }}) || '''' || ' ::DATE ]]'', ''SELECT
   DISTINCT
   i.uuid  uuid,
   i.gender  gender_name,
@@ -49,7 +52,9 @@ FROM
   program_enrolment_view enrolment
   LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent''''
-'')') AS (
+AND (program_exit_date_time ISNULL
+  [[ OR enrolment.program_exit_date_time < (' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE) ]]
+  [[ OR enrolment.program_exit_date_time > ' || '''' || quote_literal({{ end_date }}) || '''' || ' ::DATE ]])'')') AS (
 rowid TEXT,
 "All Female" TEXT,
 "All Male" TEXT,

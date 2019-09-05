@@ -97,7 +97,8 @@ FROM non_exited_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
       JOIN non_exited_program_enrolment_view e ON e.individual_id = i.id
 WHERE lpe.program_name = ''''Adolescent''''
-      AND lpe.agg_obs @> ''''{"eb47f6b7-1f64-4008-87f3-a781c7c342cd":"b14dc6d9-c724-4005-b407-77b365e8241d"}''''
+    AND (lpe.agg_obs @> ''''{"eb47f6b7-1f64-4008-87f3-a781c7c342cd":"b14dc6d9-c724-4005-b407-77b365e8241d"}''''
+    OR i.addresslevel_type = ''''Boarding'''')
       [[and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
       [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'', ''SELECT
   DISTINCT

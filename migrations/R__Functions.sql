@@ -39,7 +39,7 @@ CREATE OR REPLACE FUNCTION text_obs(ANYELEMENT, TEXT)
   RETURNS TEXT
 AS 'SELECT text_obs($1.observations :: JSON, $2);'
 LANGUAGE SQL
-STABLE 
+STABLE
 RETURNS NULL ON NULL INPUT;
 
 
@@ -432,6 +432,21 @@ END
 $$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION frequency_and_percentage_oneline(frequency_query TEXT, denominator_query TEXT)
+  RETURNS TABLE(value JSONB) AS
+$$
+BEGIN
+  return query select
+    jsonb_merge(
+      jsonb_agg(
+        jsonb_build_object(
+          address_type || ' ' || gender,
+          total::TEXT || ' (' || percentage::VARCHAR(5) || '%)'
+        ))) as value
+  from frequency_and_percentage(frequency_query, denominator_query);
+END
+$$
+LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION frequency_and_percentage(frequency_query TEXT, denominator_query TEXT)
   RETURNS TABLE(total BIGINT, percentage FLOAT, gender VARCHAR, address_type VARCHAR) AS $$
@@ -477,64 +492,78 @@ BEGIN
   EXECUTE format('INSERT INTO aggregates_%s (total, gender, address_type)
     SELECT
       count(qo.uuid)  total,
-      qo.gender_name  gender,
-      qo.address_type address_type
+      g.name          gender,
+      alt.name        address_type
     FROM query_output_%s qo
-    GROUP BY qo.gender_name, qo.address_type', separator, separator);
+      right join gender g on g.name = qo.gender_name
+      right join address_level_type alt on alt.name = qo.address_type
+    WHERE not alt.is_voided and not g.is_voided
+    GROUP BY g.name, alt.name', separator, separator);
 
   EXECUTE format('INSERT INTO denominator_aggregates_%s (total, gender, address_type)
     SELECT
       count(qo.uuid)  total,
-      qo.gender_name  gender,
-      qo.address_type address_type
+      g.name          gender,
+      alt.name        address_type
     FROM denominator_query_output_%s qo
-    GROUP BY qo.gender_name, qo.address_type', separator, separator);
+      right join gender g on g.name = qo.gender_name
+      right join address_level_type alt on alt.name = qo.address_type
+    WHERE not alt.is_voided and not g.is_voided
+    GROUP BY g.name, alt.name', separator, separator);
 
 
   EXECUTE format('INSERT INTO aggregates_%s (total, gender, address_type)
     SELECT
       count(qo.uuid)  total,
+      ''Total''       gender,
+      alt.name        address_type
+    FROM query_output_%s qo
+      right join address_level_type alt on alt.name = qo.address_type
+    WHERE not alt.is_voided
+    GROUP BY alt.name', separator, separator);
+
+  EXECUTE format('INSERT INTO denominator_aggregates_%s (total, gender, address_type)
+    SELECT
+      count(qo.uuid)  total,
+      ''Total''       gender,
+      alt.name        address_type
+    FROM denominator_query_output_%s qo
+      right join address_level_type alt on alt.name = qo.address_type
+    WHERE not alt.is_voided
+    GROUP BY alt.name', separator, separator);
+
+  EXECUTE format('INSERT INTO aggregates_%s (total, gender, address_type)
+    SELECT
+      count(qo.uuid)  total,
+      g.name          gender,
+      ''All''         address_type
+    FROM query_output_%s qo
+      right join gender g on g.name = qo.gender_name
+    WHERE not g.is_voided
+    GROUP BY g.name', separator, separator);
+
+  EXECUTE format('INSERT INTO denominator_aggregates_%s (total, gender, address_type)
+    SELECT
+      count(qo.uuid)  total,
+      g.name          gender,
+      ''All''         address_type
+    FROM denominator_query_output_%s qo
+      right join gender g on g.name = qo.gender_name
+    WHERE not g.is_voided
+    GROUP BY g.name', separator, separator);
+
+  EXECUTE format('INSERT INTO aggregates_%s (total, gender, address_type)
+    SELECT
+      count(qo.uuid)    total,
       ''Total''         gender,
-      qo.address_type address_type
-    FROM query_output_%s qo
-    GROUP BY qo.address_type', separator, separator);
-
-  EXECUTE format('INSERT INTO denominator_aggregates_%s (total, gender, address_type)
-    SELECT
-      count(qo.uuid)  total,
-      ''Total''         gender,
-      qo.address_type address_type
-    FROM denominator_query_output_%s qo
-    GROUP BY qo.address_type', separator, separator);
-
-  EXECUTE format('INSERT INTO aggregates_%s (total, gender, address_type)
-    SELECT
-      count(qo.uuid)  total,
-      qo.gender_name  gender,
-      ''All'' address_type
-    FROM query_output_%s qo
-    GROUP BY qo.gender_name', separator, separator);
-
-  EXECUTE format('INSERT INTO denominator_aggregates_%s (total, gender, address_type)
-    SELECT
-      count(qo.uuid)  total,
-      qo.gender_name  gender,
-      ''All'' address_type
-    FROM denominator_query_output_%s qo
-    GROUP BY qo.gender_name', separator, separator);
-
-  EXECUTE format('INSERT INTO aggregates_%s (total, gender, address_type)
-    SELECT
-      count(qo.uuid) total,
-      ''Total''        gender,
-      ''All''          address_type
+      ''All''           address_type
     FROM query_output_%s qo', separator, separator);
 
   EXECUTE format('INSERT INTO denominator_aggregates_%s (total, gender, address_type)
     SELECT
-      count(qo.uuid) total,
-      ''Total''        gender,
-      ''All''          address_type
+      count(qo.uuid)    total,
+      ''Total''         gender,
+      ''All''           address_type
     FROM denominator_query_output_%s qo', separator, separator);
 
   EXECUTE FORMAT('UPDATE aggregates_%s ag1

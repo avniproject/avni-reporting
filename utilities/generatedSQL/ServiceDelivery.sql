@@ -1,6 +1,11 @@
 -- Generated Report
 -- Name: ServiceDelivery
 
+with filters as (
+    select coalesce( [[ {{start_date}} , ]] '1900-01-01'::timestamptz) start_date,
+           coalesce( [[ {{end_date}} , ]] current_timestamp) end_date
+)
+
 SELECT * FROM crosstab('SELECT
   ''Total Adolescents Registered''                                          rowid,
   address_type || '' '' || gender AS                             attribute,
@@ -199,17 +204,27 @@ SELECT
 ''Total Adolescents With a Dropout Home Visit''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
-FROM frequency_and_percentage(''SELECT DISTINCT
+FROM frequency_and_percentage(''WITH individual_program_partitions AS (
+  SELECT e.individual_id,
+         (row_number()  OVER (PARTITION BY individual_id ORDER BY pe.encounter_date_time desc) = 1)::boolean islatest,
+         pe.program_enrolment_id,
+         pe.observations @> ''''{"575a29c3-a070-4c7d-ac96-fe58b6bddca3":"58f789aa-6570-4aea-87a7-1f7651729c5a"}'''' isdropout
+  FROM completed_program_encounter_view pe
+         INNER JOIN program_enrolment_view e ON pe.program_enrolment_id = e.id
+  WHERE e.program_name = ''''Adolescent''''
+    and (e.enrolment_date_time ISNULL OR e.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''')
+    AND (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit''''))
+
+SELECT DISTINCT
   i.uuid,
   i.gender,
   i.addresslevel_type,
   i.addresslevel_name
-FROM completed_program_encounter_view pe
-      INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
-      INNER JOIN individual_gender_address_view i ON e.individual_id = i.id
-WHERE e.program_name = ''''Adolescent'''' AND pe.encounter_type_name = ''''Dropout Home Visit''''
-[[ and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-  [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+FROM individual_program_partitions pe
+  join completed_program_encounter_view ce ON pe.program_enrolment_id = ce.program_enrolment_id
+  JOIN individual_gender_address_view i ON pe.individual_id = i.id
+WHERE ce.encounter_type_name = ''''Dropout Home Visit''''
+and pe.isdropout and pe.islatest;
 '', ''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                           iuuid,
          row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,

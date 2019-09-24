@@ -1,6 +1,11 @@
 -- Generated Report
 -- Name: Nutrition
 
+with filters as (
+    select coalesce( [[ {{start_date}} , ]] '1900-01-01'::timestamptz) start_date,
+           coalesce( [[ {{end_date}} , ]] current_timestamp) end_date
+)
+
 SELECT * FROM crosstab('SELECT
 ''Severely Malnourished''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

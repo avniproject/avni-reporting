@@ -1,6 +1,11 @@
 -- Generated Report
 -- Name: StatusOfParentsAndStay
 
+with filters as (
+    select coalesce( [[ {{start_date}} , ]] '1900-01-01'::timestamptz) start_date,
+           coalesce( [[ {{end_date}} , ]] current_timestamp) end_date
+)
+
 SELECT * FROM crosstab('SELECT
 ''Either only mother or father alive''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
@@ -99,8 +104,8 @@ FROM non_exited_enrolment_completed_encounters_agg_view lpe
 WHERE lpe.program_name = ''''Adolescent''''
     AND (lpe.agg_obs @> ''''{"eb47f6b7-1f64-4008-87f3-a781c7c342cd":"b14dc6d9-c724-4005-b407-77b365e8241d"}''''
     OR i.addresslevel_type = ''''Boarding'''')
-      [[and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-      [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'', ''SELECT
+       [[and e.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+       [[and e.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'', ''SELECT
   DISTINCT
   i.uuid  uuid,
   i.gender  gender_name,

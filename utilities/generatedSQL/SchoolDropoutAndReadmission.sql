@@ -1,6 +1,11 @@
 -- Generated Report
 -- Name: SchoolDropoutAndReadmission
 
+with filters as (
+    select coalesce( [[ {{start_date}} , ]] '1900-01-01'::timestamptz) start_date,
+           coalesce( [[ {{end_date}} , ]] current_timestamp) end_date
+)
+
 SELECT * FROM crosstab('SELECT
 ''Adolescents who came back after one visit''                                          rowid,
 address_type || '' '' || gender AS                             attribute,

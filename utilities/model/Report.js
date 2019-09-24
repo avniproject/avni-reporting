@@ -17,6 +17,7 @@ class Report {
                 .replace(/'/g, "''")
                 .replace(/q1/g, "'")
                 .replace(/q4/g, "''''")
+                .replace(/FILTERS\.(\w+)/g, "'|| (select $1 from filters) ||'")
         });
     }
 

@@ -5,3 +5,7 @@ In these reports we need things like pivoting based on address type and gender. 
 Reports are defined in `utilities/generate.js`. We use builder pattern to build reports based on different queries. Existing reports can be used as a reference point to create a new report.
 
 Starting point to generate this reports is `utilities/index.js`. You can run this script by doing `node index.js`.
+
+### Some weird things:
+
+- There are two custom operators we are using named q1 and q4 in some sql queries.  We replace q1 with one single quote and q4 with four single quotes in generated queries. This is weird but needed in some metabase queries using filters. We replace literal single quotes found in our queries to with two single quotes for escaping because our queries are wrapped in crosstab and frequency_and_percentage functions as string. q1 and q4 is useful when we don't want our single quotes to get replaced by two single quotes. These are used in reports in metabase that needs filters.

@@ -9,6 +9,9 @@ WITH individual_program_partitions AS (
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = 'Adolescent'
     AND pe.encounter_type_name = 'Annual Visit'
+    AND pe.observations -> '56358db1-8d55-4fbf-89c5-fde97c819c2c' NOTNULL
+    AND pe.observations -> 'cc54cff8-efc5-4246-b9c2-c226361b3798' NOTNULL
+    and (e.enrolment_date_time ISNULL OR e.enrolment_date_time between 'FILTERS.start_date' and 'FILTERS.end_date')
 )
 SELECT i.uuid              as uuid,
        i.gender            as gender_name,

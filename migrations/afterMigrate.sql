@@ -15,6 +15,7 @@ select grant_all_on_common_views(array [
 'individual_gender_address_view',
 'individual_gender_catchment_view',
 'all_enrolment_completed_encounters_agg_view',
+'all_enrolment_completed_encounters_agg_view_v2',
 'non_exited_enrolment_completed_encounters_agg_view',
 'all_completed_encounters_per_enrolment_agg_view',
 'individual_relationship_view',

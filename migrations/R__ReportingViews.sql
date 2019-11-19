@@ -163,6 +163,20 @@ create view all_enrolment_completed_encounters_agg_view AS
   from agg
          join operational_program_view op on op.program_id = agg.program_id;
 
+create or replace view all_enrolment_completed_encounters_agg_view_v2 AS
+  SELECT e.individual_id,
+         e.id program_enrolment_id,
+         e.observations
+           || jsonb_merge(jsonb_agg(
+                            jsonb_strip_nulls(pe.observations) order by pe.encounter_date_time
+                              )) obs
+  FROM program_encounter pe
+         JOIN program_enrolment e ON pe.program_enrolment_id = e.id
+  where e.is_voided is not true
+    and pe.is_voided is not true
+    and pe.encounter_date_time is not null
+  GROUP BY 1, 2;
+
 drop view if exists non_exited_enrolment_completed_encounters_agg_view cascade;
 create view non_exited_enrolment_completed_encounters_agg_view AS
   WITH agg as (

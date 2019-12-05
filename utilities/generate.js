@@ -103,12 +103,13 @@ const nutritionReport = new ReportBuilder()
 const hemoglobinReport = new ReportBuilder()
     .withName("Hemoglobin")
     .withDirName("hemoglobin")
-    .withSubReportWithDenominator("< 7", "hbLessThan7.sql", "hemoglobin/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("<= 7", "hbLessThan7.sql", "hemoglobin/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("7.1 - 10.0", "hbGreaterThan7LessThan10.sql", "hemoglobin/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("10.1 - 11.9", "hbGreaterThan10LessThan11.9.sql", "hemoglobin/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("12", "hbEqualsTo12.sql", "hemoglobin/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("12.1 - 13.0", "hbGreaterThan12LessThan13.sql", "hemoglobin/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("> 13", "hbGreaterThan13.sql", "hemoglobin/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("HB not recorded", "noHb.sql", "hemoglobin/totalNonExitedEnrolled.sql")
     .build();
 
 //Prevalence of Sickle cell Anemia

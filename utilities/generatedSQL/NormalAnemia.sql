@@ -22,7 +22,7 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
   WHERE e.program_name = ''''Adolescent''''
     AND (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
     AND pe.observations -> ''''2973890d-0142-41a6-a6f5-988e7eb36d79'''' NOTNULL
-    AND pe.observations -> ''''cc54cff8-efc5-4246-b9c2-c226361b3798'''' NOTNULL
+    AND pe.observations ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' notnull
     and (e.enrolment_date_time ISNULL OR e.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''')
 )
 SELECT i.uuid              as uuid,
@@ -32,8 +32,7 @@ SELECT i.uuid              as uuid,
 FROM individual_program_partitions ip
        JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.obs ->> ''''2973890d-0142-41a6-a6f5-988e7eb36d79'''' = ''''04bb1773-c353-44a1-a68c-9b448e07ff70''''
-  AND ip.obs -> ''''cc54cff8-efc5-4246-b9c2-c226361b3798'''' IS NOT NULL
-  AND ip.obs -> ''''cc54cff8-efc5-4246-b9c2-c226361b3798'''' ?| ARRAY [''''ba43b326-18a1-4f8d-ad04-29b0371461e0'''']
+  AND cast(ip.obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) >= 12
   AND erank = 1;
 '', ''SELECT
   DISTINCT
@@ -63,7 +62,7 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
   WHERE e.program_name = ''''Adolescent''''
     AND pe.encounter_type_name = ''''Annual Visit''''
     AND pe.observations -> ''''56358db1-8d55-4fbf-89c5-fde97c819c2c'''' NOTNULL
-    AND pe.observations -> ''''cc54cff8-efc5-4246-b9c2-c226361b3798'''' NOTNULL
+    AND pe.observations ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' notnull
     and (e.enrolment_date_time ISNULL OR e.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''')
 )
 SELECT i.uuid              as uuid,
@@ -73,8 +72,7 @@ SELECT i.uuid              as uuid,
 FROM individual_program_partitions ip
        JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE cast(ip.obs ->> ''''56358db1-8d55-4fbf-89c5-fde97c819c2c'''' AS INT) > 1
-  AND ip.obs -> ''''cc54cff8-efc5-4246-b9c2-c226361b3798'''' IS NOT NULL
-  AND ip.obs -> ''''cc54cff8-efc5-4246-b9c2-c226361b3798'''' ?| ARRAY [''''ba43b326-18a1-4f8d-ad04-29b0371461e0'''']
+  AND cast(ip.obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) >= 12
   AND erank = 1;
 '', ''WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
@@ -88,7 +86,7 @@ WHERE cast(ip.obs ->> ''''56358db1-8d55-4fbf-89c5-fde97c819c2c'''' AS INT) > 1
   WHERE e.program_name = ''''Adolescent''''
     AND (pe.encounter_type_name = ''''Annual Visit'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
     AND pe.observations -> ''''2973890d-0142-41a6-a6f5-988e7eb36d79'''' NOTNULL
-    AND pe.observations -> ''''cc54cff8-efc5-4246-b9c2-c226361b3798'''' NOTNULL
+    AND pe.observations ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' notnull
     and (e.enrolment_date_time ISNULL OR e.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''')
 )
 SELECT i.uuid              as uuid,
@@ -98,8 +96,7 @@ SELECT i.uuid              as uuid,
 FROM individual_program_partitions ip
        JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.obs ->> ''''2973890d-0142-41a6-a6f5-988e7eb36d79'''' = ''''04bb1773-c353-44a1-a68c-9b448e07ff70''''
-  AND ip.obs -> ''''cc54cff8-efc5-4246-b9c2-c226361b3798'''' IS NOT NULL
-  AND ip.obs -> ''''cc54cff8-efc5-4246-b9c2-c226361b3798'''' ?| ARRAY [''''ba43b326-18a1-4f8d-ad04-29b0371461e0'''']
+  AND cast(ip.obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) >= 12
   AND erank = 1;
 '')
 UNION ALL
@@ -119,7 +116,7 @@ FROM frequency_and_percentage(''WITH individual_program_partitions AS (
   WHERE e.program_name = ''''Adolescent''''
     AND (pe.encounter_type_name = ''''Severe Anemia Followup'''' or pe.encounter_type_name = ''''Quarterly Visit'''')
     AND pe.observations -> ''''a2e181c3-0827-4da2-9121-a59386449823'''' NOTNULL
-    AND pe.observations -> ''''cc54cff8-efc5-4246-b9c2-c226361b3798'''' NOTNULL
+    AND pe.observations ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' notnull
     and (e.enrolment_date_time ISNULL OR e.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''')
 )
 SELECT i.uuid as uuid,
@@ -129,8 +126,7 @@ SELECT i.uuid as uuid,
 FROM individual_program_partitions ip
       JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.obs ->> ''''a2e181c3-0827-4da2-9121-a59386449823'''' = ''''04bb1773-c353-44a1-a68c-9b448e07ff70''''
-  AND ip.obs -> ''''cc54cff8-efc5-4246-b9c2-c226361b3798'''' IS NOT NULL
-  AND ip.obs -> ''''cc54cff8-efc5-4246-b9c2-c226361b3798'''' ?| ARRAY [''''ba43b326-18a1-4f8d-ad04-29b0371461e0'''']
+  AND cast(ip.obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) >= 12
   AND erank = 1;
 '', ''SELECT
   DISTINCT

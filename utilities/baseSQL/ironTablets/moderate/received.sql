@@ -10,7 +10,7 @@ WITH individual_program_partitions AS (
   WHERE e.program_name = 'Adolescent'
     AND (pe.encounter_type_name = 'Annual Visit' or pe.encounter_type_name = 'Quarterly Visit')
     AND pe.observations -> '2973890d-0142-41a6-a6f5-988e7eb36d79' NOTNULL
-    AND pe.observations -> 'cc54cff8-efc5-4246-b9c2-c226361b3798' NOTNULL
+    AND pe.observations ->> 'f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b' notnull
     and (e.enrolment_date_time ISNULL OR e.enrolment_date_time between 'FILTERS.start_date' and 'FILTERS.end_date')
 )
 SELECT i.uuid              as uuid,
@@ -20,6 +20,5 @@ SELECT i.uuid              as uuid,
 FROM individual_program_partitions ip
        JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.obs ->> '2973890d-0142-41a6-a6f5-988e7eb36d79' = '04bb1773-c353-44a1-a68c-9b448e07ff70'
-  AND ip.obs -> 'cc54cff8-efc5-4246-b9c2-c226361b3798' IS NOT NULL
-  AND ip.obs -> 'cc54cff8-efc5-4246-b9c2-c226361b3798' ?| ARRAY ['5d04a0e1-548e-418b-bad3-3cb4ae184fdd']
+  AND cast(ip.obs ->> 'f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b' AS FLOAT) BETWEEN 7.1 and 10
   AND erank = 1;

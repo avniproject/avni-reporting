@@ -21,5 +21,5 @@ SELECT i.uuid              as uuid,
        i.addresslevel_name as address_name
 FROM individual_program_partitions ip
        JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
-WHERE cast(ip.obs ->> 'f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b' AS FLOAT) < 7
+WHERE cast(ip.obs ->> 'f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b' AS FLOAT) <= 7
   AND erank = 1

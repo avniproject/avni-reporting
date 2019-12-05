@@ -73,8 +73,8 @@ const absorbentMaterialUsedReport = new ReportBuilder()
     .withSubReportWithDenominator("Sanitary Pad", "sanitaryPad.sql", "absorbentMaterialUsed/started.sql")
     .withSubReportWithDenominator("Falalin", "falalin.sql", "absorbentMaterialUsed/started.sql")
     .withSubReportWithDenominator("Kit Pad", "kitPad.sql", "absorbentMaterialUsed/started.sql")
-    .withSubReportWithDenominator("MHM Kit Provided?", "kitProvided.sql", "absorbentMaterialUsed/started.sql")
-    .withSubReportWithDenominator("MHM Kit Used", "kitUsed.sql", "absorbentMaterialUsed/kitProvided.sql")
+    .withSubReportWithDenominator("MHM Kit Provided?", "kitProvided.sql", "absorbentMaterialUsed/totalFemaleAdolescent.sql")
+    .withSubReportWithDenominator("MHM Kit Used", "kitUsed.sql", "absorbentMaterialUsed/started.sql")
     .build();
 
 const treatmentTakenForMenstrualDisorderReport = new ReportBuilder()

@@ -94,6 +94,19 @@ WHERE (ip.obs @> ''''{"5af82adf-6be9-4792-9b3d-543b4b00f816":"04bb1773-c353-44a1
   OR ip.obs @> ''''{"66dd68ee-6118-47df-95ee-a0d115a75a12":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
   OR ip.obs @> ''''{"65fe703a-9756-4688-96d7-6854e783caa1":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
   OR ip.obs @> ''''{"7a71445d-6faa-4db6-95e1-f891312d0a33":["04bb1773-c353-44a1-a68c-9b448e07ff70"]}''''
+  OR cast(ip.obs ->> ''''7ac0d759-c50d-4971-88e0-84274224c839'''' AS FLOAT) < 14.5
+  OR cast(ip.obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) <= 7
+  OR ip.obs @> ''''{"b5daf90d-5b71-4b53-827f-edd4f6539d15":"2c343c7a-db14-4531-902a-d7b169300073"}''''
+  OR ip.obs @> ''''{"f0e3c0db-0f01-4c3d-a468-b740849d0011":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+  OR ip.obs @> ''''{"4cae960e-5e1e-4b23-9927-d95db35d83e3":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+  OR ip.obs @> ''''{"2ebca9be-3be3-4d11-ada0-187563ff04f8":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+  OR ip.obs -> ''''2ebca9be-3be3-4d11-ada0-187563ff04f8'''' ?| ARRAY [
+  ''''92654fda-d485-4b6d-97c5-8a8fe2a9582a'''',
+  ''''ef29759b-5f74-4f5a-b186-fea7697cfb34'''',
+  ''''246df73a-07d8-4924-8cf9-787dea8278fe'''']
+   OR ip.obs @> ''''{"672815aa-4c3f-457b-ac87-fa0b3924c957":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+   OR ip.obs @> ''''{"84e60852-0d0b-4e8e-a3b0-f22d079d42d9":"04bb1773-c353-44a1-a68c-9b448e07ff70"}''''
+
   -- Menstrual Disorders
   OR ip.obs -> ''''0f87eac1-cf6a-4632-8af2-29a935451fe4'''' ?| ARRAY [
     ''''92ad8878-b476-4291-aa76-3377fa7cf19c'''',
@@ -288,7 +301,37 @@ FROM individual_program_partitions ip
        JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.obs @> ''''{"575a29c3-a070-4c7d-ac96-fe58b6bddca3":"58f789aa-6570-4aea-87a7-1f7651729c5a"}''''
   and erank = 1
-'')') AS (
+'')
+UNION ALL
+SELECT
+''Exited''                                          rowid,
+address_type || '' '' || gender AS                             attribute,
+total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
+FROM frequency_and_percentage(''SELECT
+  DISTINCT
+  i.uuid  uuid,
+  i.gender  gender_name,
+  i.addresslevel_type  address_type,
+  i.addresslevel_name address_name
+FROM
+  program_enrolment_view enrolment
+  LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent''''
+  AND program_exit_date_time NOTNULL
+  [[ and enrolment.program_exit_date_time >= (' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE) ]]
+  [[ and enrolment.program_exit_date_time <= ' || '''' || quote_literal({{ end_date }}) || '''' || ' ::DATE ]]'', ''SELECT
+  DISTINCT
+  i.uuid  uuid,
+  i.gender  gender_name,
+  i.addresslevel_type  address_type,
+  i.addresslevel_name address_name
+FROM
+  program_enrolment_view enrolment
+  LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+WHERE enrolment.program_name = ''''Adolescent''''
+AND (program_exit_date_time ISNULL
+  [[ OR enrolment.program_exit_date_time < (' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE) ]]
+  [[ OR enrolment.program_exit_date_time > ' || '''' || quote_literal({{ end_date }}) || '''' || ' ::DATE ]])'')') AS (
 rowid TEXT,
 "All Female" TEXT,
 "All Male" TEXT,

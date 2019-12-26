@@ -23,6 +23,7 @@ const serviceDeliveryReport = new ReportBuilder()
     .withSubReportWithDenominator("Total Adolescents Started Going to School Again",
         "adolescentsStartedSchool.sql",
         "serviceDelivery/totalAdolescentsDroppedOut.sql")
+        .withSubReportWithDenominator("Exited", "totalExited.sql", "serviceDelivery/totalInProgram.sql")
     .build();
 
 //Prevalence of Substance misuse
@@ -233,28 +234,36 @@ const helpline = new ReportBuilder()
 const caste = new ReportBuilder()
     .withName('SocioDemographicsCaste')
     .withDirName('caste')
-    .withSubReportWithDenominator('Caste ST', 'casteST.sql', 'common/everyone.sql')
-    .withSubReportWithDenominator('Caste SC', 'casteSC.sql', 'common/everyone.sql')
-    .withSubReportWithDenominator('Caste OBC', 'casteOBC.sql', 'common/everyone.sql')
-    .withSubReportWithDenominator('Caste General', 'casteGeneral.sql', 'common/everyone.sql')
+    .withSubReportWithDenominator('Caste ST', 'casteST.sql', 'common/everyoneEnrolled.sql')
+    .withSubReportWithDenominator('Caste SC', 'casteSC.sql', 'common/everyoneEnrolled.sql')
+    .withSubReportWithDenominator('Caste OBC', 'casteOBC.sql', 'common/everyoneEnrolled.sql')
+    .withSubReportWithDenominator('Caste General', 'casteGeneral.sql', 'common/everyoneEnrolled.sql')
+
+    .withSubReportWithDenominator('Total', 'everyoneEnrolled.sql', 'common/everyoneEnrolled.sql')
     .build();
 
 const age = new ReportBuilder()
     .withName('SocioDemographicsAge')
     .withDirName('age')
-    .withSubReportWithDenominator('Age 10-14', 'ageFrom10To14.sql', 'common/everyone.sql')
-    .withSubReportWithDenominator('Age 15-19', 'ageFrom15To19.sql', 'common/everyone.sql')
+    .withSubReportWithDenominator('Age Less Than 10 ', 'ageLessThan10.sql', 'age/totalInProgram.sql')
+    .withSubReportWithDenominator('Age From 10 To 13 ', 'ageFrom10To13.sql', 'age/totalInProgram.sql')
+    .withSubReportWithDenominator('Age From 14 To 17 ', 'ageFrom14To17.sql', 'age/totalInProgram.sql')
+    .withSubReportWithDenominator('Age From 18 To 21 ', 'ageFrom18To21.sql', 'age/totalInProgram.sql')
+    .withSubReportWithDenominator('Age Above 21 ', 'ageAbove21.sql', 'age/totalInProgram.sql')
+    .withSubReportWithDenominator('Total ', 'totalInProgram.sql', 'age/totalInProgram.sql')
+
     .build();
 
 const religion = new ReportBuilder()
     .withName('SocioDemographicsReligion')
     .withDirName('religion')
-    .withSubReportWithDenominator('Christian', 'christian.sql', 'common/everyone.sql')
-    .withSubReportWithDenominator('Hindu', 'hindu.sql', 'common/everyone.sql')
-    .withSubReportWithDenominator('Jain', 'jain.sql', 'common/everyone.sql')
-    .withSubReportWithDenominator('Muslim', 'muslim.sql', 'common/everyone.sql')
-    .withSubReportWithDenominator('Other', 'other.sql', 'common/everyone.sql')
-    .withSubReportWithDenominator('Sikh', 'sikh.sql', 'common/everyone.sql')
+    .withSubReportWithDenominator('Christian', 'christian.sql', 'common/everyoneEnrolled.sql')
+    .withSubReportWithDenominator('Hindu', 'hindu.sql', 'common/everyoneEnrolled.sql')
+    .withSubReportWithDenominator('Jain', 'jain.sql', 'common/everyoneEnrolled.sql')
+    .withSubReportWithDenominator('Muslim', 'muslim.sql', 'common/everyoneEnrolled.sql')
+    .withSubReportWithDenominator('Other', 'other.sql', 'common/everyoneEnrolled.sql')
+    .withSubReportWithDenominator('Sikh', 'sikh.sql', 'common/everyoneEnrolled.sql')
+    .withSubReportWithDenominator('Total', 'everyoneEnrolled.sql', 'common/everyoneEnrolled.sql')
     .build();
 
 const rationCard = new ReportBuilder()
@@ -264,6 +273,8 @@ const rationCard = new ReportBuilder()
     .withSubReportWithDenominator('BPL', 'bpl.sql', 'common/everyone.sql')
     .withSubReportWithDenominator('Antyodaya', 'antyodaya.sql', 'common/everyone.sql')
     .withSubReportWithDenominator('No', 'no.sql', 'common/everyone.sql')
+    .withSubReportWithDenominator('Data Not Available', 'dataNotAvailable.sql', 'common/everyone.sql')
+    .withSubReportWithDenominator('Total', 'everyone.sql', 'common/everyone.sql')
     .build();
 
 //Socio Demographic - Standards 8,9,10

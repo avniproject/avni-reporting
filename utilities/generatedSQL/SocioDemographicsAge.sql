@@ -7,58 +7,193 @@ with filters as (
 )
 
 SELECT * FROM crosstab('SELECT
-''Age 10-14''                                          rowid,
+''Age Less Than 10 ''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
-FROM frequency_and_percentage(''SELECT
-  i.uuid uuid,
-  g.name    gender_name,
-  a.type    address_type,
-  a.title   address_name
+FROM frequency_and_percentage(''
+
+SELECT
+    i.uuid uuid,
+    g.name    gender_name,
+    a.type    address_type,
+    a.title   address_name
 FROM individual i
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-  LEFT OUTER JOIN gender g ON i.gender_id = g.id
-WHERE extract(YEAR FROM age(i.date_of_birth)) >= 10 AND extract(YEAR FROM age(i.date_of_birth)) <= 14
-[[ and i.registration_date >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-  [[and i.registration_date <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'', ''SELECT
-    DISTINCT
-    i.uuid  uuid,
-    g.name  gender_name,
-    a.type  address_type,
-    a.title address_name
-FROM
-    individual i
-    LEFT OUTER JOIN gender g ON g.id = i.gender_id
-    LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-    [[ and i.registration_date >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and i.registration_date <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'')
+         LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
+         LEFT OUTER JOIN gender g ON i.gender_id = g.id
+         join program_enrolment_view pe on i.id = pe.individual_id
+where extract(YEAR FROM age(i.date_of_birth)) < 10 and enrolment_date_time notnull and program_name=''''Adolescent''''
+  and i.is_voided=false
+  and pe.program_exit_date_time isnull
+  and
+    pe.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''''', ''SELECT i.uuid                 uuid,
+       i.gender            as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM individual_gender_address_view i
+         join program_enrolment_view pev on i.id = pev.individual_id
+where program_name = ''''Adolescent''''
+  and enrolment_date_time notnull
+  and pev.program_exit_date_time isnull
+
+  and pev.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||'''''
+'')
 UNION ALL
 SELECT
-''Age 15-19''                                          rowid,
+''Age From 10 To 13 ''                                          rowid,
+address_type || '' '' || gender AS                             attribute,
+total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
+FROM frequency_and_percentage(''
+
+
+
+SELECT
+    i.uuid uuid,
+    g.name    gender_name,
+    a.type    address_type,
+    a.title   address_name
+FROM individual i
+         LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
+         LEFT OUTER JOIN gender g ON i.gender_id = g.id
+         join program_enrolment_view pe on i.id = pe.individual_id
+where extract(YEAR FROM age(i.date_of_birth)) >= 10 AND extract(YEAR FROM age(i.date_of_birth)) <= 13 and enrolment_date_time notnull and program_name=''''Adolescent''''
+  and i.is_voided=false
+and pe.program_exit_date_time isnull
+  and
+    pe.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''''', ''SELECT i.uuid                 uuid,
+       i.gender            as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM individual_gender_address_view i
+         join program_enrolment_view pev on i.id = pev.individual_id
+where program_name = ''''Adolescent''''
+  and enrolment_date_time notnull
+  and pev.program_exit_date_time isnull
+
+  and pev.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||'''''
+'')
+UNION ALL
+SELECT
+''Age From 14 To 17 ''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''SELECT
-  i.uuid uuid,
-  g.name    gender_name,
-  a.type    address_type,
-  a.title   address_name
+    i.uuid uuid,
+    g.name    gender_name,
+    a.type    address_type,
+    a.title   address_name
 FROM individual i
-  LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-  LEFT OUTER JOIN gender g ON i.gender_id = g.id
-WHERE extract(YEAR FROM age(i.date_of_birth)) > 14 AND extract(YEAR FROM age(i.date_of_birth)) <= 19
-[[ and i.registration_date >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-  [[and i.registration_date <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'', ''SELECT
-    DISTINCT
-    i.uuid  uuid,
-    g.name  gender_name,
-    a.type  address_type,
-    a.title address_name
-FROM
-    individual i
-    LEFT OUTER JOIN gender g ON g.id = i.gender_id
-    LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-    [[ and i.registration_date >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and i.registration_date <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'')') AS (
+         LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
+         LEFT OUTER JOIN gender g ON i.gender_id = g.id
+         join program_enrolment_view pe on i.id = pe.individual_id
+where extract(YEAR FROM age(i.date_of_birth)) >= 14 AND extract(YEAR FROM age(i.date_of_birth)) <= 17 and enrolment_date_time notnull and program_name=''''Adolescent''''
+
+  and i.is_voided=false
+  and pe.program_exit_date_time isnull
+
+  and
+    pe.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''''', ''SELECT i.uuid                 uuid,
+       i.gender            as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM individual_gender_address_view i
+         join program_enrolment_view pev on i.id = pev.individual_id
+where program_name = ''''Adolescent''''
+  and enrolment_date_time notnull
+  and pev.program_exit_date_time isnull
+
+  and pev.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||'''''
+'')
+UNION ALL
+SELECT
+''Age From 18 To 21 ''                                          rowid,
+address_type || '' '' || gender AS                             attribute,
+total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
+FROM frequency_and_percentage(''
+SELECT
+    i.uuid uuid,
+    g.name    gender_name,
+    a.type    address_type,
+    a.title   address_name
+FROM individual i
+         LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
+         LEFT OUTER JOIN gender g ON i.gender_id = g.id
+         join program_enrolment_view pe on i.id = pe.individual_id
+where extract(YEAR FROM age(i.date_of_birth)) >= 18 AND extract(YEAR FROM age(i.date_of_birth)) <= 21 and enrolment_date_time notnull and program_name=''''Adolescent''''
+  and i.is_voided=false
+ and pe.program_exit_date_time isnull
+  and    pe.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''''', ''SELECT i.uuid                 uuid,
+       i.gender            as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM individual_gender_address_view i
+         join program_enrolment_view pev on i.id = pev.individual_id
+where program_name = ''''Adolescent''''
+  and enrolment_date_time notnull
+  and pev.program_exit_date_time isnull
+
+  and pev.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||'''''
+'')
+UNION ALL
+SELECT
+''Age Above 21 ''                                          rowid,
+address_type || '' '' || gender AS                             attribute,
+total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
+FROM frequency_and_percentage(''
+
+SELECT
+    i.uuid uuid,
+    g.name    gender_name,
+    a.type    address_type,
+    a.title   address_name
+FROM individual i
+         LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
+         LEFT OUTER JOIN gender g ON i.gender_id = g.id
+         join program_enrolment_view pe on i.id = pe.individual_id
+where extract(YEAR FROM age(i.date_of_birth))>21 and enrolment_date_time notnull and program_name=''''Adolescent''''
+and i.is_voided=false
+and pe.program_exit_date_time isnull
+
+  and
+    pe.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''''', ''SELECT i.uuid                 uuid,
+       i.gender            as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM individual_gender_address_view i
+         join program_enrolment_view pev on i.id = pev.individual_id
+where program_name = ''''Adolescent''''
+  and enrolment_date_time notnull
+  and pev.program_exit_date_time isnull
+
+  and pev.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||'''''
+'')
+UNION ALL
+SELECT
+''Total ''                                          rowid,
+address_type || '' '' || gender AS                             attribute,
+total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
+FROM frequency_and_percentage(''SELECT i.uuid                 uuid,
+       i.gender            as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM individual_gender_address_view i
+         join program_enrolment_view pev on i.id = pev.individual_id
+where program_name = ''''Adolescent''''
+  and enrolment_date_time notnull
+  and pev.program_exit_date_time isnull
+
+  and pev.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||'''''
+'', ''SELECT i.uuid                 uuid,
+       i.gender            as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM individual_gender_address_view i
+         join program_enrolment_view pev on i.id = pev.individual_id
+where program_name = ''''Adolescent''''
+  and enrolment_date_time notnull
+  and pev.program_exit_date_time isnull
+
+  and pev.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||'''''
+'')') AS (
 rowid TEXT,
 "All Female" TEXT,
 "All Male" TEXT,

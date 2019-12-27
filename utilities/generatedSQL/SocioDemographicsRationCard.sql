@@ -27,17 +27,19 @@ where i.observations @>''''{"476a0b71-485b-4a0a-ba6f-4f3cf13568ca":"36008c2c-774
 
     pe.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||'''''
 '', ''SELECT
-    DISTINCT
-    i.uuid  uuid,
-    g.name  gender_name,
-    a.type  address_type,
-    a.title address_name
-FROM
-    individual i
-    LEFT OUTER JOIN gender g ON g.id = i.gender_id
-    LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-    [[ and i.registration_date >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and i.registration_date <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'')
+    i.uuid uuid,
+    g.name    gender_name,
+    a.type    address_type,
+    a.title   address_name
+FROM individual i
+         LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
+         LEFT OUTER JOIN gender g ON i.gender_id = g.id
+         join program_enrolment_view pe on i.id = pe.individual_id
+where pe.enrolment_date_time notnull and pe.program_name=''''Adolescent''''
+and i.is_voided=false
+ and pe.program_exit_date_time isnull
+and
+   pe.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''''')
 UNION ALL
 SELECT
 ''BPL''                                          rowid,
@@ -58,17 +60,19 @@ where i.observations @>''''{"476a0b71-485b-4a0a-ba6f-4f3cf13568ca":"5c9f10e3-3e2
  and pe.program_exit_date_time isnull
  and
     pe.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''''', ''SELECT
-    DISTINCT
-    i.uuid  uuid,
-    g.name  gender_name,
-    a.type  address_type,
-    a.title address_name
-FROM
-    individual i
-    LEFT OUTER JOIN gender g ON g.id = i.gender_id
-    LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-    [[ and i.registration_date >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and i.registration_date <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'')
+    i.uuid uuid,
+    g.name    gender_name,
+    a.type    address_type,
+    a.title   address_name
+FROM individual i
+         LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
+         LEFT OUTER JOIN gender g ON i.gender_id = g.id
+         join program_enrolment_view pe on i.id = pe.individual_id
+where pe.enrolment_date_time notnull and pe.program_name=''''Adolescent''''
+and i.is_voided=false
+ and pe.program_exit_date_time isnull
+and
+   pe.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''''')
 UNION ALL
 SELECT
 ''Antyodaya''                                          rowid,
@@ -91,17 +95,19 @@ where i.observations @>''''{"476a0b71-485b-4a0a-ba6f-4f3cf13568ca":"eace7aa2-844
   and
     pe.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||'''''
 '', ''SELECT
-    DISTINCT
-    i.uuid  uuid,
-    g.name  gender_name,
-    a.type  address_type,
-    a.title address_name
-FROM
-    individual i
-    LEFT OUTER JOIN gender g ON g.id = i.gender_id
-    LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-    [[ and i.registration_date >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and i.registration_date <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'')
+    i.uuid uuid,
+    g.name    gender_name,
+    a.type    address_type,
+    a.title   address_name
+FROM individual i
+         LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
+         LEFT OUTER JOIN gender g ON i.gender_id = g.id
+         join program_enrolment_view pe on i.id = pe.individual_id
+where pe.enrolment_date_time notnull and pe.program_name=''''Adolescent''''
+and i.is_voided=false
+ and pe.program_exit_date_time isnull
+and
+   pe.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''''')
 UNION ALL
 SELECT
 ''No''                                          rowid,
@@ -124,17 +130,19 @@ where i.observations @>''''{"476a0b71-485b-4a0a-ba6f-4f3cf13568ca":"e7b50c78-3d9
   and
     pe.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||'''''
 '', ''SELECT
-    DISTINCT
-    i.uuid  uuid,
-    g.name  gender_name,
-    a.type  address_type,
-    a.title address_name
-FROM
-    individual i
-    LEFT OUTER JOIN gender g ON g.id = i.gender_id
-    LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-    [[ and i.registration_date >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and i.registration_date <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'')
+    i.uuid uuid,
+    g.name    gender_name,
+    a.type    address_type,
+    a.title   address_name
+FROM individual i
+         LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
+         LEFT OUTER JOIN gender g ON i.gender_id = g.id
+         join program_enrolment_view pe on i.id = pe.individual_id
+where pe.enrolment_date_time notnull and pe.program_name=''''Adolescent''''
+and i.is_voided=false
+ and pe.program_exit_date_time isnull
+and
+   pe.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''''')
 UNION ALL
 SELECT
 ''Data Not Available''                                          rowid,
@@ -154,17 +162,19 @@ where i.observations->>''''476a0b71-485b-4a0a-ba6f-4f3cf13568ca'''' isnull and p
    and pe.program_exit_date_time isnull
   and
     pe.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''''', ''SELECT
-    DISTINCT
-    i.uuid  uuid,
-    g.name  gender_name,
-    a.type  address_type,
-    a.title address_name
-FROM
-    individual i
-    LEFT OUTER JOIN gender g ON g.id = i.gender_id
-    LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-    [[ and i.registration_date >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and i.registration_date <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'')
+    i.uuid uuid,
+    g.name    gender_name,
+    a.type    address_type,
+    a.title   address_name
+FROM individual i
+         LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
+         LEFT OUTER JOIN gender g ON i.gender_id = g.id
+         join program_enrolment_view pe on i.id = pe.individual_id
+where pe.enrolment_date_time notnull and pe.program_name=''''Adolescent''''
+and i.is_voided=false
+ and pe.program_exit_date_time isnull
+and
+   pe.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''''')
 UNION ALL
 SELECT
 ''Total''                                          rowid,
@@ -184,17 +194,19 @@ and i.is_voided=false
  and pe.program_exit_date_time isnull
 and
    pe.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''''', ''SELECT
-    DISTINCT
-    i.uuid  uuid,
-    g.name  gender_name,
-    a.type  address_type,
-    a.title address_name
-FROM
-    individual i
-    LEFT OUTER JOIN gender g ON g.id = i.gender_id
-    LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
-    [[ and i.registration_date >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-    [[and i.registration_date <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'')') AS (
+    i.uuid uuid,
+    g.name    gender_name,
+    a.type    address_type,
+    a.title   address_name
+FROM individual i
+         LEFT OUTER JOIN address_level_type_view a ON i.address_id = a.id
+         LEFT OUTER JOIN gender g ON i.gender_id = g.id
+         join program_enrolment_view pe on i.id = pe.individual_id
+where pe.enrolment_date_time notnull and pe.program_name=''''Adolescent''''
+and i.is_voided=false
+ and pe.program_exit_date_time isnull
+and
+   pe.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''''')') AS (
 rowid TEXT,
 "All Female" TEXT,
 "All Male" TEXT,

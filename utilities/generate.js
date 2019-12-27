@@ -269,12 +269,12 @@ const religion = new ReportBuilder()
 const rationCard = new ReportBuilder()
     .withName('SocioDemographicsRationCard')
     .withDirName('rationCard')
-    .withSubReportWithDenominator('APL', 'apl.sql', 'common/everyone.sql')
-    .withSubReportWithDenominator('BPL', 'bpl.sql', 'common/everyone.sql')
-    .withSubReportWithDenominator('Antyodaya', 'antyodaya.sql', 'common/everyone.sql')
-    .withSubReportWithDenominator('No', 'no.sql', 'common/everyone.sql')
-    .withSubReportWithDenominator('Data Not Available', 'dataNotAvailable.sql', 'common/everyone.sql')
-    .withSubReportWithDenominator('Total', 'everyone.sql', 'common/everyone.sql')
+    .withSubReportWithDenominator('APL', 'apl.sql', 'rationCard/everyone.sql')
+    .withSubReportWithDenominator('BPL', 'bpl.sql', 'rationCard/everyone.sql')
+    .withSubReportWithDenominator('Antyodaya', 'antyodaya.sql', 'rationCard/everyone.sql')
+    .withSubReportWithDenominator('No', 'no.sql', 'rationCard/everyone.sql')
+    .withSubReportWithDenominator('Data Not Available', 'dataNotAvailable.sql', 'rationCard/everyone.sql')
+    .withSubReportWithDenominator('Total', 'everyone.sql', 'rationCard/everyone.sql')
     .build();
 
 //Socio Demographic - Standards 8,9,10

@@ -121,3 +121,7 @@ CREATE OR REPLACE VIEW boolean AS
    select 'No' as status, false as bool);
 
 CREATE OR REPLACE VIEW boolean_na(status) AS (values ('Yes'), ('No'), ('Not Available'));
+
+CREATE OR REPLACE VIEW year(year) As (values (2016), (2017), (2018), (2019), (2020), (2021),
+                                             (2022), (2023), (2024), (2025), (2026), (2027),
+                                             (2028), (2029), (2030));

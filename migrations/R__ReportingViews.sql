@@ -115,7 +115,7 @@ drop view if exists individual_gender_address_view cascade;
 create view individual_gender_address_view as
   select i.*,
          l.title      as addresslevel_name,
-         l.level      as addresslevel_level,
+         lt.level     as addresslevel_level,
          l.uuid       as addresslevel_uuid,
          l.is_voided  as addresslevel_is_voided,
          lt.name      as addresslevel_type,

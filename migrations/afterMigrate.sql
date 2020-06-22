@@ -29,7 +29,8 @@ select grant_all_on_common_views(array [
 'latest_program_encounter',
 'boolean',
 'location_view',
-'year'
+'year',
+'concept_concept_answer'
 ], a.rolname)
 
 FROM pg_roles a

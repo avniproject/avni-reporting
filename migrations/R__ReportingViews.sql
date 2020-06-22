@@ -410,3 +410,15 @@ create or replace view location_view as
          left join address_level top5 on top5.parent_id = top4.id
          left join address_level top6 on top6.parent_id = top5.id
   where top1.parent_id is null;
+
+drop view if exists concept_concept_answer;
+create view concept_concept_answer as (
+    select c.name       concept_name,
+           ac.name      answer_concept_name,
+           ca.is_voided answer_concept_voided,
+           c.is_voided  concept_voided
+    from concept c
+             join concept_answer ca on c.id = ca.concept_id
+             join concept ac on ca.answer_concept_id = ac.id
+    where not ca.is_voided = false
+);

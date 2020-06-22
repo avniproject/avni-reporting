@@ -420,5 +420,5 @@ create view concept_concept_answer as (
     from concept c
              join concept_answer ca on c.id = ca.concept_id
              join concept ac on ca.answer_concept_id = ac.id
-    where not ca.is_voided = false
+    where not ca.is_voided
 );

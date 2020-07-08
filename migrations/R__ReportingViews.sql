@@ -413,10 +413,11 @@ create or replace view location_view as
 
 drop view if exists concept_concept_answer;
 create view concept_concept_answer as (
-    select c.name       concept_name,
-           ac.name      answer_concept_name,
-           ca.is_voided answer_concept_voided,
-           c.is_voided  concept_voided
+    select c.name          concept_name,
+           ac.name         answer_concept_name,
+           ca.is_voided    answer_concept_voided,
+           c.is_voided     concept_voided,
+           ca.answer_order answer_order
     from concept c
              join concept_answer ca on c.id = ca.concept_id
              join concept ac on ca.answer_concept_id = ac.id

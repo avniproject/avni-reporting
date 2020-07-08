@@ -733,3 +733,82 @@ $body$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION boolean_txt(BOOLEAN) RETURNS TEXT
 AS 'SELECT CASE $1 WHEN TRUE THEN ''Yes'' WHEN FALSE THEN ''No'' ELSE NULL END;'
 LANGUAGE sql IMMUTABLE;
+
+
+create or replace function translated_value(lang text, string text)
+    returns character varying
+    stable
+    language plpgsql
+as
+$$
+DECLARE
+    result varchar;
+BEGIN
+    select coalesce(translation_json ->> string, string)
+    from translation
+    where language = lang
+    into result;
+    return result;
+END;
+$$;
+
+
+create or replace function translated_single_select_coded(lang text, obs text) returns character varying
+    stable
+    language plpgsql
+as
+$$
+DECLARE result VARCHAR;
+BEGIN
+    BEGIN
+        SELECT translated_value(lang, name::text)
+        FROM concept
+        WHERE uuid = obs
+        INTO result;
+        RETURN result;
+    END;
+END
+$$;
+
+create or replace function translated_single_select_coded(lang text, obs jsonb) returns character varying
+    stable
+    language plpgsql
+as
+$$
+DECLARE result VARCHAR;
+BEGIN
+    BEGIN
+        IF JSONB_TYPEOF(obs) = 'array' THEN
+            SELECT translated_value(lang, name::text) FROM concept WHERE (obs->>0) = uuid INTO result;
+        ELSEIF JSONB_TYPEOF(obs) = 'string' THEN
+            select translated_value(lang, name::text) from concept where (array_to_json(array[obs])->>0) = uuid into result;
+        END IF;
+        RETURN result;
+    END;
+END
+$$;
+
+create or replace function translated_multi_select_coded(lang text, obs jsonb) returns character varying
+    language plpgsql
+as
+$$
+DECLARE result VARCHAR;
+BEGIN
+    BEGIN
+        IF JSONB_TYPEOF(obs) = 'array'
+        THEN
+            SELECT STRING_AGG(translated_value(lang, C.NAME::text), ' ,')
+            FROM JSONB_ARRAY_ELEMENTS_TEXT(obs) AS OB (UUID)
+                     JOIN CONCEPT C ON C.UUID = OB.UUID
+            INTO RESULT;
+        ELSE
+            SELECT translated_single_select_coded(lang, obs) INTO RESULT;
+        END IF;
+        RETURN RESULT;
+    EXCEPTION WHEN OTHERS
+        THEN
+            RAISE NOTICE 'Failed while processing translated_multi_select_coded(''%'')', obs :: TEXT;
+            RAISE NOTICE '% %', SQLERRM, SQLSTATE;
+    END;
+END
+$$;

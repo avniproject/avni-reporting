@@ -417,7 +417,9 @@ create view concept_concept_answer as (
            ac.name         answer_concept_name,
            ca.is_voided    answer_concept_voided,
            c.is_voided     concept_voided,
-           ca.answer_order answer_order
+           ca.answer_order answer_order,
+           ac.uuid         answer_concept_uuid,
+           c.uuid          concept_uuid
     from concept c
              join concept_answer ca on c.id = ca.concept_id
              join concept ac on ca.answer_concept_id = ac.id

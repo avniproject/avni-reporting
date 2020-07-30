@@ -342,95 +342,81 @@ DROP FUNCTION IF EXISTS frequency_and_percentage( TEXT );
 DROP FUNCTION IF EXISTS frequency_and_percentage( TEXT, TEXT );
 
 CREATE OR REPLACE FUNCTION frequency_and_percentage(frequency_query TEXT)
-  RETURNS TABLE(total BIGINT, percentage FLOAT, gender VARCHAR, address_type VARCHAR) AS $$
-DECLARE separator TEXT;
+    RETURNS TABLE
+            (
+                total        BIGINT,
+                percentage   FLOAT,
+                gender       VARCHAR,
+                address_type VARCHAR
+            )
+AS
+$$
 BEGIN
-  SELECT md5(random() :: TEXT) :: TEXT
-  INTO separator;
-  EXECUTE format('CREATE TEMPORARY TABLE query_output_%s (
-    uuid         VARCHAR,
-    gender_name  VARCHAR,
-    address_type VARCHAR,
-    address_name VARCHAR
-  ) ON COMMIT DROP', separator);
-
-  EXECUTE format('CREATE TEMPORARY TABLE aggregates_%s (
-    total        BIGINT,
-    percentage   FLOAT,
-    gender       VARCHAR,
-    address_type VARCHAR
-  ) ON COMMIT DROP', separator);
-
-  -- Store filtered query into a temporary variable
-
-
-  EXECUTE FORMAT('INSERT INTO query_output_%s (uuid, gender_name, address_type, address_name) %s', separator,
-                 frequency_query);
-
-  EXECUTE format('INSERT INTO aggregates_%s (total, gender, address_type)
-    SELECT
-      count(qo.uuid)  total,
-      qo.gender_name  gender,
-      qo.address_type address_type
-    FROM query_output_%s qo
-    GROUP BY qo.gender_name, qo.address_type', separator, separator);
-
-
-  EXECUTE format('INSERT INTO aggregates_%s (total, gender, address_type)
-    SELECT
-      count(qo.uuid)  total,
-      ''Total''         gender,
-      qo.address_type address_type
-    FROM query_output_%s qo
-    GROUP BY qo.address_type', separator, separator);
-
-  EXECUTE format('INSERT INTO aggregates_%s (total, gender, address_type)
-    SELECT
-      count(qo.uuid)  total,
-      qo.gender_name  gender,
-      ''All'' address_type
-    FROM query_output_%s qo
-    GROUP BY qo.gender_name', separator, separator);
-
-  EXECUTE format('INSERT INTO aggregates_%s (total, gender, address_type)
-    SELECT
-      count(qo.uuid) total,
-      ''Total''        gender,
-      ''All''          address_type
-    FROM query_output_%s qo', separator, separator);
-
-  EXECUTE format('UPDATE aggregates_%s ag1
-  SET percentage = coalesce(round(((ag1.total / (SELECT sum(ag2.total)
-                                                 FROM aggregates_%s ag2
-                                                 WHERE (ag2.address_type = ag1.address_type AND ag2.gender != ''Total'')))
-                                   * 100), 2), 100)', separator, separator);
-
-  EXECUTE FORMAT('INSERT INTO aggregates_%s (total, percentage, address_type, gender)
-                        SELECT 0, 0, atname, gname from (
-                            SELECT DISTINCT type atname,
-                            name gname
-                          FROM address_level_type_view, gender
-                          UNION ALL
-                          SELECT
-                            ''All'' atname,
-                            name gname
-                          FROM gender
-                          UNION ALL
-                          SELECT DISTINCT
-                            type atname,
-                            ''Total'' gname
-                          FROM address_level_type_view
-                          UNION ALL
-                          SELECT
-                            ''All'' atname,
-                            ''Total'' gname) as agt where (atname, gname) not in (select address_type, gender from aggregates_%s)',
-                 separator, separator);
-
-  RETURN QUERY EXECUTE format('SELECT *
-               FROM aggregates_%s order by address_type, gender', separator);
+    RETURN QUERY EXECUTE FORMAT('WITH query_output as ( %s ),' ||
+                                'aggregates_all as (SELECT
+                                                       count(qo.uuid)  total,
+                                                       g.name          gender,
+                                                       alt.name        address_type
+                                                     FROM query_output qo
+                                                       right join gender g on g.name = qo.gender_name
+                                                       right join address_level_type alt on alt.name = qo.address_type
+                                                     WHERE not alt.is_voided and not g.is_voided
+                                                     GROUP BY g.name, alt.name),' ||
+                                'aggregates_alt as (SELECT
+                                                       count(qo.uuid)  total,
+                                                       ''Total''::varchar       gender,
+                                                       alt.name        address_type
+                                                     FROM query_output qo
+                                                       right join address_level_type alt on alt.name = qo.address_type
+                                                     WHERE not alt.is_voided
+                                                     GROUP BY alt.name),' ||
+                                'aggregates_gender as (SELECT
+                                                       count(qo.uuid)  total,
+                                                       g.name          gender,
+                                                       ''All''::varchar         address_type
+                                                     FROM query_output qo
+                                                       right join gender g on g.name = qo.gender_name
+                                                     WHERE not g.is_voided
+                                                     GROUP BY g.name),' ||
+                                'aggregates_none as (SELECT
+                                                       count(qo.uuid)    total,
+                                                       ''Total''::varchar         gender,
+                                                       ''All''::varchar           address_type
+                                                     FROM query_output qo),' ||
+                                'aggregates as (select * from aggregates_all
+                                                union all select * from aggregates_alt
+                                                union all select * from aggregates_gender
+                                                union all select * from aggregates_none),' ||
+                                'aggregates_percentage as (select *,
+                                                            coalesce(round(((ag1.total / nullif((SELECT sum(ag2.total)
+                                                 FROM aggregates ag2
+                                                 WHERE (ag2.address_type = ag1.address_type AND ag2.gender != ''Total''::varchar)),0))
+                                   * 100), 2), 100) as percentage from aggregates ag1),' ||
+                                'all_data as (select total, percentage, address_type, gender from aggregates_percentage
+                                             union all
+                                             SELECT 0, 0::float, atname, gname from (
+                                                     SELECT DISTINCT type atname,
+                                                     name gname
+                                                   FROM address_level_type_view, gender
+                                                   UNION ALL
+                                                   SELECT
+                                                     ''All''::varchar atname,
+                                                     name gname
+                                                   FROM gender
+                                                   UNION ALL
+                                                   SELECT DISTINCT
+                                                     type atname,
+                                                     ''Total''::varchar gname
+                                                   FROM address_level_type_view
+                                                   UNION ALL
+                                                   SELECT
+                                                     ''All''::varchar atname,
+                                                     ''Total''::varchar gname) as agt where (atname, gname) not in (select address_type, gender from aggregates))' ||
+                                'select total, percentage, gender, address_type from all_data order by address_type, gender',
+                                replace(frequency_query, ';', ''));
 END
 $$
-LANGUAGE plpgsql;
+    LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION frequency_and_percentage_oneline(frequency_query TEXT, denominator_query TEXT)
   RETURNS TABLE(value JSONB) AS
@@ -449,157 +435,120 @@ $$
 LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION frequency_and_percentage(frequency_query TEXT, denominator_query TEXT)
-  RETURNS TABLE(total BIGINT, percentage FLOAT, gender VARCHAR, address_type VARCHAR) AS $$
-DECLARE separator TEXT;
+    RETURNS TABLE
+            (
+                total        BIGINT,
+                percentage   FLOAT,
+                gender       VARCHAR,
+                address_type VARCHAR
+            )
+AS
+$$
+DECLARE
 BEGIN
-  SELECT md5(random() :: TEXT) :: TEXT
-  INTO separator;
-  EXECUTE FORMAT('CREATE TEMPORARY TABLE query_output_%s (
-    uuid         VARCHAR,
-    gender_name  VARCHAR,
-    address_type VARCHAR,
-    address_name VARCHAR
-  ) ON COMMIT DROP', separator);
-
-  EXECUTE FORMAT('CREATE TEMPORARY TABLE denominator_query_output_%s (
-    uuid         VARCHAR,
-    gender_name  VARCHAR,
-    address_type VARCHAR,
-    address_name VARCHAR
-  ) ON COMMIT DROP', separator);
-
-  EXECUTE format('CREATE TEMPORARY TABLE aggregates_%s (
-    total        BIGINT,
-    percentage   FLOAT,
-    gender       VARCHAR,
-    address_type VARCHAR
-  ) ON COMMIT DROP', separator);
-
-  EXECUTE FORMAT('CREATE TEMPORARY TABLE denominator_aggregates_%s (
-    total        BIGINT,
-    gender       VARCHAR,
-    address_type VARCHAR
-  ) ON COMMIT DROP', separator);
-  -- Store filtered query into a temporary variable
-
-  EXECUTE FORMAT('INSERT INTO query_output_%s (uuid, gender_name, address_type, address_name) %s', separator,
-                 frequency_query);
-
-  EXECUTE FORMAT('INSERT INTO denominator_query_output_%s (uuid, gender_name, address_type, address_name) %s',
-                 separator,
-                 denominator_query);
-
-  EXECUTE format('INSERT INTO aggregates_%s (total, gender, address_type)
-    SELECT
-      count(qo.uuid)  total,
-      g.name          gender,
-      alt.name        address_type
-    FROM query_output_%s qo
-      right join gender g on g.name = qo.gender_name
-      right join address_level_type alt on alt.name = qo.address_type
-    WHERE not alt.is_voided and not g.is_voided
-    GROUP BY g.name, alt.name', separator, separator);
-
-  EXECUTE format('INSERT INTO denominator_aggregates_%s (total, gender, address_type)
-    SELECT
-      count(qo.uuid)  total,
-      g.name          gender,
-      alt.name        address_type
-    FROM denominator_query_output_%s qo
-      right join gender g on g.name = qo.gender_name
-      right join address_level_type alt on alt.name = qo.address_type
-    WHERE not alt.is_voided and not g.is_voided
-    GROUP BY g.name, alt.name', separator, separator);
-
-
-  EXECUTE format('INSERT INTO aggregates_%s (total, gender, address_type)
-    SELECT
-      count(qo.uuid)  total,
-      ''Total''       gender,
-      alt.name        address_type
-    FROM query_output_%s qo
-      right join address_level_type alt on alt.name = qo.address_type
-    WHERE not alt.is_voided
-    GROUP BY alt.name', separator, separator);
-
-  EXECUTE format('INSERT INTO denominator_aggregates_%s (total, gender, address_type)
-    SELECT
-      count(qo.uuid)  total,
-      ''Total''       gender,
-      alt.name        address_type
-    FROM denominator_query_output_%s qo
-      right join address_level_type alt on alt.name = qo.address_type
-    WHERE not alt.is_voided
-    GROUP BY alt.name', separator, separator);
-
-  EXECUTE format('INSERT INTO aggregates_%s (total, gender, address_type)
-    SELECT
-      count(qo.uuid)  total,
-      g.name          gender,
-      ''All''         address_type
-    FROM query_output_%s qo
-      right join gender g on g.name = qo.gender_name
-    WHERE not g.is_voided
-    GROUP BY g.name', separator, separator);
-
-  EXECUTE format('INSERT INTO denominator_aggregates_%s (total, gender, address_type)
-    SELECT
-      count(qo.uuid)  total,
-      g.name          gender,
-      ''All''         address_type
-    FROM denominator_query_output_%s qo
-      right join gender g on g.name = qo.gender_name
-    WHERE not g.is_voided
-    GROUP BY g.name', separator, separator);
-
-  EXECUTE format('INSERT INTO aggregates_%s (total, gender, address_type)
-    SELECT
-      count(qo.uuid)    total,
-      ''Total''         gender,
-      ''All''           address_type
-    FROM query_output_%s qo', separator, separator);
-
-  EXECUTE format('INSERT INTO denominator_aggregates_%s (total, gender, address_type)
-    SELECT
-      count(qo.uuid)    total,
-      ''Total''         gender,
-      ''All''           address_type
-    FROM denominator_query_output_%s qo', separator, separator);
-
-  EXECUTE FORMAT('UPDATE aggregates_%s ag1
-  SET percentage = (SELECT coalesce(round((( ag2.total :: FLOAT / (CASE dag1.total when 0 then null else dag1.total end) ) * 100) :: NUMERIC, 2), 100)
-                    FROM aggregates_%s ag2
-                      INNER JOIN denominator_aggregates_%s dag1
-                        ON ag2.address_type = dag1.address_type AND ag2.gender = dag1.gender
-                    WHERE ag2.address_type = ag1.address_type AND ag2.gender = ag1.gender
-                    LIMIT 1)', separator, separator, separator);
-
-  EXECUTE FORMAT('INSERT INTO aggregates_%s (total, percentage, address_type, gender)
-                        SELECT 0, 0, atname, gname from (
-                            SELECT DISTINCT type atname,
-                            name gname
-                          FROM address_level_type_view, gender
-                          UNION ALL
-                          SELECT
-                            ''All'' atname,
-                            name gname
-                          FROM gender
-                          UNION ALL
-                          SELECT DISTINCT
-                            type atname,
-                            ''Total'' gname
-                          FROM address_level_type_view
-                          UNION ALL
-                          SELECT
-                            ''All'' atname,
-                            ''Total'' gname) as agt where (atname, gname) not in (select address_type, gender from aggregates_%s)',
-                 separator, separator);
-
-  RETURN QUERY EXECUTE format('SELECT *
-               FROM aggregates_%s order by address_type, gender', separator);
+    RETURN QUERY EXECUTE FORMAT('WITH query_output as ( %s ),' ||
+                                'denominator_query_output as ( %s ),' ||
+                                'aggregates_all as (SELECT
+                                                       count(qo.uuid)  total,
+                                                       g.name          gender,
+                                                       alt.name        address_type
+                                                     FROM query_output qo
+                                                       right join gender g on g.name = qo.gender_name
+                                                       right join address_level_type alt on alt.name = qo.address_type
+                                                     WHERE not alt.is_voided and not g.is_voided
+                                                     GROUP BY g.name, alt.name),' ||
+                                'denominator_aggregates_all as (SELECT
+                                                       count(qo.uuid)  total,
+                                                       g.name          gender,
+                                                       alt.name        address_type
+                                                     FROM denominator_query_output qo
+                                                       right join gender g on g.name = qo.gender_name
+                                                       right join address_level_type alt on alt.name = qo.address_type
+                                                     WHERE not alt.is_voided and not g.is_voided
+                                                     GROUP BY g.name, alt.name),' ||
+                                'aggregates_alt as (SELECT
+                                                       count(qo.uuid)  total,
+                                                       ''Total''::varchar       gender,
+                                                       alt.name        address_type
+                                                     FROM query_output qo
+                                                       right join address_level_type alt on alt.name = qo.address_type
+                                                     WHERE not alt.is_voided
+                                                     GROUP BY alt.name),' ||
+                                'denominator_aggregates_alt as (SELECT
+                                                       count(qo.uuid)  total,
+                                                       ''Total''::varchar       gender,
+                                                       alt.name        address_type
+                                                     FROM denominator_query_output qo
+                                                       right join address_level_type alt on alt.name = qo.address_type
+                                                     WHERE not alt.is_voided
+                                                     GROUP BY alt.name),' ||
+                                'aggregates_gender as (SELECT
+                                                       count(qo.uuid)  total,
+                                                       g.name          gender,
+                                                       ''All''::varchar         address_type
+                                                     FROM query_output qo
+                                                       right join gender g on g.name = qo.gender_name
+                                                     WHERE not g.is_voided
+                                                     GROUP BY g.name),' ||
+                                'denominator_aggregates_gender as (SELECT
+                                                       count(qo.uuid)  total,
+                                                       g.name          gender,
+                                                       ''All''::varchar         address_type
+                                                     FROM denominator_query_output qo
+                                                       right join gender g on g.name = qo.gender_name
+                                                     WHERE not g.is_voided
+                                                     GROUP BY g.name),' ||
+                                'aggregates_none as (SELECT
+                                                       count(qo.uuid)    total,
+                                                       ''Total''::varchar         gender,
+                                                       ''All''::varchar           address_type
+                                                     FROM query_output qo),' ||
+                                'denominator_aggregates_none as (SELECT
+                                                       count(qo.uuid)    total,
+                                                       ''Total''::varchar         gender,
+                                                       ''All''::varchar           address_type
+                                                     FROM denominator_query_output qo),' ||
+                                'aggregates as (select * from aggregates_all
+                                                union all select * from aggregates_alt
+                                                union all select * from aggregates_gender
+                                                union all select * from aggregates_none),' ||
+                                'denominator_aggregates as (select * from denominator_aggregates_all
+                                                            union all select * from denominator_aggregates_alt
+                                                            union all select * from denominator_aggregates_gender
+                                                            union all select * from denominator_aggregates_none),' ||
+                                'aggregates_percentage as (select *,
+                                                            (SELECT coalesce(round((( ag2.total :: FLOAT / (CASE dag1.total when 0 then null else dag1.total end) ) * 100) :: NUMERIC, 2), 100)
+                                                             FROM aggregates ag2
+                                                               INNER JOIN denominator_aggregates dag1
+                                                                 ON ag2.address_type = dag1.address_type AND ag2.gender = dag1.gender
+                                                             WHERE ag2.address_type = ag1.address_type AND ag2.gender = ag1.gender
+                                                             LIMIT 1) as percentage from aggregates ag1),' ||
+                                'all_data as (select total, percentage, address_type, gender from aggregates_percentage
+                                             union all
+                                             SELECT 0, 0::float, atname, gname from (
+                                                     SELECT DISTINCT type atname,
+                                                     name gname
+                                                   FROM address_level_type_view, gender
+                                                   UNION ALL
+                                                   SELECT
+                                                     ''All''::varchar atname,
+                                                     name gname
+                                                   FROM gender
+                                                   UNION ALL
+                                                   SELECT DISTINCT
+                                                     type atname,
+                                                     ''Total''::varchar gname
+                                                   FROM address_level_type_view
+                                                   UNION ALL
+                                                   SELECT
+                                                     ''All''::varchar atname,
+                                                     ''Total''::varchar gname) as agt where (atname, gname) not in (select address_type, gender from aggregates))' ||
+                                'select total, percentage, gender, address_type from all_data order by address_type, gender',
+                                replace(frequency_query, ';', ''),
+                                replace(denominator_query, ';', ''));
 END
 $$
-LANGUAGE plpgsql;
+    LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION multi_select_coded(obs JSONB)
     RETURNS VARCHAR LANGUAGE plpgsql

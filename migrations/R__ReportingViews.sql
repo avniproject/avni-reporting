@@ -425,3 +425,22 @@ create view concept_concept_answer as (
              join concept ac on ca.answer_concept_id = ac.id
     where not ca.is_voided
 );
+
+drop view if exists member_household_view;
+create view member_household_view(member_name, member_id, house_name, house_id, head_of_family_name,
+                                           head_of_family_id) as
+SELECT concat(member.first_name, ' ', member.last_name) AS member_name,
+       member.id                                        AS member_id,
+       house.first_name                                 AS house_name,
+       house.id                                         AS house_id,
+       (SELECT concat(head.first_name, ' ', head.last_name) AS concat
+        FROM individual head
+        WHERE (head.id = gs2.member_subject_id))        AS head_of_family_name,
+       gs2.member_subject_id                            AS head_of_family_id
+FROM (((((individual member
+    JOIN subject_type ON (((member.subject_type_id = subject_type.id) AND ((subject_type.type)::text = 'Person'::text))))
+    LEFT JOIN group_subject gs ON (((gs.member_subject_id = member.id) AND (NOT gs.is_voided))))
+    LEFT JOIN individual house ON ((house.id = gs.group_subject_id)))
+    LEFT JOIN group_subject gs2 ON ((gs2.group_subject_id = house.id)))
+         LEFT JOIN group_role gr ON ((gs2.group_role_id = gr.id)))
+WHERE (((NOT gs2.is_voided) AND (gr.role = 'Head of household'::text)) OR (gr.role IS NULL));

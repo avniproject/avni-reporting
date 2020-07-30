@@ -30,7 +30,8 @@ select grant_all_on_common_views(array [
 'boolean',
 'location_view',
 'year',
-'concept_concept_answer'
+'concept_concept_answer',
+'member_household_view'
 ], a.rolname)
 
 FROM pg_roles a

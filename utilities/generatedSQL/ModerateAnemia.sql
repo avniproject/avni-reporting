@@ -128,16 +128,27 @@ FROM individual_program_partitions ip
 WHERE ip.obs ->> ''''a2e181c3-0827-4da2-9121-a59386449823'''' = ''''04bb1773-c353-44a1-a68c-9b448e07ff70''''
   AND cast(ip.obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) BETWEEN 7.1 and 10
   AND erank = 1;
-'', ''SELECT
-  DISTINCT
-  i.uuid  uuid,
-  i.gender  gender_name,
-  i.addresslevel_type  address_type,
-  i.addresslevel_name address_name
-FROM
-  non_exited_program_enrolment_view enrolment
-    LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
-WHERE enrolment.program_name = ''''Adolescent''''
+'', ''WITH individual_program_partitions AS (
+  SELECT i.uuid          AS                                                                                   iuuid,
+         row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
+         pe.uuid         AS                                                                                   euuid,
+         pe.observations AS                                                                                   obs,
+         pe.encounter_date_time
+  FROM completed_program_encounter_view pe
+         INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
+         INNER JOIN individual_view i ON e.individual_id = i.id
+  WHERE e.program_name = ''''Adolescent''''
+    AND pe.encounter_type_name = ''''Annual Visit''''
+    AND pe.observations ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' notnull
+)
+SELECT i.uuid              as uuid,
+       i.gender            as gender_name,
+       i.addresslevel_type as address_type,
+       i.addresslevel_name as address_name
+FROM individual_program_partitions ip
+       JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
+WHERE cast(ip.obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) BETWEEN 7.1 and 10
+  AND erank = 1;
 '')') AS (
 rowid TEXT,
 "All Female" TEXT,

@@ -131,7 +131,7 @@ const severeAnemiaIronTabletsReport = new ReportBuilder()
     .withDirName("ironTablets")
     .withSubReportWithDenominator("Received", "severe/received.sql", "common/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Consumed", "severe/taken.sql", "ironTablets/severe/received.sql")
-    .withSubReportWithDenominator("Albandazole Tablets Received", "severe/albendazole.sql", "common/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Albandazole Tablets Received", "severe/albendazole.sql", "ironTablets/severe/totalNonExitedEnrolledSevere.sql")
     .build();
 
 const moderateAnemiaIronTabletsReport = new ReportBuilder()
@@ -139,7 +139,7 @@ const moderateAnemiaIronTabletsReport = new ReportBuilder()
     .withDirName("ironTablets")
     .withSubReportWithDenominator("Received", "moderate/received.sql", "common/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Consumed", "moderate/taken.sql", "ironTablets/moderate/received.sql")
-    .withSubReportWithDenominator("Albandazole Tablets Received", "moderate/albendazole.sql", "common/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Albandazole Tablets Received", "moderate/albendazole.sql", "ironTablets/moderate/totalNonExitedEnrolledModerate.sql")
     .build();
 
 const mildAnemiaIronTabletsReport = new ReportBuilder()
@@ -147,7 +147,7 @@ const mildAnemiaIronTabletsReport = new ReportBuilder()
     .withDirName("ironTablets")
     .withSubReportWithDenominator("Received", "mild/received.sql", "common/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Consumed", "mild/taken.sql", "ironTablets/mild/received.sql")
-    .withSubReportWithDenominator("Albandazole Tablets Received", "mild/albendazole.sql", "common/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Albandazole Tablets Received", "mild/albendazole.sql", "ironTablets/mild/totalNonExitedEnrolledMild.sql")
     .build();
 
 const normalAnemiaIronTabletsReport = new ReportBuilder()
@@ -155,7 +155,7 @@ const normalAnemiaIronTabletsReport = new ReportBuilder()
     .withDirName("ironTablets")
     .withSubReportWithDenominator("Received", "normal/received.sql", "common/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Consumed", "normal/taken.sql", "ironTablets/normal/received.sql")
-    .withSubReportWithDenominator("Albandazole Tablets Received", "normal/albendazole.sql", "common/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Albandazole Tablets Received", "normal/albendazole.sql", "ironTablets/normal/totalNonExitedEnrolledNormal.sql")
     .build();
 
 const vulnerability = new ReportBuilder()

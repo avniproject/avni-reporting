@@ -761,3 +761,30 @@ BEGIN
     END;
 END
 $$;
+
+
+create or replace function get_coded_string_value(obs jsonb, obs_store hstore) returns character varying
+    language plpgsql
+as
+$$
+DECLARE
+    result VARCHAR;
+BEGIN
+    BEGIN
+        IF JSONB_TYPEOF(obs) = 'array'
+        THEN
+            select STRING_AGG(obs_store -> obs_item, ', ')
+            from unnest(ARRAY [obs ->> 0]) obs_item
+            INTO RESULT;
+        ELSE
+            SELECT obs_store -> (obs ->> 0) INTO RESULT;
+        END IF;
+        RETURN RESULT;
+    EXCEPTION
+        WHEN OTHERS
+            THEN
+                RAISE NOTICE 'Failed while processing get_coded_string_value(''%'')', obs :: TEXT;
+                RAISE NOTICE '% %', SQLERRM, SQLSTATE;
+    END;
+END
+$$;

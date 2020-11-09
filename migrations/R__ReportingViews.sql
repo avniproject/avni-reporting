@@ -211,7 +211,6 @@ create view all_completed_encounters_per_enrolment_agg_view as
         from program_encounter
         where is_voided is not true
           and encounter_date_time is not null
-        order by program_enrolment_id, encounter_date_time
     )
   select program_enrolment_id, jsonb_merge(jsonb_agg(jsonb_strip_nulls(observations))) observations
   from completed_program_encounters

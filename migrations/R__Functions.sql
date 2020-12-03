@@ -773,8 +773,8 @@ BEGIN
     BEGIN
         IF JSONB_TYPEOF(obs) = 'array'
         THEN
-            select STRING_AGG(obs_store -> obs_item, ', ')
-            from unnest(ARRAY [obs ->> 0]) obs_item
+            select STRING_AGG(obs_store -> OB.UUID, ', ')
+            from JSONB_ARRAY_ELEMENTS_TEXT(obs) AS OB (UUID)
             INTO RESULT;
         ELSE
             SELECT obs_store -> (obs ->> 0) INTO RESULT;

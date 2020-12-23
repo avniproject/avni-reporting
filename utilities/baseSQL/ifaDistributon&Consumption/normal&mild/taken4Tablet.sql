@@ -1,4 +1,3 @@
-set role sewa_rural;
 WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,
          row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
@@ -12,7 +11,7 @@ WITH individual_program_partitions AS (
     AND pe.encounter_type_name = 'Annual Visit'
     AND pe.observations -> '56358db1-8d55-4fbf-89c5-fde97c819c2c' NOTNULL
     AND pe.observations ->> 'f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b' notnull
-    and (e.enrolment_date_time ISNULL OR e.enrolment_date_time between ${start_date} and ${end_date})
+    and (e.enrolment_date_time ISNULL OR e.enrolment_date_time between 'FILTERS.start_date' and 'FILTERS.end_date')
 )
 SELECT i.uuid              as uuid,
        i.gender            as gender_name,
@@ -20,6 +19,6 @@ SELECT i.uuid              as uuid,
        i.addresslevel_name as address_name
 FROM individual_program_partitions ip
        JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
-WHERE cast(ip.obs ->> '56358db1-8d55-4fbf-89c5-fde97c819c2c' AS INT) > 1
-  AND cast(ip.obs ->> 'f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b' AS FLOAT) <= 7
+WHERE cast(ip.obs ->> '56358db1-8d55-4fbf-89c5-fde97c819c2c' AS FLOAT) >= 4
+  AND cast(ip.obs ->> 'f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b' AS FLOAT) >= 10.1
   AND erank = 1;

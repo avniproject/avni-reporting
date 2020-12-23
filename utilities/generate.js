@@ -24,6 +24,15 @@ const serviceDeliveryReport = new ReportBuilder()
         "adolescentsStartedSchool.sql",
         "serviceDelivery/totalAdolescentsDroppedOut.sql")
         .withSubReportWithDenominator("Exited", "totalExited.sql", "serviceDelivery/totalInProgram.sql")
+    .withSubReportWithDenominator("All menstruating girls",
+        "started.sql",
+        "absorbentMaterialUsed/totalFemaleAdolescent.sql")
+    .withSubReportWithDenominator("MHM Kit Provided?",
+        "kitProvided.sql",
+        "absorbentMaterialUsed/totalFemaleAdolescent.sql")
+    .withSubReportWithDenominator("MHM Kit Used",
+        "kitUsed.sql",
+        "absorbentMaterialUsed/started.sql")
     .build();
 
 //Prevalence of Substance misuse
@@ -49,6 +58,7 @@ const educationReport = new ReportBuilder()
     .withSubReportWithDenominator("No School in Village", "noSchoolInVillage.sql", "education/totalAdolescentsDroppedOut.sql")
     .withSubReportWithDenominator("Study Completed", "studyCompleted.sql", "education/totalAdolescentsDroppedOut.sql")
     .withSubReportWithDenominator("Other Reason", "otherReason.sql", "education/totalAdolescentsDroppedOut.sql")
+    .withSubReportWithDenominator("Reason not mentioned", "reasonNotMentioned.sql", "education/totalAdolescentsDroppedOut.sql")
     .build();
 
 //Menstrual disorders
@@ -73,7 +83,7 @@ const absorbentMaterialUsedReport = new ReportBuilder()
     .withSubReportWithDenominator("Old Cloth", "oldCloth.sql", "absorbentMaterialUsed/started.sql")
     .withSubReportWithDenominator("Sanitary Pad", "sanitaryPad.sql", "absorbentMaterialUsed/started.sql")
     .withSubReportWithDenominator("Falalin", "falalin.sql", "absorbentMaterialUsed/started.sql")
-    .withSubReportWithDenominator("Kit Pad", "kitPad.sql", "absorbentMaterialUsed/started.sql")
+    .withSubReportWithDenominator("All menstruating girls", "started.sql", "absorbentMaterialUsed/totalFemaleAdolescent.sql")
     .withSubReportWithDenominator("MHM Kit Provided?", "kitProvided.sql", "absorbentMaterialUsed/totalFemaleAdolescent.sql")
     .withSubReportWithDenominator("MHM Kit Used", "kitUsed.sql", "absorbentMaterialUsed/started.sql")
     .build();
@@ -82,11 +92,11 @@ const treatmentTakenForMenstrualDisorderReport = new ReportBuilder()
     .withName("TreatmentTakenForMenstrualDisorder")
     .withDirName("menstrualDisorderTreatment")
     .withSubReportWithDenominator("Disorder", "disorder.sql", "common/started.sql")
-    .withSubReportWithDenominator("Treament Taken", "takingTreatment.sql", "menstrualDisorderTreatment/disorder.sql")
-    .withSubReportWithDenominator("Home Remedy", "homeRemedy.sql", "menstrualDisorderTreatment/disorder.sql")
-    .withSubReportWithDenominator("Consulted Doctor", "consultedDoctor.sql", "menstrualDisorderTreatment/disorder.sql")
-    .withSubReportWithDenominator("Tablet From Shop", "tabletFromShop.sql", "menstrualDisorderTreatment/disorder.sql")
-    .withSubReportWithDenominator("Tablet From Kit", "tabletFromKit.sql", "menstrualDisorderTreatment/disorder.sql")
+    .withSubReportWithDenominator("Treament Taken", "takingTreatment.sql", "common/started.sql")
+    .withSubReportWithDenominator("Home Remedy", "homeRemedy.sql", "common/started.sql")
+    .withSubReportWithDenominator("Consulted Doctor", "consultedDoctor.sql", "common/started.sql")
+    .withSubReportWithDenominator("Tablet From Shop", "tabletFromShop.sql", "common/started.sql")
+    .withSubReportWithDenominator("Tablet From Kit", "tabletFromKit.sql", "common/started.sql")
     .build();
 
 //Prevalence of Malnutrition
@@ -98,6 +108,7 @@ const nutritionReport = new ReportBuilder()
     .withSubReportWithDenominator("Normal", "normal.sql", "nutrition/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Overweight", "overweight.sql", "nutrition/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Obese", "obese.sql", "nutrition/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("BMI not done", "bmiNotDone.sql", "nutrition/bmiNotNormal.sql")
     .build();
 
 //Prevalence of Anemia
@@ -119,10 +130,37 @@ const sicklingReport = new ReportBuilder()
     .withDirName("sickling")
     .withSubReportWithDenominator("Test Done", "sicklingTestDone.sql", "sickling/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Negative", "negative.sql", "sickling/sicklingTestDone.sql")
-    .withSubReportWithDenominator("Trait", "trait.sql", "sickling/sicklingTestDone.sql")
-    .withSubReportWithDenominator("Disease", "disease.sql", "sickling/sicklingTestDone.sql")
+    .withSubReportWithDenominator("Counseling done for Trait", "counsellingDoneForTrait.sql", "sickling/trait.sql")
+    .withSubReportWithDenominator("Counseling done for Disease", "counsellingDoneForDisease.sql", "sickling/disease.sql")
     .withSubReportWithDenominator("Counselling Done", "counsellingDone.sql", "sickling/diseaseOrTrait.sql")
     .withSubReportWithDenominator("Referred", "referralForSickling.sql", "sickling/diseaseOrTrait.sql")
+    .withSubReportWithDenominator("Total Tested Adolescents ", "sicklingTestDone.sql", "sickling/totalNonExitedEnrolled.sql")
+    .build();
+
+//IFA distribution & Consumption
+const severeModerateAnemiaIronTabletsReport = new ReportBuilder()
+    .withName("IFADistribution&ConsumptionForSevere&ModerateAnemia")
+    .withDirName("ifaDistributon&Consumption")
+    .withSubReportWithDenominator("Adolescents received IFA", "severe&moderate/received.sql", "ifaDistributon&Consumption/severe&moderate/totalNonExitedEnrolledSevere&Moderate.sql")
+    .withSubReportWithDenominator("Adolescents consumed 0 tablet", "severe&moderate/taken0.sql", "ifaDistributon&Consumption/severe&moderate/totalNonExitedEnrolledSevere&Moderate.sql")
+    .withSubReportWithDenominator("Adolescents consumed 1 to 10 tablet", "severe&moderate/taken1To10.sql", "ifaDistributon&Consumption/severe&moderate/totalNonExitedEnrolledSevere&Moderate.sql")
+    .withSubReportWithDenominator("Adolescents consumed 11 to 20 tablets", "severe&moderate/taken11To20.sql", "ifaDistributon&Consumption/severe&moderate/totalNonExitedEnrolledSevere&Moderate.sql")
+    .withSubReportWithDenominator("Adolescents consumed 21 to 30 tablets", "severe&moderate/taken21To30.sql", "ifaDistributon&Consumption/severe&moderate/totalNonExitedEnrolledSevere&Moderate.sql")
+    .withSubReportWithDenominator("Adolescents received Albendazol", "severe&moderate/albendazole.sql", "ifaDistributon&Consumption/severe&moderate/totalNonExitedEnrolledSevere&Moderate.sql")
+    .build();
+
+
+//IFA distribution & Consumption
+const normlaMildAnemiaIronTabletsReport = new ReportBuilder()
+    .withName("IFADistribution&ConsumptionForNormal&MildAnemia")
+    .withDirName("ifaDistributon&Consumption")
+    .withSubReportWithDenominator("Adolescents received IFA", "normal&mild/received.sql", "ifaDistributon&Consumption/normal&mild/totalNonExitedEnrolledNormal.sql")
+    .withSubReportWithDenominator("Adolescents consumed 0 tablet", "normal&mild/taken0Tablet.sql", "ifaDistributon&Consumption/severe&moderate/totalNonExitedEnrolledSevere&Moderate.sql")
+    .withSubReportWithDenominator("Adolescents consumed 1 tablet", "normal&mild/taken1Tablet.sql", "ifaDistributon&Consumption/normal&mild/totalNonExitedEnrolledNormal.sql")
+    .withSubReportWithDenominator("Adolescents consumed 2 tablets", "normal&mild/taken2Tablet.sql", "ifaDistributon&Consumption/normal&mild/totalNonExitedEnrolledNormal.sql")
+    .withSubReportWithDenominator("Adolescents consumed 3 tablets", "normal&mild/taken3Tablet.sql", "ifaDistributon&Consumption/normal&mild/totalNonExitedEnrolledNormal.sql")
+    .withSubReportWithDenominator("Adolescents consumed 4 (All) tablets", "normal&mild/taken4Tablet.sql", "ifaDistributon&Consumption/normal&mild/totalNonExitedEnrolledNormal.sql")
+    .withSubReportWithDenominator("Adolescents received Albendazol", "normal&mild/albendazole.sql", "ifaDistributon&Consumption/normal&mild/totalNonExitedEnrolledNormal.sql")
     .build();
 
 //IFA distribution & Consumption
@@ -323,14 +361,14 @@ const chronicSickness = new ReportBuilder()
     .withSubReportWithDenominator("Kidney problem", "kidneyProblem.sql", "chronicSickness/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Other Problem", "otherProblem.sql", "chronicSickness/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Convulsion", "convulsion.sql", "chronicSickness/totalNonExitedEnrolled.sql")
-    .withSubReportWithDenominator("Taking treatment regularly", "takingTreatment.sql", "chronicSickness/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Taking treatment regularly", "takingTreatment.sql", "chronicSickness/totalNonExitedEnrolledChronicSickness.sql")
     .withSubReportWithDenominator("Fever", "fever.sql", "chronicSickness/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Cough-cold", "coughCold.sql", "chronicSickness/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Jaundice", "jaundice.sql", "chronicSickness/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Abdominal pain", "abdominalPain.sql", "chronicSickness/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Diarrhoea", "diarrhoea.sql", "chronicSickness/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Other Sickness", "otherSickness.sql", "chronicSickness/totalNonExitedEnrolled.sql")
-    .withSubReportWithDenominator("Hospitalization", "hospitalization.sql", "chronicSickness/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Hospitalization", "hospitalization.sql", "chronicSickness/totalNonExitedEnrolledChronicSickness.sql")
     .build();
 
 const schoolDropoutAndReadmission = new ReportBuilder()
@@ -376,7 +414,9 @@ const generate = () =>
         schoolDropoutAndReadmission,
         moderateAnemiaIronTabletsReport,
         mildAnemiaIronTabletsReport,
-        normalAnemiaIronTabletsReport
+        normalAnemiaIronTabletsReport,
+        severeModerateAnemiaIronTabletsReport,
+            normlaMildAnemiaIronTabletsReport
     ].map((report) => report.generate());
 
 module.exports = generate;

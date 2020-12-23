@@ -87,10 +87,7 @@ FROM individual_program_partitions ip
        JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE cast(ip.obs ->> ''''56358db1-8d55-4fbf-89c5-fde97c819c2c'''' AS INT) > 1
   AND cast(ip.obs ->> ''''f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b'''' AS FLOAT) <= 7
-  AND erank = 1;
-
-
-select enrolment_date_time from program_enrolment limit 1;'', ''set role sewa_rural;
+  AND erank = 1;'', ''set role sewa_rural;
 
 WITH individual_program_partitions AS (
   SELECT i.uuid          AS                                                                                   iuuid,

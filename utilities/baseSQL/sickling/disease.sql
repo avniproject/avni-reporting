@@ -10,3 +10,5 @@ WHERE lpe.program_name = 'Adolescent'
       [[and e.enrolment_date_time >=(q1 || q4 || quote_literal({{ start_date }}) || q4 || q1  ::DATE)]]
       [[and e.enrolment_date_time <=q1 || q4 || quote_literal({{end_date}}) || q4 || q1 ::DATE]]
       [[and i.addresslevel_name = q1 || q4 || quote_literal({{title}}) || q4 || q1]]
+
+

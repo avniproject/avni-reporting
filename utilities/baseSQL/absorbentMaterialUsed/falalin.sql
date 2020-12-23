@@ -19,5 +19,6 @@ SELECT i.uuid              as uuid,
 FROM individual_program_partitions ip
        JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE ip.obs -> 'a54fcfad-8656-46ae-9706-671a600eabca' IS NOT NULL
-  AND ip.obs -> 'a54fcfad-8656-46ae-9706-671a600eabca' ?| ARRAY ['6ebf2af2-38c6-4703-98c2-cba9f234b8f5']
+  AND (ip.obs -> 'a54fcfad-8656-46ae-9706-671a600eabca' ?| ARRAY ['6ebf2af2-38c6-4703-98c2-cba9f234b8f5']
+   or ip.obs -> 'a54fcfad-8656-46ae-9706-671a600eabca' ?| ARRAY ['99414d2a-b7b1-434d-9354-c3da69619d83'])
   AND erank = 1

@@ -183,11 +183,11 @@ WHERE ip.obs @> ''''{"03400ffc-68ab-4b1e-9f45-0a38ce52ca41": "04bb1773-c353-44a1
   i.gender  gender_name,
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
-FROM
-  non_exited_program_enrolment_view enrolment
-  LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+FROM  completed_program_encounter_view pe
+         INNER JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+         LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent''''
-'')
+AND pe.encounter_type_name = ''''Chronic Sickness Followup'''''')
 UNION ALL
 SELECT
 ''Fever''                                          rowid,
@@ -454,11 +454,11 @@ WHERE ip.obs @> ''''{"342a4172-131a-41fd-a9c7-ae16603b582f": "04bb1773-c353-44a1
   i.gender  gender_name,
   i.addresslevel_type  address_type,
   i.addresslevel_name address_name
-FROM
-  non_exited_program_enrolment_view enrolment
-  LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
+FROM  completed_program_encounter_view pe
+         INNER JOIN non_exited_program_enrolment_view enrolment ON pe.program_enrolment_id = enrolment.id
+         LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = ''''Adolescent''''
-'')') AS (
+AND pe.encounter_type_name = ''''Chronic Sickness Followup'''''')') AS (
 rowid TEXT,
 "All Female" TEXT,
 "All Male" TEXT,

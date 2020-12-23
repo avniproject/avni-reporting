@@ -18,6 +18,6 @@ SELECT i.uuid              as uuid,
        i.addresslevel_name as address_name
 FROM individual_program_partitions ip
        JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
-WHERE ip.obs -> '7503cf02-c2e6-440b-a768-8e4cb1df4c68' IS NOT NULL
-  AND ip.obs ->> '7503cf02-c2e6-440b-a768-8e4cb1df4c68' = '04bb1773-c353-44a1-a68c-9b448e07ff70'
+WHERE ip.obs -> '5b11c506-d17b-499c-902f-75405bfc1d67' IS NOT NULL
+  AND ip.obs ->> '5b11c506-d17b-499c-902f-75405bfc1d67' = '04bb1773-c353-44a1-a68c-9b448e07ff70'
   AND erank = 1

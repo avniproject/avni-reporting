@@ -5,5 +5,5 @@ SELECT i.uuid as uuid,
 FROM non_exited_enrolment_completed_encounters_agg_view lpe
       JOIN individual_gender_address_view i ON i.id = lpe.individual_id
 WHERE lpe.program_name = 'Adolescent'
-      AND lpe.agg_obs ->> 'b5daf90d-5b71-4b53-827f-edd4f6539d15' = '2c343c7a-db14-4531-902a-d7b169300073'
-      OR lpe.agg_obs ->> 'b5daf90d-5b71-4b53-827f-edd4f6539d15' = 'd53a31d6-3c5e-496f-8b92-bc0f703d3b33'
+      AND (lpe.agg_obs ->> 'b5daf90d-5b71-4b53-827f-edd4f6539d15' = '2c343c7a-db14-4531-902a-d7b169300073'
+      OR lpe.agg_obs ->> 'b5daf90d-5b71-4b53-827f-edd4f6539d15' = 'd53a31d6-3c5e-496f-8b92-bc0f703d3b33')

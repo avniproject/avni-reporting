@@ -128,13 +128,11 @@ const hemoglobinReport = new ReportBuilder()
 const sicklingReport = new ReportBuilder()
     .withName("SicklingTest")
     .withDirName("sickling")
-    .withSubReportWithDenominator("Test Done", "sicklingTestDone.sql", "sickling/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Total Tested Adolescents", "sicklingTestDone.sql", "sickling/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Negative", "negative.sql", "sickling/sicklingTestDone.sql")
     .withSubReportWithDenominator("Counseling done for Trait", "counsellingDoneForTrait.sql", "sickling/trait.sql")
     .withSubReportWithDenominator("Counseling done for Disease", "counsellingDoneForDisease.sql", "sickling/disease.sql")
-    .withSubReportWithDenominator("Counselling Done", "counsellingDone.sql", "sickling/diseaseOrTrait.sql")
     .withSubReportWithDenominator("Referred", "referralForSickling.sql", "sickling/diseaseOrTrait.sql")
-    .withSubReportWithDenominator("Total Tested Adolescents ", "sicklingTestDone.sql", "sickling/totalNonExitedEnrolled.sql")
     .build();
 
 //IFA distribution & Consumption

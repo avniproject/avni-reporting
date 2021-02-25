@@ -13,7 +13,7 @@ WITH individual_program_partitions AS (
       [[and i.addresslevel_name = q1 || q4 || quote_literal({{title}}) || q4 || q1]]
 
 )
-SELECT distinct i.uuid              as uuid,
+SELECT distinct i.uuid     as uuid,
        i.gender            as gender_name,
        i.addresslevel_type as address_type,
        i.addresslevel_name as address_name,

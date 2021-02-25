@@ -8,7 +8,7 @@ WITH individual_program_partitions AS (
          INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = 'Adolescent'
-    AND (pe.encounter_type_name = 'Severe Anemia Followup' or pe.encounter_type_name = 'Quarterly Visit')
+    AND (pe.encounter_type_name = 'Quarterly Visit')
     AND pe.observations -> 'a2e181c3-0827-4da2-9121-a59386449823' NOTNULL
     AND pe.observations ->> 'f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b' notnull
     and (e.enrolment_date_time ISNULL OR e.enrolment_date_time between 'FILTERS.start_date' and 'FILTERS.end_date')

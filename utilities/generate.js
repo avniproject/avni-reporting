@@ -137,28 +137,30 @@ const sicklingReport = new ReportBuilder()
 
 //IFA distribution & Consumption
 const severeModerateAnemiaIronTabletsReport = new ReportBuilder()
-    .withName("IFADistribution&ConsumptionForSevere&ModerateAnemia")
-    .withDirName("ifaDistributon&Consumption")
-    .withSubReportWithDenominator("Adolescents received IFA", "severe&moderate/received.sql", "ifaDistributon&Consumption/severe&moderate/totalNonExitedEnrolledSevere&Moderate.sql")
-    .withSubReportWithDenominator("Adolescents consumed 0 tablet", "severe&moderate/taken0.sql", "ifaDistributon&Consumption/severe&moderate/totalNonExitedEnrolledSevere&Moderate.sql")
-    .withSubReportWithDenominator("Adolescents consumed 1 to 10 tablet", "severe&moderate/taken1To10.sql", "ifaDistributon&Consumption/severe&moderate/totalNonExitedEnrolledSevere&Moderate.sql")
-    .withSubReportWithDenominator("Adolescents consumed 11 to 20 tablets", "severe&moderate/taken11To20.sql", "ifaDistributon&Consumption/severe&moderate/totalNonExitedEnrolledSevere&Moderate.sql")
-    .withSubReportWithDenominator("Adolescents consumed 21 to 30 tablets", "severe&moderate/taken21To30.sql", "ifaDistributon&Consumption/severe&moderate/totalNonExitedEnrolledSevere&Moderate.sql")
-    .withSubReportWithDenominator("Adolescents received Albendazol", "severe&moderate/albendazole.sql", "ifaDistributon&Consumption/severe&moderate/totalNonExitedEnrolledSevere&Moderate.sql")
+    .withName("IFADistribution&ConsumptionForSevereAndModerateAnemia")
+    .withDirName("ifaDistributonAndConsumption")
+    .withSubReportWithDenominator("Adolescents with Severe & Moderate Anemia", "severeAndModerate/totalSevereAndModerate.sql", "ifaDistributonAndConsumption/severeAndModerate/totalNonExitedEnrolledSevereAndModerate.sql")
+    .withSubReportWithDenominator("Adolescents received IFA", "severeAndModerate/received.sql", "ifaDistributonAndConsumption/severeAndModerate/totalSevereAndModerate.sql")
+    .withSubReportWithDenominator("Adolescents received and consumed IFA", "severeAndModerate/receivedAndConsumed.sql", "ifaDistributonAndConsumption/severeAndModerate/received.sql")
+    .withSubReportWithDenominator("Adolescents consumed 1 to 10 tablet", "severeAndModerate/taken1To10.sql", "ifaDistributonAndConsumption/severeAndModerate/received.sql")
+    .withSubReportWithDenominator("Adolescents consumed 11 to 20 tablets", "severeAndModerate/taken11To20.sql", "ifaDistributonAndConsumption/severeAndModerate/received.sql")
+    .withSubReportWithDenominator("Adolescents consumed 21 to 30 tablets", "severeAndModerate/taken21To30.sql", "ifaDistributonAndConsumption/severeAndModerate/received.sql")
+    .withSubReportWithDenominator("Adolescents consumed > 30 tablets ", "severeAndModerate/takenMoreThan30.sql", "ifaDistributonAndConsumption/severeAndModerate/received.sql")
+    .withSubReportWithDenominator("Adolescents received Albendazol", "severeAndModerate/albendazole.sql", "ifaDistributonAndConsumption/severeAndModerate/totalSevereAndModerate.sql")
     .build();
 
 
 //IFA distribution & Consumption
-const normlaMildAnemiaIronTabletsReport = new ReportBuilder()
-    .withName("IFADistribution&ConsumptionForNormal&MildAnemia")
-    .withDirName("ifaDistributon&Consumption")
-    .withSubReportWithDenominator("Adolescents received IFA", "normal&mild/received.sql", "ifaDistributon&Consumption/normal&mild/totalNonExitedEnrolledNormal.sql")
-    .withSubReportWithDenominator("Adolescents consumed 0 tablet", "normal&mild/taken0Tablet.sql", "ifaDistributon&Consumption/severe&moderate/totalNonExitedEnrolledSevere&Moderate.sql")
-    .withSubReportWithDenominator("Adolescents consumed 1 tablet", "normal&mild/taken1Tablet.sql", "ifaDistributon&Consumption/normal&mild/totalNonExitedEnrolledNormal.sql")
-    .withSubReportWithDenominator("Adolescents consumed 2 tablets", "normal&mild/taken2Tablet.sql", "ifaDistributon&Consumption/normal&mild/totalNonExitedEnrolledNormal.sql")
-    .withSubReportWithDenominator("Adolescents consumed 3 tablets", "normal&mild/taken3Tablet.sql", "ifaDistributon&Consumption/normal&mild/totalNonExitedEnrolledNormal.sql")
-    .withSubReportWithDenominator("Adolescents consumed 4 (All) tablets", "normal&mild/taken4Tablet.sql", "ifaDistributon&Consumption/normal&mild/totalNonExitedEnrolledNormal.sql")
-    .withSubReportWithDenominator("Adolescents received Albendazol", "normal&mild/albendazole.sql", "ifaDistributon&Consumption/normal&mild/totalNonExitedEnrolledNormal.sql")
+const normalMildAnemiaIronTabletsReport = new ReportBuilder()
+    .withName("IFADistribution&ConsumptionForNormalAndMildAnemia")
+    .withDirName("ifaDistributonAndConsumption")
+    .withSubReportWithDenominator("Adolescents with Normal & Mild Anemia", "normalAndMild/totalNormalAndMild.sql", "ifaDistributonAndConsumption/normalAndMild/totalNonExitedEnrolledNormal.sql")
+    .withSubReportWithDenominator("Adolescents received IFA", "normalAndMild/received.sql", "ifaDistributonAndConsumption/normalAndMild/totalNormalAndMild.sql")
+    .withSubReportWithDenominator("Adolescents received and consumed IFA", "normalAndMild/received&consumed.sql", "ifaDistributonAndConsumption/normalAndMild/totalNormalAndMild.sql")
+    .withSubReportWithDenominator("Adolescents consumed 1 to 6 tablet", "normalAndMild/taken1To6Tablet.sql", "ifaDistributonAndConsumption/normalAndMild/received.sql")
+    .withSubReportWithDenominator("Adolescents consumed 7 to 11 tablets", "normalAndMild/taken7To11Tablet.sql", "ifaDistributonAndConsumption/normalAndMild/received.sql")
+    .withSubReportWithDenominator("Adolescents consumed >= 12 (All) tablets", "normalAndMild/taken12AllTablet.sql", "ifaDistributonAndConsumption/normalAndMild/received.sql")
+    .withSubReportWithDenominator("Adolescents received Albendazol", "normalAndMild/albendazole.sql", "ifaDistributonAndConsumption/normalAndMild/totalNormalAndMild.sql")
     .build();
 
 //IFA distribution & Consumption
@@ -414,7 +416,7 @@ const generate = () =>
         mildAnemiaIronTabletsReport,
         normalAnemiaIronTabletsReport,
         severeModerateAnemiaIronTabletsReport,
-            normlaMildAnemiaIronTabletsReport
+            normalMildAnemiaIronTabletsReport
     ].map((report) => report.generate());
 
 module.exports = generate;

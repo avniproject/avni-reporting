@@ -8,10 +8,8 @@ WITH individual_program_partitions AS (
          INNER JOIN non_exited_program_enrolment_view e ON pe.program_enrolment_id = e.id
          INNER JOIN individual_view i ON e.individual_id = i.id
   WHERE e.program_name = 'Adolescent'
-    AND (pe.encounter_type_name = 'Annual Visit' or pe.encounter_type_name = 'Quarterly Visit')
-    AND pe.observations -> '2973890d-0142-41a6-a6f5-988e7eb36d79' NOTNULL
-    AND pe.observations ->> 'f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b' notnull
-     and (e.enrolment_date_time ISNULL OR e.enrolment_date_time between 'FILTERS.start_date' and 'FILTERS.end_date')
+    AND (pe.encounter_type_name = 'Quarterly Visit')
+    AND (e.enrolment_date_time ISNULL OR e.enrolment_date_time between 'FILTERS.start_date' and 'FILTERS.end_date')
 )
 SELECT i.uuid              as uuid,
        i.gender            as gender_name,
@@ -19,6 +17,7 @@ SELECT i.uuid              as uuid,
        i.addresslevel_name as address_name
 FROM individual_program_partitions ip
        JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
-WHERE ip.obs ->> '2973890d-0142-41a6-a6f5-988e7eb36d79' = '04bb1773-c353-44a1-a68c-9b448e07ff70'
-  AND cast(ip.obs ->> 'f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b' AS FLOAT) <= 10
+WHERE cast (ip.obs ->> 'bba15025-334a-4c9c-959f-0d186b451197' AS FLOAT) > 0
+  AND cast(ip.obs ->> 'c238b921-749b-45f9-8fd5-6ffc3c14d96d' AS FLOAT) between 1 and 6.9
+  AND cast(ip.obs ->> 'f9ecabbc-2df2-4bfc-a6fa-aa417c50e11b' AS FLOAT) >= 10.1
   AND erank = 1;

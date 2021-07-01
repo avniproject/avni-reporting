@@ -334,6 +334,7 @@ const exitReason = new ReportBuilder()
     .withSubReportWithDenominator("Marriage", "marriage.sql", "exitReason/totalExited.sql")
     .withSubReportWithDenominator("Pregnancy", "pregnancy.sql", "exitReason/totalExited.sql")
     .withSubReportWithDenominator("Lost to follow-up", "lostToFollowUp.sql", "exitReason/totalExited.sql")
+    .withSubReportWithDenominator("Change of school outside intervention area", "changeOfSchool.sql", "exitReason/totalExited.sql")
     .build();
 
 const schoolGoingChildren = new ReportBuilder()

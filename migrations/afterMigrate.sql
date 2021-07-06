@@ -31,7 +31,8 @@ select grant_all_on_common_views(array [
 'location_view',
 'year',
 'concept_concept_answer',
-'member_household_view'
+'member_household_view',
+'month'
 ], a.rolname)
 
 FROM pg_roles a

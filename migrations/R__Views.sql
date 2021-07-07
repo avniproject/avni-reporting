@@ -126,4 +126,15 @@ CREATE OR REPLACE VIEW year(year) As (values (2016), (2017), (2018), (2019), (20
                                              (2022), (2023), (2024), (2025), (2026), (2027),
                                              (2028), (2029), (2030));
 
-CREATE OR REPLACE VIEW month(month) As (values (1), (2), (3), (4), (5), (6), (7), (8), (9), (10), (11), (12));
+CREATE OR REPLACE VIEW month(name, month) As (values ('January', 1),
+                                                     ('February', 2),
+                                                     ('March', 3),
+                                                     ('April', 4),
+                                                     ('May', 5),
+                                                     ('June', 6),
+                                                     ('July', 7),
+                                                     ('August', 8),
+                                                     ('September', 9),
+                                                     ('October', 10),
+                                                     ('November', 11),
+                                                     ('December', 12));

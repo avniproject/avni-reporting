@@ -19,5 +19,5 @@ SELECT i.uuid              as uuid,
 FROM individual_program_partitions ip
        JOIN individual_gender_address_view i ON i.uuid = ip.iuuid
 WHERE cast(ip.obs ->> '7ac0d759-c50d-4971-88e0-84274224c839' as float) > 18.5
-  and cast(ip.obs ->> '7ac0d759-c50d-4971-88e0-84274224c839' as float) < 25
+  and cast(ip.obs ->> '7ac0d759-c50d-4971-88e0-84274224c839' as float) <= 25
   AND erank = 1

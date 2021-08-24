@@ -8,6 +8,7 @@ FROM
   non_exited_program_enrolment_view enrolment
     LEFT OUTER JOIN individual_gender_address_view i ON enrolment.individual_id = i.id
 WHERE enrolment.program_name = 'Adolescent'
+AND i.gender ='Female'
     [[ and enrolment.enrolment_date_time >=(q1 || q4 || quote_literal({{ start_date }}) || q4 || q1  ::DATE)]]
     [[and enrolment.enrolment_date_time <=q1 || q4 || quote_literal({{end_date}}) || q4 || q1 ::DATE]]
     [[and i.addresslevel_name = q1 || q4 || quote_literal({{title}}) || q4 || q1]]

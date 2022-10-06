@@ -100,6 +100,18 @@ const treatmentTakenForMenstrualDisorderReport = new ReportBuilder()
     .withSubReportWithDenominator("Tablet From Kit", "tabletFromKit.sql", "common/started.sql")
     .build();
 
+const treatmentTakenForMenstrualDisorderReportADSR = new ReportBuilder()
+    .withName("TreatmentTakenForMenstrualDisorderADSR")
+    .withDirName("menstrualDisorderTreatmentADSR")
+    .withSubReportWithDenominator("Total girls menstruating", "started.sql", "menstrualDisorderTreatmentADSR/started.sql")
+    .withSubReportWithDenominator("Disorder", "disorder.sql", "menstrualDisorderTreatmentADSR/started.sql")
+    .withSubReportWithDenominator("Treatment Taken", "takingTreatment.sql", "menstrualDisorderTreatmentADSR/started.sql")
+    .withSubReportWithDenominator("Home Remedy", "homeRemedy.sql", "menstrualDisorderTreatmentADSR/started.sql")
+    .withSubReportWithDenominator("Consulted Doctor", "consultedDoctor.sql", "menstrualDisorderTreatmentADSR/started.sql")
+    .withSubReportWithDenominator("Tablet From Shop", "tabletFromShop.sql", "menstrualDisorderTreatmentADSR/started.sql")
+    .withSubReportWithDenominator("Tablet From Kit", "tabletFromKit.sql", "menstrualDisorderTreatmentADSR/started.sql")
+    .build();
+
 //Prevalence of Malnutrition
 const nutritionReport = new ReportBuilder()
     .withName("Nutrition")
@@ -408,6 +420,7 @@ const generate = () =>
         menstruationReport,
         absorbentMaterialUsedReport,
         treatmentTakenForMenstrualDisorderReport,
+        treatmentTakenForMenstrualDisorderReportADSR,
         nutritionReport,
         hemoglobinReport,
         sicklingReport,

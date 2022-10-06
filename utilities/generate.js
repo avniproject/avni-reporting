@@ -359,6 +359,20 @@ const exitReason = new ReportBuilder()
     .withSubReportWithDenominator("Total adolescents exited", "totalExited.sql", "exitReason/totalExited.sql")
     .build();
 
+const exitReasonADSR = new ReportBuilder()
+    .withName("ExitReasonADSR")
+    .withDirName("exitReasonADSR")
+    .withSubReportWithDenominator("Age more than 20 years", "ageMoreThan20.sql", "exitReasonADSR/totalExited.sql")
+    .withSubReportWithDenominator("Death", "death.sql", "exitReasonADSR/totalExited.sql")
+    .withSubReportWithDenominator("Migration", "migration.sql", "exitReasonADSR/totalExited.sql")
+    .withSubReportWithDenominator("Marriage", "marriage.sql", "exitReasonADSR/totalExited.sql")
+    .withSubReportWithDenominator("Pregnancy", "pregnancy.sql", "exitReasonADSR/totalExited.sql")
+    .withSubReportWithDenominator("Lost to follow-up", "lostToFollowUp.sql", "exitReasonADSR/totalExited.sql")
+    .withSubReportWithDenominator("Change of school outside intervention area", "changeOfSchool.sql", "exitReasonADSR/totalExited.sql")
+    .withSubReportWithDenominator("Exit reason not captured", "noExitReason.sql", "exitReasonADSR/totalExited.sql")
+    .withSubReportWithDenominator("Total adolescents exited", "totalExited.sql", "exitReasonADSR/totalExited.sql")
+    .build();
+
 const schoolGoingChildren = new ReportBuilder()
     .withName("SchoolGoingChildren")
     .withDirName("schoolGoingChildren")
@@ -438,6 +452,7 @@ const generate = () =>
         rationCard,
         standard_8_9_10,
         exitReason,
+        exitReasonADSR,
         schoolGoingChildren,
         enrolledExited,
         chronicSickness,

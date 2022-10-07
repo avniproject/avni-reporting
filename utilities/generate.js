@@ -23,7 +23,7 @@ const serviceDeliveryReport = new ReportBuilder()
     .withSubReportWithDenominator("Total Adolescents Started Going to School Again",
         "adolescentsStartedSchool.sql",
         "serviceDelivery/totalAdolescentsDroppedOut.sql")
-        .withSubReportWithDenominator("Exited", "totalExited.sql", "serviceDelivery/totalInProgram.sql")
+    .withSubReportWithDenominator("Exited", "totalExited.sql", "serviceDelivery/totalInProgram.sql")
     .withSubReportWithDenominator("All menstruating girls",
         "started.sql",
         "absorbentMaterialUsed/totalFemaleAdolescent.sql")
@@ -33,6 +33,40 @@ const serviceDeliveryReport = new ReportBuilder()
     .withSubReportWithDenominator("MHM Kit Used",
         "kitUsed.sql",
         "absorbentMaterialUsed/started.sql")
+    .build();
+
+const serviceDeliveryReportADSR = new ReportBuilder()
+    .withName("ServiceDeliveryADSR")
+    .withDirName("serviceDeliveryADSR")
+    .withSubReport("Total Adolescents Registered", "totalRegistered.sql")
+    .withSubReportWithDenominator("Total Adolescents Enrolled",
+        "totalNonExitedEnrolled.sql",
+        "serviceDeliveryADSR/totalRegistered.sql")
+    .withSubReportWithDenominator("Total Adolescents With Problems",
+        "totalAdolescentsWithProblems.sql",
+        "serviceDeliveryADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Total Adolescents Referred",
+        "totalAdolescentsWithReferralAdvice.sql",
+        "serviceDeliveryADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Total Adolescents Dropped Out",
+        "totalAdolescentsDroppedOut.sql",
+        "serviceDeliveryADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Total Adolescents With a Dropout Home Visit",
+        "totalIndividualsWithDropOutHomeVisit.sql",
+        "serviceDeliveryADSR/totalAdolescentsDroppedOut.sql")
+    .withSubReportWithDenominator("Total Adolescents Started Going to School Again",
+        "adolescentsStartedSchool.sql",
+        "serviceDeliveryADSR/totalAdolescentsDroppedOut.sql")
+    .withSubReportWithDenominator("Exited", "totalExited.sql", "serviceDeliveryADSR/totalInProgram.sql")
+    .withSubReportWithDenominator("All menstruating girls",
+        "started.sql",
+        "serviceDeliveryADSR/totalFemaleAdolescent.sql")
+    .withSubReportWithDenominator("MHM Kit Provided?",
+        "kitProvided.sql",
+        "serviceDeliveryADSR/totalFemaleAdolescent.sql")
+    .withSubReportWithDenominator("MHM Kit Used",
+        "kitUsed.sql",
+        "serviceDeliveryADSR/started.sql")
     .build();
 
 //Prevalence of Substance misuse
@@ -429,6 +463,7 @@ const schoolDropoutAndReadmission = new ReportBuilder()
 const generate = () =>
     [
         serviceDeliveryReport,
+        serviceDeliveryReportADSR,
         addictionReport,
         educationReport,
         menstruationReport,
@@ -461,7 +496,7 @@ const generate = () =>
         mildAnemiaIronTabletsReport,
         normalAnemiaIronTabletsReport,
         severeModerateAnemiaIronTabletsReport,
-            normalMildAnemiaIronTabletsReport
+        normalMildAnemiaIronTabletsReport
     ].map((report) => report.generate());
 
 module.exports = generate;

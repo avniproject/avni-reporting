@@ -39,7 +39,9 @@ from adsr.individual i
          inner join annual_visit_data an on an.individual_id = i.id
          left join adsr.address a on a.id = i.address_id
 where ia.program_exit_date_time is null
-  and an."Menstruation started" =''''Yes'''''', ''
+  and an."Menstruation started" =''''Yes''''
+  and i.is_voided = false
+      and ia.is_voided = false'', ''
 with annual_visit_data as (
     select individual_id, "Menstruation started", encounter_date_time, earliest_visit_date_time, is_voided
     from adsr.individual_adolescent_annual_visit_baseline baseline
@@ -68,7 +70,9 @@ from adsr.individual i
          inner join annual_visit_data an on an.individual_id = i.id
          left join adsr.address a on a.id = i.address_id
 where ia.program_exit_date_time is null
-  and an."Menstruation started" =''''Yes'''''')
+  and an."Menstruation started" =''''Yes''''
+  and i.is_voided = false
+      and ia.is_voided = false'')
 UNION ALL
 SELECT
 ''Disorder''                                          rowid,
@@ -132,7 +136,9 @@ from adsr.individual i
          inner join annual_visit_data an on an.individual_id = i.id
          left join adsr.address a on a.id = i.address_id
 where ia.program_exit_date_time is null
-  and an."Menstruation started" =''''Yes'''''')
+  and an."Menstruation started" =''''Yes''''
+  and i.is_voided = false
+      and ia.is_voided = false'')
 UNION ALL
 SELECT
 ''Treatment Taken''                                          rowid,
@@ -194,7 +200,9 @@ from adsr.individual i
          inner join annual_visit_data an on an.individual_id = i.id
          left join adsr.address a on a.id = i.address_id
 where ia.program_exit_date_time is null
-  and an."Menstruation started" =''''Yes'''''')
+  and an."Menstruation started" =''''Yes''''
+  and i.is_voided = false
+      and ia.is_voided = false'')
 UNION ALL
 SELECT
 ''Home Remedy''                                          rowid,
@@ -256,7 +264,9 @@ from adsr.individual i
          inner join annual_visit_data an on an.individual_id = i.id
          left join adsr.address a on a.id = i.address_id
 where ia.program_exit_date_time is null
-  and an."Menstruation started" =''''Yes'''''')
+  and an."Menstruation started" =''''Yes''''
+  and i.is_voided = false
+      and ia.is_voided = false'')
 UNION ALL
 SELECT
 ''Consulted Doctor''                                          rowid,
@@ -318,7 +328,9 @@ from adsr.individual i
          inner join annual_visit_data an on an.individual_id = i.id
          left join adsr.address a on a.id = i.address_id
 where ia.program_exit_date_time is null
-  and an."Menstruation started" =''''Yes'''''')
+  and an."Menstruation started" =''''Yes''''
+  and i.is_voided = false
+      and ia.is_voided = false'')
 UNION ALL
 SELECT
 ''Tablet From Shop''                                          rowid,
@@ -380,7 +392,9 @@ from adsr.individual i
          inner join annual_visit_data an on an.individual_id = i.id
          left join adsr.address a on a.id = i.address_id
 where ia.program_exit_date_time is null
-  and an."Menstruation started" =''''Yes'''''')
+  and an."Menstruation started" =''''Yes''''
+  and i.is_voided = false
+      and ia.is_voided = false'')
 UNION ALL
 SELECT
 ''Tablet From Kit''                                          rowid,
@@ -442,7 +456,9 @@ from adsr.individual i
          inner join annual_visit_data an on an.individual_id = i.id
          left join adsr.address a on a.id = i.address_id
 where ia.program_exit_date_time is null
-  and an."Menstruation started" =''''Yes'''''')') AS (
+  and an."Menstruation started" =''''Yes''''
+  and i.is_voided = false
+      and ia.is_voided = false'')') AS (
 rowid TEXT,
 "All Female" TEXT,
 "All Male" TEXT,

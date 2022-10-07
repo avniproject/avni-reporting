@@ -28,3 +28,5 @@ from adsr.individual i
          left join adsr.address a on a.id = i.address_id
 where ia.program_exit_date_time is null
   and an."Menstruation started" ='Yes'
+  and i.is_voided = false
+      and ia.is_voided = false

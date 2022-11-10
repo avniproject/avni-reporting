@@ -145,7 +145,7 @@ WHERE 1=1
 '')
 UNION ALL
 SELECT
-''<= 8''                                          rowid,
+''<= 7.9''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''WITH all_enc_data AS (
@@ -236,7 +236,7 @@ WHERE 1=1
 '')
 UNION ALL
 SELECT
-''9 - 10.9''                                          rowid,
+''8 - 10.9''                                          rowid,
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''WITH all_enc_data AS (

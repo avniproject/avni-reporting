@@ -176,6 +176,20 @@ const hemoglobinReport = new ReportBuilder()
     .withSubReportWithDenominator("HB not recorded", "noHb.sql", "hemoglobin/totalNonExitedEnrolled.sql")
     .build();
 
+//Prevalence of Anemia ADSR
+const hemoglobinReportADSR = new ReportBuilder()
+    .withName("HemoglobinADSR")
+    .withDirName("hemoglobinADSR")
+    .withSubReportWithDenominator("Total adolescents enrolled", "totalNonExitedEnrolled.sql", "hemoglobinADSR/totalRegistered.sql")
+    .withSubReportWithDenominator("HB recorded", "HbDone.sql", "hemoglobinADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("<= 8", "hbLessThan8.sql", "hemoglobinADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("9 - 10.9", "hbGreaterThan8LessThan11.sql", "hemoglobinADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("11 - 11.9", "hbGreaterThan11LessThan11.9.sql", "hemoglobinADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("12 - 12.9", "hbGreaterThan12LessThan13.sql", "hemoglobinADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("> 13", "hbGreaterThan13.sql", "hemoglobinADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("HB not recorded", "noHb.sql", "hemoglobinADSR/totalNonExitedEnrolled.sql")
+    .build();
+
 //Prevalence of Sickle cell Anemia
 const sicklingReport = new ReportBuilder()
     .withName("SicklingTest")
@@ -471,6 +485,7 @@ const generate = () =>
         treatmentTakenForMenstrualDisorderReport,
         treatmentTakenForMenstrualDisorderReportADSR,
         nutritionReport,
+        hemoglobinReportADSR,
         hemoglobinReport,
         sicklingReport,
         severeAnemiaIronTabletsReport,

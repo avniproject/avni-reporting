@@ -38,7 +38,6 @@ WITH ind_with_HB AS (
         inner join adsr.individual_adolescent_moderate_anemia_followup moderate on ind.id = moderate.individual_id
     WHERE 1 = 1
         AND moderate."Haemoglobin" notnull
-    union all
 )
 SELECT i.uuid              as uuid,
        i.gender            as gender_name,

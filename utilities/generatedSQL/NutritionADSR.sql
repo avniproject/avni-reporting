@@ -11,27 +11,27 @@ SELECT * FROM crosstab('SELECT
 address_type || '' '' || gender AS                             attribute,
 total :: VARCHAR || '' ('' || percentage :: VARCHAR(5) || ''%)'' frequency_percentage
 FROM frequency_and_percentage(''SELECT DISTINCT i.uuid uuid, i.gender gender_name, alt.name address_type, a.title address_name
-FROM program_enrolment enrolment
-LEFT OUTER JOIN adsr.individual i
-ON enrolment.individual_id = i.id
+FROM adsr.individual i
+LEFT OUTER JOIN adsr.individual_adolescent_annual_visit_baseline baseline
+ON baseline.individual_id = i.id
 JOIN address_level a
 ON a.id = i.address_id
 JOIN address_level_type alt
 ON alt.id = a.type_id
-WHERE program_exit_date_time is null  AND i.is_voided = false and a.is_voided = false
-[[ and enrolment.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-[[and enrolment.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+WHERE baseline.is_voided is false AND i.is_voided = false and a.is_voided = false
+[[ and baseline.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+[[and baseline.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 [[and a.title  = ' || '''' || quote_literal({{title}}) || '''' || ']]'', ''SELECT DISTINCT i.uuid uuid, i.gender gender_name, alt.name address_type, a.title address_name
-FROM program_enrolment enrolment
-LEFT OUTER JOIN adsr.individual i
-ON enrolment.individual_id = i.id
+FROM adsr.individual i
+LEFT OUTER JOIN adsr.individual_adolescent_annual_visit_baseline baseline
+ON baseline.individual_id = i.id
 JOIN address_level a
 ON a.id = i.address_id
 JOIN address_level_type alt
 ON alt.id = a.type_id
-WHERE program_exit_date_time is null  AND i.is_voided = false and a.is_voided = false
-[[ and enrolment.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-[[and enrolment.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+WHERE baseline.is_voided is false AND i.is_voided = false and a.is_voided = false
+[[ and baseline.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+[[and baseline.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 [[and a.title  = ' || '''' || quote_literal({{title}}) || '''' || ']]'')
 UNION ALL
 SELECT
@@ -85,16 +85,16 @@ JOIN adsr.individual i ON i.uuid = ip.iuuid
 JOIN address_level a on a.id = i.address_id
 JOIN address_level_type alt on alt.id = a.type_id
 WHERE erank = 1 and a.is_voided = false'', ''SELECT DISTINCT i.uuid uuid, i.gender gender_name, alt.name address_type, a.title address_name
-FROM program_enrolment enrolment
-LEFT OUTER JOIN adsr.individual i
-ON enrolment.individual_id = i.id
+FROM adsr.individual i
+LEFT OUTER JOIN adsr.individual_adolescent_annual_visit_baseline baseline
+ON baseline.individual_id = i.id
 JOIN address_level a
 ON a.id = i.address_id
 JOIN address_level_type alt
 ON alt.id = a.type_id
-WHERE program_exit_date_time is null  AND i.is_voided = false and a.is_voided = false
-[[ and enrolment.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-[[and enrolment.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+WHERE baseline.is_voided is false AND i.is_voided = false and a.is_voided = false
+[[ and baseline.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+[[and baseline.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 [[and a.title  = ' || '''' || quote_literal({{title}}) || '''' || ']]'')
 UNION ALL
 SELECT
@@ -147,16 +147,16 @@ JOIN address_level_type alt on alt.id = a.type_id
 WHERE erank = 1 and a.is_voided = false
 and obs < 14.5
 '', ''SELECT DISTINCT i.uuid uuid, i.gender gender_name, alt.name address_type, a.title address_name
-FROM program_enrolment enrolment
-LEFT OUTER JOIN adsr.individual i
-ON enrolment.individual_id = i.id
+FROM adsr.individual i
+LEFT OUTER JOIN adsr.individual_adolescent_annual_visit_baseline baseline
+ON baseline.individual_id = i.id
 JOIN address_level a
 ON a.id = i.address_id
 JOIN address_level_type alt
 ON alt.id = a.type_id
-WHERE program_exit_date_time is null  AND i.is_voided = false and a.is_voided = false
-[[ and enrolment.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-[[and enrolment.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+WHERE baseline.is_voided is false AND i.is_voided = false and a.is_voided = false
+[[ and baseline.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+[[and baseline.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 [[and a.title  = ' || '''' || quote_literal({{title}}) || '''' || ']]'')
 UNION ALL
 SELECT
@@ -210,16 +210,16 @@ WHERE erank = 1 and a.is_voided = false
 and obs >= 14.5  AND obs <= 18.5
 
 '', ''SELECT DISTINCT i.uuid uuid, i.gender gender_name, alt.name address_type, a.title address_name
-FROM program_enrolment enrolment
-LEFT OUTER JOIN adsr.individual i
-ON enrolment.individual_id = i.id
+FROM adsr.individual i
+LEFT OUTER JOIN adsr.individual_adolescent_annual_visit_baseline baseline
+ON baseline.individual_id = i.id
 JOIN address_level a
 ON a.id = i.address_id
 JOIN address_level_type alt
 ON alt.id = a.type_id
-WHERE program_exit_date_time is null  AND i.is_voided = false and a.is_voided = false
-[[ and enrolment.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-[[and enrolment.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+WHERE baseline.is_voided is false AND i.is_voided = false and a.is_voided = false
+[[ and baseline.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+[[and baseline.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 [[and a.title  = ' || '''' || quote_literal({{title}}) || '''' || ']]'')
 UNION ALL
 SELECT
@@ -272,16 +272,16 @@ JOIN address_level_type alt on alt.id = a.type_id
 WHERE erank = 1 and a.is_voided = false
 and obs > 18.5  AND obs <= 25
 '', ''SELECT DISTINCT i.uuid uuid, i.gender gender_name, alt.name address_type, a.title address_name
-FROM program_enrolment enrolment
-LEFT OUTER JOIN adsr.individual i
-ON enrolment.individual_id = i.id
+FROM adsr.individual i
+LEFT OUTER JOIN adsr.individual_adolescent_annual_visit_baseline baseline
+ON baseline.individual_id = i.id
 JOIN address_level a
 ON a.id = i.address_id
 JOIN address_level_type alt
 ON alt.id = a.type_id
-WHERE program_exit_date_time is null  AND i.is_voided = false and a.is_voided = false
-[[ and enrolment.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-[[and enrolment.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+WHERE baseline.is_voided is false AND i.is_voided = false and a.is_voided = false
+[[ and baseline.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+[[and baseline.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 [[and a.title  = ' || '''' || quote_literal({{title}}) || '''' || ']]'')
 UNION ALL
 SELECT
@@ -335,16 +335,16 @@ WHERE erank = 1 and a.is_voided = false
 and obs > 25 and obs < 30
 
 '', ''SELECT DISTINCT i.uuid uuid, i.gender gender_name, alt.name address_type, a.title address_name
-FROM program_enrolment enrolment
-LEFT OUTER JOIN adsr.individual i
-ON enrolment.individual_id = i.id
+FROM adsr.individual i
+LEFT OUTER JOIN adsr.individual_adolescent_annual_visit_baseline baseline
+ON baseline.individual_id = i.id
 JOIN address_level a
 ON a.id = i.address_id
 JOIN address_level_type alt
 ON alt.id = a.type_id
-WHERE program_exit_date_time is null  AND i.is_voided = false and a.is_voided = false
-[[ and enrolment.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-[[and enrolment.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+WHERE baseline.is_voided is false AND i.is_voided = false and a.is_voided = false
+[[ and baseline.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+[[and baseline.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 [[and a.title  = ' || '''' || quote_literal({{title}}) || '''' || ']]'')
 UNION ALL
 SELECT
@@ -397,16 +397,16 @@ JOIN address_level_type alt on alt.id = a.type_id
 WHERE erank = 1 and a.is_voided = false
 and obs >= 30
 '', ''SELECT DISTINCT i.uuid uuid, i.gender gender_name, alt.name address_type, a.title address_name
-FROM program_enrolment enrolment
-LEFT OUTER JOIN adsr.individual i
-ON enrolment.individual_id = i.id
+FROM adsr.individual i
+LEFT OUTER JOIN adsr.individual_adolescent_annual_visit_baseline baseline
+ON baseline.individual_id = i.id
 JOIN address_level a
 ON a.id = i.address_id
 JOIN address_level_type alt
 ON alt.id = a.type_id
-WHERE program_exit_date_time is null  AND i.is_voided = false and a.is_voided = false
-[[ and enrolment.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-[[and enrolment.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+WHERE baseline.is_voided is false AND i.is_voided = false and a.is_voided = false
+[[ and baseline.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+[[and baseline.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 [[and a.title  = ' || '''' || quote_literal({{title}}) || '''' || ']]'')
 UNION ALL
 SELECT
@@ -451,16 +451,16 @@ JOIN adsr.individual i ON i.uuid = ip.iuuid
 JOIN address_level a on i.address_id = a.id
 JOIN address_level_type alt on alt.id = a.type_id
 WHERE ip.obs is null and erank = 1 and a.is_voided = false and i.is_voided = false'', ''SELECT DISTINCT i.uuid uuid, i.gender gender_name, alt.name address_type, a.title address_name
-FROM program_enrolment enrolment
-LEFT OUTER JOIN adsr.individual i
-ON enrolment.individual_id = i.id
+FROM adsr.individual i
+LEFT OUTER JOIN adsr.individual_adolescent_annual_visit_baseline baseline
+ON baseline.individual_id = i.id
 JOIN address_level a
 ON a.id = i.address_id
 JOIN address_level_type alt
 ON alt.id = a.type_id
-WHERE program_exit_date_time is null  AND i.is_voided = false and a.is_voided = false
-[[ and enrolment.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-[[and enrolment.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+WHERE baseline.is_voided is false AND i.is_voided = false and a.is_voided = false
+[[ and baseline.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+[[and baseline.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 [[and a.title  = ' || '''' || quote_literal({{title}}) || '''' || ']]'')') AS (
 rowid TEXT,
 "All Female" TEXT,

@@ -79,6 +79,15 @@ const addictionReport = new ReportBuilder()
     .withSubReportWithDenominator("Adolescents quited Alcohol", "alcoholQuitter.sql", "addiction/alcoholAddiction.sql")
     .build();
 
+const addictionReportADSR = new ReportBuilder()
+    .withName("AddictionADSR")
+    .withDirName("addictionADSR")
+    .withSubReportWithDenominator("Adolescents Addicted to Tobacco", "tobaccoAddiction.sql", "addictionADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Adolescents Addicted to Alcohol", "alcoholAddiction.sql", "addictionADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Adolescents quited Tobacco", "tobaccoQuitter.sql", "addictionADSR/tobaccoAddiction.sql")
+    .withSubReportWithDenominator("Adolescents quited Alcohol", "alcoholQuitter.sql", "addictionADSR/alcoholAddiction.sql")
+    .build();
+
 //Reasons for school dropout
 const educationReport = new ReportBuilder()
     .withName("Education")
@@ -108,6 +117,22 @@ const menstruationReport = new ReportBuilder()
     .withSubReportWithDenominator("Backache", "backache.sql", "menstruation/disorder.sql")
     .withSubReportWithDenominator("Leg Pain", "legPain.sql", "menstruation/disorder.sql")
     .withSubReportWithDenominator("Nausea And Vomiting", "nauseaAndVomitting.sql", "menstruation/disorder.sql")
+    .build();
+
+//ADSR Menstrual disorders
+const menstruationReportADSR = new ReportBuilder()
+    .withName("MenstruationADSR")
+    .withDirName("menstruationADSR")
+    .withSubReportWithDenominator("Menstruation Started", "started.sql", "menstruationADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Menstrual Disorder", "disorder.sql", "menstruationADSR/started.sql")
+    .withSubReportWithDenominator("Headache", "headache.sql", "menstruationADSR/disorder.sql")
+    .withSubReportWithDenominator("Heavy Bleeding", "heavyBleeding.sql", "menstruationADSR/disorder.sql")
+    .withSubReportWithDenominator("Lower Abdominal Pain", "lowerAbdominalPain.sql", "menstruationADSR/disorder.sql")
+    .withSubReportWithDenominator("Abnormal Discharge", "abnormalDischarge.sql", "menstruationADSR/disorder.sql")
+    .withSubReportWithDenominator("Backache", "backache.sql", "menstruationADSR/disorder.sql")
+    .withSubReportWithDenominator("Leg Pain", "legPain.sql", "menstruationADSR/disorder.sql")
+    .withSubReportWithDenominator("Nausea And Vomiting", "nauseaAndVomitting.sql", "menstruationADSR/disorder.sql")
+    .withSubReportWithDenominator("Irregular mensis", "irregularMenses.sql", "menstruationADSR/disorder.sql")
     .build();
 
 //Menstrual Hygiene Practices
@@ -161,6 +186,21 @@ const nutritionReport = new ReportBuilder()
 
     .build();
 
+//Prevalence of Malnutrition
+const nutritionReportADSR = new ReportBuilder()
+    .withName("NutritionADSR")
+    .withDirName("nutritionADSR")
+    .withSubReportWithDenominator("Total adolescents enrolled", "totalNonExitedEnrolled.sql", "nutritionADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("BMI done", "bmiDone.sql", "nutritionADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Severely Malnourished", "severelyMalnourished.sql", "nutritionADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Malnourished", "malnourished.sql", "nutritionADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Normal", "normal.sql", "nutritionADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Overweight", "overweight.sql", "nutritionADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Obese", "obese.sql", "nutritionADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("BMI not done", "bmiNotDone.sql", "nutritionADSR/totalNonExitedEnrolled.sql")
+
+    .build();
+
 //Prevalence of Anemia
 const hemoglobinReport = new ReportBuilder()
     .withName("Hemoglobin")
@@ -199,6 +239,17 @@ const sicklingReport = new ReportBuilder()
     .withSubReportWithDenominator("Counseling done for Trait", "counsellingDoneForTrait.sql", "sickling/trait.sql")
     .withSubReportWithDenominator("Counseling done for Disease", "counsellingDoneForDisease.sql", "sickling/disease.sql")
     .withSubReportWithDenominator("Referred", "referralForSickling.sql", "sickling/diseaseOrTrait.sql")
+    .build();
+
+//Prevalence of Sickle cell Anemia
+const sicklingReportADSR = new ReportBuilder()
+    .withName("SicklingTestADSR")
+    .withDirName("sicklingADSR")
+    .withSubReportWithDenominator("Total Tested Adolescents", "sicklingTestDone.sql", "sicklingADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Negative", "negative.sql", "sicklingADSR/sicklingTestDone.sql")
+    .withSubReportWithDenominator("Counseling done for Trait", "counsellingDoneForTrait.sql", "sicklingADSR/trait.sql")
+    .withSubReportWithDenominator("Counseling done for Disease", "counsellingDoneForDisease.sql", "sicklingADSR/disease.sql")
+    .withSubReportWithDenominator("Referred", "referralForSickling.sql", "sicklingADSR/diseaseOrTrait.sql")
     .build();
 
 //IFA distribution & Consumption
@@ -319,6 +370,17 @@ const rti = new ReportBuilder()
     .withSubReportWithDenominator("Burning Micturition", "burningMicturition.sql", "rti/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Ulcer over Genetalia", "ulcer.sql", "rti/totalNonExitedEnrolled.sql")
     .withSubReportWithDenominator("Abnormal discharge from vagina/penis", "abnormalDischarge.sql", "rti/totalNonExitedEnrolled.sql")
+    .build();
+
+const rtiADSR = new ReportBuilder()
+    .withName("SignsOfRTIAndRiskOfEarlyPregnancyADSR")
+    .withDirName("rtiADSR")
+    .withSubReportWithDenominator("Sexually Active", "sexuallyActive.sql", "rtiADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Multiple Partners", "multiplePartners.sql", "rtiADSR/sexuallyActive.sql")
+    .withSubReportWithDenominator("Unprotected Sex", "unprotectedSex.sql", "rtiADSR/sexuallyActive.sql")
+    .withSubReportWithDenominator("Burning Micturition", "burningMicturition.sql", "rtiADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Ulcer over Genetalia", "ulcer.sql", "rtiADSR/totalNonExitedEnrolled.sql")
+    .withSubReportWithDenominator("Abnormal discharge from vagina/penis", "abnormalDischarge.sql", "rtiADSR/totalNonExitedEnrolled.sql")
     .build();
 
 const rta = new ReportBuilder()
@@ -511,7 +573,13 @@ const generate = () =>
         mildAnemiaIronTabletsReport,
         normalAnemiaIronTabletsReport,
         severeModerateAnemiaIronTabletsReport,
-        normalMildAnemiaIronTabletsReport
+        normalMildAnemiaIronTabletsReport,
+            addictionReportADSR,
+            menstruationReportADSR,
+            nutritionReportADSR,
+            sicklingReportADSR,
+            rtiADSR
+
     ].map((report) => report.generate());
 
 module.exports = generate;

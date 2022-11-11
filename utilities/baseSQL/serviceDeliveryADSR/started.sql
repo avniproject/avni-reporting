@@ -29,6 +29,7 @@ from adsr.individual i
 where ia.program_exit_date_time is null
   and an."Menstruation started" ='Yes'
   and i.is_voided = false
+    and a.is_voided = false
     and ia.is_voided = false
    [[ and ia.enrolment_date_time >=(q1 || q4 || quote_literal({{ start_date }}) || q4 || q1  ::DATE)]]
       [[and ia.enrolment_date_time <=q1 || q4 || quote_literal({{end_date}}) || q4 || q1 ::DATE]]

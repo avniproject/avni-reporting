@@ -26,6 +26,7 @@ FROM frequency_and_percentage(''  select   distinct
   from adsr.individual i
           left join adsr.address a on a.id = i.address_id
   where  i.is_voided = false
+  and a.is_voided = false
     [[ and i.registration_date >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
       [[and i.registration_date <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '')
@@ -52,6 +53,7 @@ FROM frequency_and_percentage(''  select   distinct
            left join adsr.address a on a.id = i.address_id
   where  i.is_voided = false
     and ia.is_voided = false
+      and a.is_voided = false
  [[ and ia.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
    [[and ia.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '', ''  select   distinct
@@ -70,6 +72,7 @@ FROM frequency_and_percentage(''  select   distinct
   from adsr.individual i
           left join adsr.address a on a.id = i.address_id
   where  i.is_voided = false
+  and a.is_voided = false
     [[ and i.registration_date >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
       [[and i.registration_date <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '')
@@ -175,6 +178,7 @@ WHERE ia.program_exit_date_time isnull
   AND erank = 1
   and i.is_voided = false
   and ia.is_voided = false
+    and a.is_voided = false
    [[ and ia.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
     [[and ia.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
   and (
@@ -224,6 +228,7 @@ WHERE ia.program_exit_date_time isnull
            left join adsr.address a on a.id = i.address_id
   where  i.is_voided = false
     and ia.is_voided = false
+      and a.is_voided = false
  [[ and ia.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
    [[and ia.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '')
@@ -295,6 +300,7 @@ WHERE ia.program_exit_date_time isnull
   and erank = 1
   and i.is_voided = false
   and ia.is_voided = false
+    and a.is_voided = false
   and "Have you been referred" = ''''Yes''''
   [[ and ia.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
       [[and ia.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
@@ -316,6 +322,7 @@ WHERE ia.program_exit_date_time isnull
            left join adsr.address a on a.id = i.address_id
   where  i.is_voided = false
     and ia.is_voided = false
+      and a.is_voided = false
  [[ and ia.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
    [[and ia.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '')
@@ -361,6 +368,7 @@ WHERE "Going to school" = ''''Dropped out''''
   AND erank = 1
   and i.is_voided = false
   and ia.is_voided = false
+    and a.is_voided = false
   and (ia.enrolment_date_time ISNULL OR ia.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''')'', ''  select   distinct
   i.uuid      uuid,
          i.gender as gender_name,
@@ -379,6 +387,7 @@ WHERE "Going to school" = ''''Dropped out''''
            left join adsr.address a on a.id = i.address_id
   where  i.is_voided = false
     and ia.is_voided = false
+      and a.is_voided = false
  [[ and ia.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
    [[and ia.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '')
@@ -427,6 +436,7 @@ FROM ranked_data rd
 WHERE  erank = 1
   and i.is_voided = false
   and ia.is_voided = false
+    and a.is_voided = false
   and rd."Going to school" = ''''Dropped out''''
   and (ia.enrolment_date_time ISNULL OR ia.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''')
 '', ''WITH individual_program_partitions AS (
@@ -466,6 +476,7 @@ WHERE "Going to school" = ''''Dropped out''''
   AND erank = 1
   and i.is_voided = false
   and ia.is_voided = false
+    and a.is_voided = false
   and (ia.enrolment_date_time ISNULL OR ia.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''')'')
 UNION ALL
 SELECT
@@ -494,6 +505,7 @@ where ia.program_exit_date_time isnull
   and i.is_voided = false
   and ia.is_voided = false
   and an.is_voided = false
+    and a.is_voided = false
   and "Are you ready to readmit in school" = ''''yes''''
   [[ and ia.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
   [[and ia.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
@@ -534,6 +546,7 @@ WHERE "Going to school" = ''''Dropped out''''
   AND erank = 1
   and i.is_voided = false
   and ia.is_voided = false
+    and a.is_voided = false
   and (ia.enrolment_date_time ISNULL OR ia.enrolment_date_time between '''''|| (select start_date from filters) ||''''' and '''''|| (select end_date from filters) ||''''')'')
 UNION ALL
 SELECT
@@ -560,6 +573,7 @@ FROM frequency_and_percentage(''
            left join adsr.address a on a.id = i.address_id
   where ia.program_exit_date_time notnull
    and i.is_voided = false
+     and a.is_voided = false
     and ia.is_voided = false
   [[ and ia.program_exit_date_time >= (' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE) ]]
     [[ and ia.program_exit_date_time <= ' || '''' || quote_literal({{ end_date }}) || '''' || ' ::DATE ]]'', ''  select   distinct
@@ -580,6 +594,7 @@ FROM frequency_and_percentage(''
            left join adsr.address a on a.id = i.address_id
   where  i.is_voided = false
     and ia.is_voided = false
+      and a.is_voided = false
  AND (program_exit_date_time ISNULL
    [[ OR ia.program_exit_date_time < (' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE) ]]
    [[ OR ia.program_exit_date_time > ' || '''' || quote_literal({{ end_date }}) || '''' || ' ::DATE ]])
@@ -620,6 +635,7 @@ from adsr.individual i
 where ia.program_exit_date_time is null
   and an."Menstruation started" =''''Yes''''
   and i.is_voided = false
+    and a.is_voided = false
     and ia.is_voided = false
    [[ and ia.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
       [[and ia.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
@@ -644,6 +660,7 @@ where ia.program_exit_date_time is null
    and i.is_voided = false
     and ia.is_voided = false
     and  i.gender =''''Female''''
+      and a.is_voided = false
  [[ and ia.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
      [[and ia.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '')
@@ -689,6 +706,7 @@ WHERE "MHM Kit received" = ''''Yes''''
   and ia.program_exit_date_time isnull
   AND erank = 1
   and i.is_voided = false
+    and a.is_voided = false
   and ia.is_voided = false
    [[ and ia.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
       [[and ia.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'', ''
@@ -712,6 +730,7 @@ WHERE "MHM Kit received" = ''''Yes''''
    and i.is_voided = false
     and ia.is_voided = false
     and  i.gender =''''Female''''
+      and a.is_voided = false
  [[ and ia.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
      [[and ia.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
 '')
@@ -758,6 +777,7 @@ WHERE "MHM Kit used" = ''''Yes''''
   AND erank = 1
   and i.is_voided = false
   and ia.is_voided = false
+    and a.is_voided = false
   [[ and ia.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
         [[and ia.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'', ''
 with annual_visit_data as (
@@ -790,6 +810,7 @@ from adsr.individual i
 where ia.program_exit_date_time is null
   and an."Menstruation started" =''''Yes''''
   and i.is_voided = false
+    and a.is_voided = false
     and ia.is_voided = false
    [[ and ia.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
       [[and ia.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]

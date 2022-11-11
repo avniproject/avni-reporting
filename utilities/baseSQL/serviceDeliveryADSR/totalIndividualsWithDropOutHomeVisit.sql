@@ -38,5 +38,6 @@ FROM ranked_data rd
 WHERE  erank = 1
   and i.is_voided = false
   and ia.is_voided = false
+    and a.is_voided = false
   and rd."Going to school" = 'Dropped out'
   and (ia.enrolment_date_time ISNULL OR ia.enrolment_date_time between 'FILTERS.start_date' and 'FILTERS.end_date')

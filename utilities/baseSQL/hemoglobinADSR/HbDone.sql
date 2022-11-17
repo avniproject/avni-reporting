@@ -44,7 +44,7 @@ SELECT i.uuid              as uuid,
        case
            when ad."Village" is not null then 'Village'
            when ad."School" is not null then 'School'
-           when ad."Boarding" is not null then "Boarding"
+           when ad."Boarding" is not null then 'Boarding'
        end as address_type,
        case
            when ad."Village" is not null then ad."Village"

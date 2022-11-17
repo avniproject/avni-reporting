@@ -57,6 +57,8 @@ FROM adsr.individual i
          left join address_level adl on i.address_id = adl.id
 WHERE enc."Haemoglobin" >= 12
   and enc."Haemoglobin" < 13
+  and i.is_voided is false
+  and a.is_voided is false
       [[and enl.enrolment_date_time >=(q1 || q4 || quote_literal({{ start_date }}) || q4 || q1  ::DATE)]]
       [[and enl.enrolment_date_time <=q1 || q4 || quote_literal({{end_date}}) || q4 || q1 ::DATE]]
       [[and adl.title = q1 || q4 || quote_literal({{title}}) || q4 || q1]]

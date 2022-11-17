@@ -26,31 +26,41 @@ FROM frequency_and_percentage(''SELECT
       end  as address_name
 FROM
   adsr.individual ind
-  inner join adsr.address a on ind.address_id = a.id
-  inner join adsr.individual_adolescent enl on ind.id = enl.individual_id
+  left join adsr.address a on ind.address_id = a.id
+  left join adsr.individual_adolescent enl on ind.id = enl.individual_id
   left join address_level adl on ind.address_id = adl.id
 WHERE 1=1
+and ind.is_voided is false
+and a.is_voided is false
     [[ and enl.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
     [[and enl.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
     [[and adl.title = ' || '''' || quote_literal({{title}}) || '''' || ']];
-'', ''select   distinct
-  i.uuid      uuid,
-         i.gender as gender_name,
-         case
-             when a."School" notnull then ''''School''''
-             when a."Village" notnull then ''''Village''''
-             when a."Boarding" notnull then ''''Boarding''''
-             end  as address_type,
-         case
-             when a."School" notnull then a."School"
-             when a."Village" notnull then a."Village"
-             when a."Boarding" notnull then a."Boarding"
-             end  as address_name
-  from adsr.individual i
-          left join adsr.address a on a.id = i.address_id
-  where  i.is_voided = false
-    [[ and i.registration_date >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
-      [[and i.registration_date <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]'')
+'', ''SELECT
+  DISTINCT
+  ind.uuid  uuid,
+  ind.gender  gender_name,
+  case
+      when a."Village" is not null then ''''Village''''
+      when a."School" is not null then ''''School''''
+      when a."Boarding" is not null then ''''Boarding''''
+      end  as address_type,
+  case
+      when a."Village" is not null then a."Village"
+      when a."School" is not null then a."School"
+      when a."Boarding" is not null then a."Boarding"
+      end  as address_name
+FROM
+  adsr.individual ind
+  left join adsr.address a on ind.address_id = a.id
+  left join adsr.individual_adolescent enl on ind.id = enl.individual_id
+  left join address_level adl on ind.address_id = adl.id
+WHERE 1=1
+and ind.is_voided is false
+and a.is_voided is false
+    [[ and enl.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
+    [[and enl.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
+    [[and adl.title = ' || '''' || quote_literal({{title}}) || '''' || ']];
+'')
 UNION ALL
 SELECT
 ''HB recorded''                                          rowid,
@@ -66,36 +76,36 @@ FROM frequency_and_percentage(''WITH ind_with_HB AS (
         inner join adsr.individual_adolescent_annual_visit_baseline base on ind.id = base.individual_id
     WHERE 1 = 1
         AND base."Haemoglobin" notnull
-    union all
-    SELECT ind.uuid          AS                                                           iuuid,
-           ind.id            As                                                           id,
-           endline.uuid         AS                                                           euuid,
-           endline."Haemoglobin" AS "Haemoglobin",
-           endline.encounter_date_time
-    FROM adsr.individual ind
-        inner join adsr.individual_adolescent_annual_visit_endline endline on ind.id = endline.individual_id
-    WHERE 1 = 1
-        AND endline."Haemoglobin" notnull
-    union all
-    SELECT ind.uuid          AS                                                           iuuid,
-           ind.id            As                                                           id,
-           severe.uuid         AS                                                           euuid,
-           severe."Haemoglobin" AS "Haemoglobin",
-           severe.encounter_date_time
-    FROM adsr.individual ind
-        inner join adsr.individual_adolescent_severe_anemia_followup severe on ind.id = severe.individual_id
-    WHERE 1 = 1
-        AND severe."Haemoglobin" notnull
-    union all
-    SELECT ind.uuid          AS                                                           iuuid,
-           ind.id            As                                                           id,
-           moderate.uuid         AS                                                           euuid,
-           moderate."Haemoglobin" AS "Haemoglobin",
-           moderate.encounter_date_time
-    FROM adsr.individual ind
-        inner join adsr.individual_adolescent_moderate_anemia_followup moderate on ind.id = moderate.individual_id
-    WHERE 1 = 1
-        AND moderate."Haemoglobin" notnull
+    -- union all
+    -- SELECT ind.uuid          AS                                                           iuuid,
+    --        ind.id            As                                                           id,
+    --        endline.uuid         AS                                                           euuid,
+    --        endline."Haemoglobin" AS "Haemoglobin",
+    --        endline.encounter_date_time
+    -- FROM adsr.individual ind
+    --     inner join adsr.individual_adolescent_annual_visit_endline endline on ind.id = endline.individual_id
+    -- WHERE 1 = 1
+    --     AND endline."Haemoglobin" notnull
+    -- union all
+    -- SELECT ind.uuid          AS                                                           iuuid,
+    --        ind.id            As                                                           id,
+    --        severe.uuid         AS                                                           euuid,
+    --        severe."Haemoglobin" AS "Haemoglobin",
+    --        severe.encounter_date_time
+    -- FROM adsr.individual ind
+    --     inner join adsr.individual_adolescent_severe_anemia_followup severe on ind.id = severe.individual_id
+    -- WHERE 1 = 1
+    --     AND severe."Haemoglobin" notnull
+    -- union all
+    -- SELECT ind.uuid          AS                                                           iuuid,
+    --        ind.id            As                                                           id,
+    --        moderate.uuid         AS                                                           euuid,
+    --        moderate."Haemoglobin" AS "Haemoglobin",
+    --        moderate.encounter_date_time
+    -- FROM adsr.individual ind
+    --     inner join adsr.individual_adolescent_moderate_anemia_followup moderate on ind.id = moderate.individual_id
+    -- WHERE 1 = 1
+    --     AND moderate."Haemoglobin" notnull
 )
 SELECT i.uuid              as uuid,
        i.gender            as gender_name,
@@ -116,6 +126,8 @@ FROM adsr.individual i
      left join address_level adl on i.address_id = adl.id
 
 WHERE i.id in (select id from ind_with_HB)
+and i.is_voided is false
+and ad.is_voided is false
     [[ and enl.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
     [[and enl.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
     [[and adl.title = ' || '''' || quote_literal({{title}}) || '''' || ']];
@@ -135,10 +147,12 @@ WHERE i.id in (select id from ind_with_HB)
       end  as address_name
 FROM
   adsr.individual ind
-  inner join adsr.address a on ind.address_id = a.id
-  inner join adsr.individual_adolescent enl on ind.id = enl.individual_id
+  left join adsr.address a on ind.address_id = a.id
+  left join adsr.individual_adolescent enl on ind.id = enl.individual_id
   left join address_level adl on ind.address_id = adl.id
 WHERE 1=1
+and ind.is_voided is false
+and a.is_voided is false
     [[ and enl.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
     [[and enl.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
     [[and adl.title = ' || '''' || quote_literal({{title}}) || '''' || ']];
@@ -207,6 +221,8 @@ FROM adsr.individual i
          left join address_level adl on i.address_id = adl.id
          inner join adsr.individual_adolescent enl on i.id = enl.individual_id
 WHERE enc."Haemoglobin" <= 7.9
+and i.is_voided is false
+and a.is_voided is false
         [[and enl.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
         [[and enl.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
         [[and adl.title = ' || '''' || quote_literal({{title}}) || '''' || ']]
@@ -226,10 +242,12 @@ WHERE enc."Haemoglobin" <= 7.9
       end  as address_name
 FROM
   adsr.individual ind
-  inner join adsr.address a on ind.address_id = a.id
-  inner join adsr.individual_adolescent enl on ind.id = enl.individual_id
+  left join adsr.address a on ind.address_id = a.id
+  left join adsr.individual_adolescent enl on ind.id = enl.individual_id
   left join address_level adl on ind.address_id = adl.id
 WHERE 1=1
+and ind.is_voided is false
+and a.is_voided is false
     [[ and enl.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
     [[and enl.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
     [[and adl.title = ' || '''' || quote_literal({{title}}) || '''' || ']];
@@ -298,6 +316,8 @@ FROM adsr.individual i
          left join address_level adl on i.address_id = adl.id
 WHERE enc."Haemoglobin" >= 8
   and enc."Haemoglobin" < 11
+  and i.is_voided is false
+  and a.is_voided is false
   [[and enl.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
   [[and enl.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
   [[and adl.title = ' || '''' || quote_literal({{title}}) || '''' || ']]
@@ -317,10 +337,12 @@ WHERE enc."Haemoglobin" >= 8
       end  as address_name
 FROM
   adsr.individual ind
-  inner join adsr.address a on ind.address_id = a.id
-  inner join adsr.individual_adolescent enl on ind.id = enl.individual_id
+  left join adsr.address a on ind.address_id = a.id
+  left join adsr.individual_adolescent enl on ind.id = enl.individual_id
   left join address_level adl on ind.address_id = adl.id
 WHERE 1=1
+and ind.is_voided is false
+and a.is_voided is false
     [[ and enl.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
     [[and enl.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
     [[and adl.title = ' || '''' || quote_literal({{title}}) || '''' || ']];
@@ -389,6 +411,8 @@ FROM adsr.individual i
          left join address_level adl on i.address_id = adl.id
 WHERE enc."Haemoglobin" >= 11
   and enc."Haemoglobin" < 12
+and   i.is_voided is false
+and   a.is_voided is false
     [[and enl.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
     [[and enl.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
     [[and adl.title = ' || '''' || quote_literal({{title}}) || '''' || ']]
@@ -408,10 +432,12 @@ WHERE enc."Haemoglobin" >= 11
       end  as address_name
 FROM
   adsr.individual ind
-  inner join adsr.address a on ind.address_id = a.id
-  inner join adsr.individual_adolescent enl on ind.id = enl.individual_id
+  left join adsr.address a on ind.address_id = a.id
+  left join adsr.individual_adolescent enl on ind.id = enl.individual_id
   left join address_level adl on ind.address_id = adl.id
 WHERE 1=1
+and ind.is_voided is false
+and a.is_voided is false
     [[ and enl.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
     [[and enl.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
     [[and adl.title = ' || '''' || quote_literal({{title}}) || '''' || ']];
@@ -480,6 +506,8 @@ FROM adsr.individual i
          left join address_level adl on i.address_id = adl.id
 WHERE enc."Haemoglobin" >= 12
   and enc."Haemoglobin" < 13
+  and i.is_voided is false
+  and a.is_voided is false
       [[and enl.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
       [[and enl.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
       [[and adl.title = ' || '''' || quote_literal({{title}}) || '''' || ']]
@@ -499,10 +527,12 @@ WHERE enc."Haemoglobin" >= 12
       end  as address_name
 FROM
   adsr.individual ind
-  inner join adsr.address a on ind.address_id = a.id
-  inner join adsr.individual_adolescent enl on ind.id = enl.individual_id
+  left join adsr.address a on ind.address_id = a.id
+  left join adsr.individual_adolescent enl on ind.id = enl.individual_id
   left join address_level adl on ind.address_id = adl.id
 WHERE 1=1
+and ind.is_voided is false
+and a.is_voided is false
     [[ and enl.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
     [[and enl.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
     [[and adl.title = ' || '''' || quote_literal({{title}}) || '''' || ']];
@@ -570,6 +600,8 @@ FROM adsr.individual i
          inner join adsr.individual_adolescent enl on i.id = enl.individual_id
          left join address_level adl on i.address_id = adl.id
 WHERE enc."Haemoglobin" > 13
+and i.is_voided is false
+and a.is_voided is false
     [[and enl.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
     [[and enl.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
     [[and adl.title = ' || '''' || quote_literal({{title}}) || '''' || ']]
@@ -589,10 +621,12 @@ WHERE enc."Haemoglobin" > 13
       end  as address_name
 FROM
   adsr.individual ind
-  inner join adsr.address a on ind.address_id = a.id
-  inner join adsr.individual_adolescent enl on ind.id = enl.individual_id
+  left join adsr.address a on ind.address_id = a.id
+  left join adsr.individual_adolescent enl on ind.id = enl.individual_id
   left join address_level adl on ind.address_id = adl.id
 WHERE 1=1
+and ind.is_voided is false
+and a.is_voided is false
     [[ and enl.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
     [[and enl.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
     [[and adl.title = ' || '''' || quote_literal({{title}}) || '''' || ']];
@@ -611,37 +645,7 @@ FROM frequency_and_percentage(''WITH ind_without_HB AS (
     from adsr.individual ind
     inner join adsr.individual_adolescent_annual_visit_baseline base on ind.id = base.individual_id
     WHERE 1 = 1
-          AND base."Haemoglobin" is null
-    union all
-    SELECT ind.uuid          AS                                                           iuuid,
-           ind.id            As                                                           id,
-           endline.uuid         AS                                                           euuid,
-           endline."Haemoglobin" AS "Haemoglobin",
-           endline.encounter_date_time
-    from adsr.individual ind
-    inner join adsr.individual_adolescent_annual_visit_endline endline on ind.id = endline.individual_id
-    WHERE 1 = 1
-          AND endline."Haemoglobin" is null
-    union all
-    SELECT ind.uuid          AS                                                           iuuid,
-           ind.id            As                                                           id,
-           severe.uuid         AS                                                           euuid,
-           severe."Haemoglobin" AS "Haemoglobin",
-           severe.encounter_date_time
-    from adsr.individual ind
-    inner join adsr.individual_adolescent_severe_anemia_followup severe on ind.id = severe.individual_id
-    WHERE 1 = 1
-          AND severe."Haemoglobin" is null
-    union all
-    SELECT ind.uuid          AS                                                           iuuid,
-           ind.id            As                                                           id,
-           moderate.uuid         AS                                                           euuid,
-           moderate."Haemoglobin" AS "Haemoglobin",
-           moderate.encounter_date_time
-    from adsr.individual ind
-    inner join adsr.individual_adolescent_moderate_anemia_followup moderate on ind.id = moderate.individual_id
-    WHERE 1 = 1
-          AND moderate."Haemoglobin" is null
+          AND base."Haemoglobin test" = ''''Not done''''
 )
 SELECT i.uuid              as uuid,
        i.gender            as gender_name,
@@ -656,12 +660,14 @@ SELECT i.uuid              as uuid,
             when a."Boarding" is not null then a."Boarding"
        end as address_name
 FROM adsr.individual i
-     left join ind_without_HB withoutHb on i.id = withoutHb.id
-     left join adsr.address a on i.address_id = a.id
+     inner join ind_without_HB withoutHb on i.id = withoutHb.id
+     inner join adsr.address a on i.address_id = a.id
      left join address_level adl on i.address_id = adl.id
-     left join adsr.individual_adolescent enl on enl.individual_id = i.id
+     inner join adsr.individual_adolescent enl on enl.individual_id = i.id
 
 WHERE 1=1
+and i.is_voided is false
+and a.is_voided is false
     [[and enl.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
     [[and enl.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
     [[and adl.title = ' || '''' || quote_literal({{title}}) || '''' || ']];
@@ -681,10 +687,12 @@ WHERE 1=1
       end  as address_name
 FROM
   adsr.individual ind
-  inner join adsr.address a on ind.address_id = a.id
-  inner join adsr.individual_adolescent enl on ind.id = enl.individual_id
+  left join adsr.address a on ind.address_id = a.id
+  left join adsr.individual_adolescent enl on ind.id = enl.individual_id
   left join address_level adl on ind.address_id = adl.id
 WHERE 1=1
+and ind.is_voided is false
+and a.is_voided is false
     [[ and enl.enrolment_date_time >=(' || '''' || quote_literal({{ start_date }}) || '''' || '  ::DATE)]]
     [[and enl.enrolment_date_time <=' || '''' || quote_literal({{end_date}}) || '''' || ' ::DATE]]
     [[and adl.title = ' || '''' || quote_literal({{title}}) || '''' || ']];

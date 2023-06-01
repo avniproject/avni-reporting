@@ -18,8 +18,9 @@ FROM
   left join adsr.individual_adolescent enl on ind.id = enl.individual_id
   left join address_level adl on ind.address_id = adl.id
 WHERE 1=1
-and ind.is_voided is false
-and a.is_voided is false
+and ind.is_voided = false
+and enl.program_exit_date_time isnull
+and enl.is_voided= false
     [[ and enl.enrolment_date_time >=(q1 || q4 || quote_literal({{ start_date }}) || q4 || q1  ::DATE)]]
     [[and enl.enrolment_date_time <=q1 || q4 || quote_literal({{end_date}}) || q4 || q1 ::DATE]]
     [[and adl.title = q1 || q4 || quote_literal({{title}}) || q4 || q1]];

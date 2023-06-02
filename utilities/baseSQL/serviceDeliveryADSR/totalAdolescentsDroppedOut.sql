@@ -35,5 +35,5 @@ WHERE "Going to school" = 'Dropped out'
   AND erank = 1
   and i.is_voided = false
   and ia.is_voided = false
-    and a.is_voided = false
-  and (ia.enrolment_date_time ISNULL OR ia.enrolment_date_time between 'FILTERS.start_date' and 'FILTERS.end_date')
+  [[ and ia.enrolment_date_time >=(q1 || q4 || quote_literal({{ start_date }}) || q4 || q1  ::DATE)]]
+       [[and ia.enrolment_date_time <=q1 || q4 || quote_literal({{end_date}}) || q4 || q1 ::DATE]]

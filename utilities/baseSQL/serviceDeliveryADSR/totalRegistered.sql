@@ -14,6 +14,5 @@
   from adsr.individual i
           left join adsr.address a on a.id = i.address_id
   where  i.is_voided = false
-  and a.is_voided = false
     [[ and i.registration_date >=(q1 || q4 || quote_literal({{ start_date }}) || q4 || q1  ::DATE)]]
       [[and i.registration_date <=q1 || q4 || quote_literal({{end_date}}) || q4 || q1 ::DATE]]

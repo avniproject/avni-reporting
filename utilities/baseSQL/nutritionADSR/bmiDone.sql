@@ -3,37 +3,37 @@ WITH agg_data as (
          individual_id,
          program_enrolment_id,
          encounter_date_time,
-         "Height (cm)",
-         "Weight (kg)"
+         "BMI (kg/m²)"
   from adsr.individual_adolescent_annual_visit_baseline
   where  encounter_date_time is not null
-  and ("Height (cm)" is not null or "Weight (kg)" is not null)
+  and  "BMI (kg/m²)" is not null
   union all
   select uuid,
          individual_id,
          program_enrolment_id,
          encounter_date_time,
-         "Height (cm)",
-         "Weight (kg)"
+          "BMI (kg/m²)"
   from adsr.individual_adolescent_annual_visit_endline
   where  encounter_date_time is not null
-  and ("Height (cm)" is not null or "Weight (kg)" is not null)
+  and  "BMI (kg/m²)" is not null
 
 ),
   individual_program_partitions AS (
   SELECT i.uuid          AS                                                           iuuid,
            row_number() OVER (PARTITION BY i.uuid ORDER BY pe.encounter_date_time desc) erank,
            pe.uuid         AS                                                           euuid,
-pe."Height (cm)" AS                                                           "Height (cm)",
-pe."Weight (kg)" AS                                                           "Weight (kg)",
 pe.encounter_date_time
 FROM agg_data pe
 INNER JOIN adsr.individual_adolescent e ON pe.program_enrolment_id = e.id
 INNER JOIN adsr.individual i ON e.individual_id = i.id
+JOIN address_level a on a.id = i.address_id
 WHERE e.program_exit_date_time is null
 and i.is_voided = false
-and (pe."Height (cm)" is not null
-or pe."Weight (kg)" is not null)
+and e.is_voided = false
+and  "BMI (kg/m²)" is not null
+[[ and e.enrolment_date_time >=(q1 || q4 || quote_literal({{ start_date }}) || q4 || q1  ::DATE)]]
+[[and e.enrolment_date_time <=q1 || q4 || quote_literal({{end_date}}) || q4 || q1 ::DATE]]
+[[and a.title  = q1 || q4 || quote_literal({{title}}) || q4 || q1]]
 
 )
 SELECT  i.uuid              as uuid,
@@ -44,4 +44,4 @@ FROM individual_program_partitions ip
 JOIN adsr.individual i ON i.uuid = ip.iuuid
 JOIN address_level a on a.id = i.address_id
 JOIN address_level_type alt on alt.id = a.type_id
-WHERE erank = 1 and a.is_voided = false
+WHERE erank = 1

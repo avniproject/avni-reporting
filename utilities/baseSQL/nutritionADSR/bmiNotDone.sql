@@ -23,7 +23,16 @@ pe.encounter_date_time
 FROM agg_data pe
 INNER JOIN adsr.individual_adolescent e ON pe.program_enrolment_id = e.id
 INNER JOIN adsr.individual i ON e.individual_id = i.id
+JOIN address_level a on a.id = i.address_id
+
 WHERE e.program_exit_date_time is null and i.is_voided = false
+and e.is_voided = false
+
+[[ and e.enrolment_date_time >=(q1 || q4 || quote_literal({{ start_date }}) || q4 || q1  ::DATE)]]
+[[and e.enrolment_date_time <=q1 || q4 || quote_literal({{end_date}}) || q4 || q1 ::DATE]]
+[[and a.title  = q1 || q4 || quote_literal({{title}}) || q4 || q1]]
+
+
 
 
 )
@@ -35,4 +44,4 @@ FROM individual_program_partitions ip
 JOIN adsr.individual i ON i.uuid = ip.iuuid
 JOIN address_level a on i.address_id = a.id
 JOIN address_level_type alt on alt.id = a.type_id
-WHERE ip.obs is null and erank = 1 and a.is_voided = false and i.is_voided = false
+WHERE ip.obs is null and erank = 1

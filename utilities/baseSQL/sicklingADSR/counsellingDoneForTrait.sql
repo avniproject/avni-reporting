@@ -25,6 +25,7 @@ INNER JOIN adsr.individual i ON e.individual_id = i.id
 INNER JOIN address_level a on i.address_id = a.id
 WHERE e.program_exit_date_time is null
 and i.is_voided = false
+and e.is_voided = false
 and "Sickling test result" = 'Trait'
 [[and e.enrolment_date_time >=(q1 || q4 || quote_literal({{ start_date }}) || q4 || q1  ::DATE)]]
 [[and e.enrolment_date_time <=q1 || q4 || quote_literal({{end_date}}) || q4 || q1 ::DATE]]
@@ -42,7 +43,8 @@ INNER JOIN adsr.individual i ON e.individual_id = i.id
 WHERE e.program_exit_date_time is null
 AND "Counselling done" = 'Yes'
 and pe.encounter_date_time is not null
-and i.is_voided = false)
+and i.is_voided = false
+and e.is_voided = false)
 SELECT distinct i.uuid   as uuid,
                 i.gender as gender_name,
                 alt.name as address_type,
@@ -56,3 +58,4 @@ JOIN address_level_type alt on alt.id = a.type_id
 JOIN individual_program_partitions_couselling_done c on c.iuuid = i.uuid
 WHERE ip.erank = 1
 and c.erank = 1
+and i.is_voided = false
